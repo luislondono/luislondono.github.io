@@ -1,0 +1,258 @@
+*{
+	margin: 0px;
+	padding: 0px;
+	box-sizing: border-box;
+}
+
+a {
+	text-decoration: none;
+	color:inherit;
+ 		}
+
+body{
+}
+
+.webpage{
+	min-width: var(--webpageWidth);
+	max-width: var(--webpageWidth);
+	margin: 0	auto 100px auto;
+	height: auto;
+}
+
+
+:root {
+    --cornellRed: rgb(179,27,27) ;
+		--webpageWidth: 960px;
+		--halfwebpageWidth: 480px;
+		--headerHeight: 112px;
+}
+
+.carnelian{
+	color: rgb(179,27,27);
+}
+
+.container{
+	overflow: hidden;
+}
+
+.flex-container{
+	display: flex;
+	flex-flow: row-wrap;
+}
+
+.header-main{
+	border-bottom: 2px solid #b31b1b;
+	height: var(--headerHeight);
+	background-color: #fff;
+	position: relative;
+
+	text-align: left;
+	width: 100%;
+	max-width: 1272px;
+	margin: 0 auto;
+}
+
+#cornellBranding{
+	position: absolute;
+	width: 300px;
+	height: var(--headerHeight);
+	margin: auto;
+	left: 0;
+	top: 0;
+}
+
+#cornellBranding a img{
+	float: left;
+	position: relative;
+	top:19px;
+	margin-bottom: auto;
+}
+#cornellBranding a:first-child img{
+	width: 24%;
+}
+#cornellBranding a:last-child img{
+	border-left: 1px solid #ccc;
+	padding-left: 5px;
+	width: 76%;
+}
+
+#navigation-bar{
+	box-sizing: content-box;
+	padding-left: 80px;
+	margin: auto;
+	width: 361px;
+	height: 100%;
+
+}
+
+#navigation-bar li{
+	float: left;
+	display: inline-block;
+	margin-right: 12px;
+	margin-left: 12px;
+	height: 100%;
+	width: auto;
+}
+
+#navigation-bar a{
+	position: relative;
+	text-decoration: none;
+	color: var(--cornellRed);
+	font-size: 1.3em;
+	font-family: Calibri, Arial,sans-serif;
+	font-weight: bold;
+	top: 33%;
+	border: 1.5px solid #ccc;
+	border-radius: 25px;
+	padding: 12px 10px 12px 10px;
+	opacity: .85;
+}
+
+#navigation-bar a:hover{
+	opacity: 1;
+	background-color: #fbfbfb;
+	border: 2.2px solid #ccc;
+
+}
+
+.page-title-container{
+	height: 112px;
+	position: relative;
+	text-align: left;
+	width: 100%;
+	max-width: 1272px;
+	margin: 0 auto;
+	font-size: 1.5em;
+	font-family: Arial;
+}
+
+.page-title-container h1{
+	text-align: center;
+}
+
+.title-background-image {
+	min-width: var(--webpageWidth);
+	position: absolute;
+	top: 120px;
+	z-index: -1;
+	opacity: .6;
+	width: 100%;
+}
+
+.gallery-container{
+	position: relative;
+	box-sizing: content-box;
+
+
+
+	height: auto;
+	background-color: yellow;
+}
+
+.gallery-tile{
+	display: flex;
+	box-sizing: border-box;
+	padding: 1px;
+	position: relative;
+	overflow: hidden;
+	float:left;
+	width: var(--halfwebpageWidth);
+	height: 640px;
+	background-color: black;
+}
+
+.gallery-tile-image{
+	display: block;
+	overflow: hidden;
+	width: var(--halfwebpageWidth);
+	height: auto;
+	margin: auto;
+}
+
+.gallery-tile-description{
+	font-family: 'PT Sans';
+	position: absolute;
+	width: inherit;
+	height: inherit;
+	background-color: black;
+	color: white;
+	opacity: .6;
+	text-align: center;
+}
+
+.gallery-tile:hover figcaption{
+	visibility: visible;
+}
+
+.gallery-tile figcaption{
+	visibility: hidden;
+}
+
+.gallery-tile-description-title{
+	position: relative;
+	top: 22%;
+	font-size: 2em;
+}
+
+.gallery-tile-description-caption{
+	position: relative;
+	font-size: 1.3em;
+	top: 23%;
+	height: 70%;
+	overflow-y: auto;
+}
+
+
+#social-media-bar{
+	top: 0%;
+	right: 0%;
+	width: 10em;
+	height: 100%;
+	float: right;
+	text-decoration: none;
+	list-style-type: none;
+	position: absolute;
+	/* background-color: lightgray; */
+}
+
+#social-media-bar li{
+	width: 33.3%;
+	height: 100%;
+	float: left;
+	align-items: center;
+
+}
+
+#social-media-bar a{
+	width: 53.3px;
+	height: 53.3px;
+	position: relative;
+}
+
+#social-media-bar img{
+	width: 2.6em;
+	height: 2.6em;
+	margin-right: 15px;
+	margin-top: 33px;
+	border-radius: .5em;
+	opacity: .4;
+
+}
+
+#social-media-bar img:hover{
+	opacity: 1;
+}
+
+
+
+.footer-container{
+/*
+	position: relative;
+	height: auto;
+	bottom: 100%; */
+	bottom: 100%;
+	height: 200px;
+	width: var(--webpageWidth);
+
+	/* text-align: center; */
+}
