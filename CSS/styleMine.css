@@ -19,6 +19,7 @@ a {
 }
 
 .webpage-content-box{
+	min-width: var(--webpageWidth);
 	max-width: var(--webpageWidth);
 	margin: 0	auto 100px auto;
 	height: 100%;
@@ -45,6 +46,11 @@ a {
 	background-color: var(--coolBlue);
 	position: relative;
 	width: 100%;
+	box-shadow: -6px 6px 6px -2px rgba(128,128,128,.5);
+
+	border-left: 2px solid black;
+	border-right: 2px solid black;
+	border-bottom: 2px solid black;
 	border-radius: 0px 0px 25px 25px;
 	/* max-width: 1272px; */
 	margin: 0 auto;
@@ -174,8 +180,6 @@ a {
 	0px 9.5px 6px -1px rgba(128,128,128,1);
 }
 
-
-
 .page-title-container{
 	position: relative;
 	height: 7em;
@@ -189,43 +193,44 @@ a {
 
 .title-background-image{
 	position: absolute;
-	top: 0%;
-	z-index: -3;
+	z-index: -555;
 	overflow: hidden;
 	height: 22em;
-	width: 90%;
-	left: 5%;
-	border: 2px solid gray;
-	padding-left: auto;
-	padding-right: auto;
-	border-radius: 0px 0px 25px 25px;
+	width: 100%;
+
+	top: 0%;
 
 }
 
 .title-background-image img {
 	display: flex;
-	position: relative;
 	z-index: inherit;
 	opacity: .75;
+
+	height: 100%;
 	width: 100%;
-	height: auto;
-	margin: auto;
+	max-width: 90%;
+	margin: 0 auto 0 auto;
+	border: 2px solid gray;
+	border-radius: 0px 0px 25px 25px;
 }
 
 .gallery-container{
 	position: relative;
-	width: var(--webpageWidth);
+	width: 87%;
+	margin: 0 auto 0 auto;
 	height: auto;
 	background-color: black;
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
+	align-items: center;
 }
 
 
 .gallery-tile-portrait{
-	width: 50%;
-	height: 640px;
+	width: 25%;
+	height: auto;
 	align-content: center;
 	align-items: center;
 	text-align: center;
@@ -235,7 +240,7 @@ a {
 }
 
 .gallery-tile-landscape{
-	width: 100%;
+	width: 50%;
 	height: auto;
 	align-content: center;
 	align-items: center;
