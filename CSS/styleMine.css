@@ -3,7 +3,7 @@
 	margin: 0px;
 	padding: 0px;
 	box-sizing: border-box;
-	font-family: "Segoe UI";
+	font-family: Arial;
 }
 
 a {
@@ -166,7 +166,7 @@ a {
 				        }
 
 .button:hover {
-	transform: translate(0, 1px); /* depth of button press */
+	transform: translate(0, 2px); /* depth of button press */
 }
 
 .button:hover {
@@ -342,6 +342,113 @@ a {
 
 #social-media-bar a img:hover{
 	opacity: .8;
+}
+
+
+.coursework-container{
+	height: auto;
+	width: 100%;
+	/* background-color: lightgray; */
+	/* font-family: Verdana; */
+}
+.coursework-container h2{
+	font-size: 2em;
+	margin-bottom: 1em;
+}
+
+.engineering-major-flowchart-container{
+	display: flex;
+	flex-wrap: wrap;
+	/* font-family: Verdana; */
+}
+
+.engineering-major-flowchart-affiliation-requirements h4{
+	font-weight: lighter;
+	margin: 1em auto 1em 0em;
+	width: 75%;
+	/* font-family: 'PT Sans'; */
+
+}
+
+.engineering-major-fouryear-container{
+	width: 100%;
+	margin: auto auto 1em auto;
+	display: flex;
+	/* font-family: 'PT Sans'; */
+
+}
+
+.engineering-major-semester-container{
+	margin: auto .25em auto .25em;
+	height: auto;
+	width: 12.5%;
+	display: flex;
+	flex-direction: column;
+	/* background-color: red; */
+	/* font-family: 'PT Sans'; */
+	font-size: 1.1em;
+	text-align: center;
+}
+
+.engineering-major-flowchart-course-box{
+	border: solid .5px black;
+	border-radius: 5px;
+	word-wrap: normal;
+	width: 100%;
+	height: 3em;
+	/* background-color: white; */
+	margin: 10px auto 10px auto;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	/* font-family: Verdana; */
+}
+
+#incomplete-class{
+	background-color: none;
+	opacity: .4;
+}
+
+#incomplete-class:hover{
+	background-color: none;
+	opacity: .7;
+}
+
+#complete-class{
+	background-color: #1ac34c;
+
+}
+
+#current-class{
+	background-color: #fcff27;
+}
+
+#Microeconomics:hover{
+	content: none;
+	text
+}
+
+.course-label{
+	margin: auto;
+	width: 100%;
+	height: auto;
+	max-height: 3em;
+	font-size: 1em;
+	line-height: 1em;
+}
+
+.engineering-major-flowchart-course-box:hover .original-course-name{
+	display: none;
+	transition: 2s ease-in;
+}
+
+.engineering-major-flowchart-course-box:hover .alternate-course-name{
+	display: inherit;
+	transition: 2s ease-in;
+}
+
+.engineering-major-flowchart-course-box .alternate-course-name{
+	display: none;
 }
 
 
