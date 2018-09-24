@@ -215,6 +215,20 @@ a {
 	border-radius: 0px 0px 25px 25px;
 }
 
+.personal-portrait-1{
+	height: 200px;
+	width: 200px;
+	overflow: hidden;
+}
+
+.personal-portrait-1 img{
+	height: 100%;
+	width auto;
+}
+
+
+
+
 .gallery-container{
 	position: relative;
 	width: 87%;
@@ -519,6 +533,8 @@ a {
 .indented{
 	padding-left: 2em;
 }
+
+
 
 
 
