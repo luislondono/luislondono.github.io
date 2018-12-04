@@ -66,9 +66,11 @@ nav{
   /* background-color: lightblue; */
   float: right;
   height: 100%;
-  min-width: 60%;
+  /* min-width: 60%; */
   position: relative;
   right: 0%;
+	max-width: 868px;
+
 }
 
 nav ul{
@@ -87,30 +89,60 @@ nav ul li{
   text-decoration: none;
   height: 100%;
   top: 0%;
-	margin: auto 60px auto auto;
+	margin: auto 30px auto auto;
 	padding: 2px 20px 2px 20px;
 	text-align: center;
   display: inline-block;
+	font-family: 'Roboto';
+	color: black;
+	line-height: 48px;
+	opacity: .6;
+	font-weight: 300;
+	font-size: 1.5em;
+	text-decoration: none;
 
 }
 
 nav ul li:nth-last-child(1){
-	margin-right: 160px;
+	/* margin-right: 160px;  */
 }
+
+/* nav ul li:nth-last-child(1):hover{
+	/* margin-right: 160px; */
+
 
 nav ul li a{
-	font-family: 'Roboto';
+
 	text-decoration: none;
-	color: black;
-	line-height: 48px;
-	font-weight: 300;
-	font-size: 1.5em;
-	opacity: .6;
+	color: inherit;
+	/* line-height: 48px; */
+
+
 }
 
-nav ul li a:hover{
+nav ul li:hover{
 	opacity: 1;
 
+}
+#dropdown-content{
+	/* transition: ease-in; */
+	/* transition-duration: 3s; */
+}
+
+#dropdown-content a{
+	display: none;
+	transition: ease-in;
+	transition-duration: 3s;
+}
+
+#dropdown-content:hover a{
+	display: flex;
+	flex-direction: column;
+	transition-duration: 2s;
+}
+
+.nav-link:hover {
+	opacity: 1;
 }
 
 .nav-link{
@@ -126,8 +158,8 @@ nav ul li a:hover{
   width: 0%;
   height: 2px;
 	display: inline;
-  right: -10%;
-	bottom: -2px;
+  right: 10%;
+	bottom: 5px;
   /* background: #fff; */
   opacity: 1;
   background: #6160ff;
@@ -139,8 +171,8 @@ nav ul li a:hover{
 .nav-link:hover::after,
 .nav-link:focus::after,
 .nav-link:active::after{
-  width: 110%;
-  left: -5%;
+  width: 80%;
+  left: 10%;
 }
 
 
