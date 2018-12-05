@@ -313,7 +313,7 @@ nav ul li:hover{
 	height: auto;
 	margin: auto;
 	margin-top: 30px;
-	font-family: "Segoe UI";
+	font-family: "PT Sans", Arial;
 	border: solid 1.2px black;
 	padding: 50px;
 	box-sizing: content-box;
