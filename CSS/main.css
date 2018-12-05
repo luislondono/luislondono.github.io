@@ -5,7 +5,7 @@
 	padding: 0px;
 	box-sizing: border-box;
 	/* font-family: Arial; */
-	list-style: none;
+	/* list-style: none; */
 }
 
 :root {
@@ -21,12 +21,15 @@
 	min-height: 99vh;
 }
 
+header{
+	min-width: 1220px;
+
+}
 
 .navbar-container{
 
 	/* background-color: #6160ff; */
   margin: auto;
-  min-width: 1200px;
   height: 60px;
   position: relative;
   }
@@ -69,7 +72,7 @@ nav{
   /* min-width: 60%; */
   position: relative;
   right: 0%;
-	max-width: 868px;
+	/* max-width: 868px; */
 
 }
 
@@ -86,20 +89,9 @@ nav ul{
 
 nav ul li{
 	/* background-color: red; */
-  text-decoration: none;
+
   height: 100%;
   top: 0%;
-	margin: auto 30px auto auto;
-	padding: 2px 20px 2px 20px;
-	text-align: center;
-  display: inline-block;
-	font-family: 'Roboto';
-	color: black;
-	line-height: 48px;
-	opacity: .6;
-	font-weight: 300;
-	font-size: 1.5em;
-	text-decoration: none;
 
 }
 
@@ -129,16 +121,26 @@ nav ul li:hover{
 	/* transition-duration: 3s; */
 }
 
-#dropdown-content a{
+#dropdown-content .nav-bar-collapsable-column{
 	display: none;
-	transition: ease-in;
-	transition-duration: 3s;
+	background-color: white;
+	position: absolute;
+	top: 41px;
+	margin: auto;
+	width: 123px;
+	/* transition: ease-in; */
+	/* transition-duration: 1s; */
 }
 
-#dropdown-content:hover a{
+#dropdown-content:hover .nav-bar-collapsable-column{
 	display: flex;
 	flex-direction: column;
-	transition-duration: 2s;
+	/* transition-duration: 2s; */
+}
+
+.nav-bar-collapsable-column{
+	border: 2px #6160ff solid;
+
 }
 
 .nav-link:hover {
@@ -148,6 +150,21 @@ nav ul li:hover{
 .nav-link{
   position: relative;
 	text-decoration: none;
+	text-decoration: none;
+  height: 100%;
+  top: 0%;
+	margin: auto 30px auto auto;
+	padding: 2px 20px 2px 20px;
+	text-align: center;
+  display: inline-block;
+	font-family: 'Roboto';
+	color: black;
+	line-height: 48px;
+	opacity: .6;
+	font-weight: 300;
+	font-size: 1.5em;
+	text-decoration: none;
+
 	/* background-color: red; */
 }
 
@@ -175,6 +192,20 @@ nav ul li:hover{
   left: 10%;
 }
 
+.social-media-link{
+	/* background-color: red; */
+	opacity: .6;
+	height: 48px;
+	width: 48px;
+	/* padding-right: 30px; */
+	margin-right: 30px;
+	border-radius: 5px;
+	overflow: hidden;
+}
+
+.social-media-link a img{
+	height: 100%;
+}
 
 .page-content{
 	width: 960px;
@@ -191,7 +222,7 @@ nav ul li:hover{
 
 #landing-page-container{
 	display: flex;
-	height: calc(100vh - 62px - 79px - 79px - 100px);
+	min-height: calc(100vh - 62px - 79px - 79px - 100px);
 	padding-bottom: 10%;
 	padding-top: 5%;
 	/* float: left; */
@@ -215,18 +246,15 @@ nav ul li:hover{
 	display: flex;
 	justify-content: center;
 	flex-direction: column;
+	margin: auto;
 }
 .circular-portrait{
 	width: 336px;
 	height: 336px;
 	margin: auto auto auto auto;
-	/* padding-bottom: 30px; */
-	/* height: 50%; */
 	overflow: hidden;
 	border-radius: 50%;
 	position: relative;
-	/* padding-top: calc(100vh - 62px - 79px - 79px  * .25); */
-	/* margin: auto; */
 	transition-duration: .4s;
 	border: 3px solid #6160ff;
 }
@@ -239,7 +267,7 @@ nav ul li:hover{
 
 .circular-portrait img{
 	height: 100%;
-	left: -23%;
+	right: 23%;
 	position: relative;
 }
 
@@ -261,6 +289,12 @@ nav ul li:hover{
 	margin-left: auto;
 	margin-right: auto;
 	width: 70%;
+}
+
+.aboutme-container ul{
+	list-style: circle;
+	list-style-position: inside;
+	margin-bottom: 1em;
 }
 
 .aboutme-container h3{
