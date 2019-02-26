@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+*{
+    font-family: 'Roboto', 'Arial', 'Helvetica';
+    margin: 0;
+    padding: 0;
+    /* display: inline-block; */
+}
+
+body{
+    height: 100vh;
+}
+.title{
+    font-size: 3em;
+    line-height: 1em;
+    font-weight: bold;
+    text-align: center;
+    padding: .5em 0 .5em 0;
+    background-color: bisque;
+    user-select: none;
+}
+
+.parking-lot{
+    background-color: rgba(154, 245, 132, 0.2);
+    border: 2px solid black;
+    border-radius: 10px;
+    margin: 0 0 0 4em;
+}
+#canvas-container{
+    z-index: -1;
+    /* padding: 0 0 0 1em; */
+    width: 100vw;
+    height: calc(100vh - 96px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* background-color: lightsalmon; */
+}
+
+#completion-label{
+    z-index: 10;
+    font-size: 3.8em;
+    line-height: 90px;
+    border-top: 3px solid black;
+    border-bottom: 3px solid black;
+    font-weight: bold;
+    text-align: center;
+    position: fixed;
+    width: 100vw;
+    top: calc(39vh - 40px);
+    background-color: lightgreen;
+    opacity: 0;
+    transition: opacity ease-in-out 500ms;
+    /* transition-duration: 1s; */
+}
+
+#game-info{
+    position: absolute;
+    left: 0;
+    top: calc(50vh - 75px);
+    background-color: lightsalmon;
+    border-radius: 0 10px 10px 0;
+    padding: 5px 20px 5px 20px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    flex-grow: 2;
+    align-content: center;
+    text-align: center;
+    /* margin: 0 2em 0 0 ; */
+    user-select: none;
+}
+
+#game-info hr{
+    width: calc(100% + 40px);
+    height: 3px;
+    border: 0;
+    background-color:white ;
+}
