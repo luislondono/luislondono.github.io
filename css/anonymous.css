@@ -1,5 +1,5 @@
 .message-board{
-    background-color: bisque;
+    /* background-color: bisque; */
     border: 1px solid black;
     align-content: center;
 }
@@ -8,6 +8,7 @@
     background-color: aquamarine;
     width: 80%;
     margin: 30px auto 30px auto;
+    border-radius: 6px;
 }
 
 .message-board-post-question{
@@ -42,4 +43,10 @@
     font-size: 1.2em;
     align-self: flex-end;
     margin: 5px 10% 5px auto;
+}
+
+#nuclear-button{
+    width: 200px;
+    height: 100px;
+    margin: auto;
 }

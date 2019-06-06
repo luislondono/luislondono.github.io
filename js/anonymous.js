@@ -1,38 +1,73 @@
 window.onload = updateMessageBoard
-let messageBoard; 
+let messageBoard;
+let messageBoardPosts = []
+const emptyMessageBoardElement = '<div class = "message-board-post"><h3> No posts have been made :( </h3></div>'
 
 
-function updateMessageBoard() {
+
+async function updateMessageBoard() {
   messageBoard = firebase.firestore().collection("anonymousMessageBoard")
 
-  console.log("updating Message Board")
+  await messageBoard.orderBy("Date").get()
+    .then(querySnapshot => {
+      querySnapshot.docs.forEach(doc => {
+        messageBoardPosts.push(doc.data());
+      });
+    }).then(function () {
 
-  getPosts().then(res => console.table(res))
+      if (messageBoardPosts.length == 0) {
+        document.getElementById("message-board-posts").innerHTML = emptyMessageBoardElement
+      }
+      else {
+        messageBoardPosts.forEach(post => {
+          addPostToMessageBoard(post)
+        });
+      }
+    })
 }
 
-async function getPosts(){
-  const posts = [];
-  const snapshot = await messageBoard.get()
-  .then(querySnapshot => {
-    querySnapshot.docs.forEach(doc => {
-    posts.push(doc.data());
-  });
-});
-  return posts
-}
 
-function addPostToMessageBoard(question,answer) {
-  const newpost = '<div class = "message-board-post"><div class="message-board-post-question">' + question + '</div><div class="message-board-post-answer">' + answer + '</div></div>';
-  document.getElementById("message-board-posts").innerHTML += newpost
+
+function addPostToMessageBoard(postObject) {
+  const newpost = '<div class = "message-board-post"><div class="message-board-post-question"> Q: ' + postObject["Question"] + '</div><div class="message-board-post-answer">' + `${postObject["Answer"] == undefined ? "Unanswered..." : 'A: ' + postObject["Answer"]}` + '</div></div>'
+
+  if (messageBoardPosts.length == 0) {
+    document.getElementById("message-board-posts").innerHTML = newpost;
+    messageBoardPosts.push(newpost)
+  }
+  else {
+    document.getElementById("message-board-posts").innerHTML += newpost
+  }
 
 }
 
 function handleSubmit() {
-  const questionDateField = new Date().toGMTString()
-  const questionField = document.getElementById("submittor-question-field").value
-  console.log(questionField)
-  console.log("Clicked!")
-  messageBoard.doc().set({ Date: questionDateField, Question: questionField })
+  questionField = document.getElementById("submittor-question-field").value
 
-  addPostToMessageBoard(questionDateField, questionField)
+  if (questionField.trim() == "") {
+    return
+  }
+  else {
+
+    let post = {}
+    post["Date"] = new Date().toGMTString()
+    post["Question"] = document.getElementById("submittor-question-field").value
+    console.log("Clicked!")
+    messageBoard.doc().set({ Date: post["Date"], Question: post["Question"] })
+
+    addPostToMessageBoard(post)
+  }
+}
+
+
+async function DeleteAllPosts() {
+  await messageBoard.get()
+    .then(querySnapshot => {
+      querySnapshot.docs.forEach(doc => {
+        messageBoard.doc(doc.id).delete()
+      });
+    }).then(function () {
+      messageBoardPosts = [];
+      updateMessageBoard()
+    })
 }
