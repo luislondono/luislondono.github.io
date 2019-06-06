@@ -1,0 +1,45 @@
+.message-board{
+    background-color: bisque;
+    border: 1px solid black;
+    align-content: center;
+}
+.message-board-post{
+    position: relative;
+    background-color: aquamarine;
+    width: 80%;
+    margin: 30px auto 30px auto;
+}
+
+.message-board-post-question{
+
+}
+
+.message-board-post-answer{
+
+}
+
+
+#message-board-post-submittor{
+    background-color: aquamarine;
+    width: 80%;
+    margin: 30px auto 30px auto;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+}
+
+#message-board-post-submittor textarea{
+    display: inline-block;
+    width: 80%;
+    margin: 8px auto 8px auto;
+    font-size: 1.2em;
+}
+
+#message-board-post-submittor-button{
+    width: 100px;
+    display: inline-block;
+    font-size: 1.2em;
+    align-self: flex-end;
+    margin: 5px 10% 5px auto;
+}

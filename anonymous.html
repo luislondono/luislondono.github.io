@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="utf-8">
+	<title>Luis Londono</title>
+	<link rel="stylesheet" href="css/main.css">
+	<link rel="stylesheet" href="css/anonymous.css">
+	<link rel="shortcut icon" type="image/x-icon" href="images/cornellicon.ico">
+	<script type="text/javascript" src="./js/anonymous.js"></script>
+
+</head>
+
+<body class="page">
+
+	<header>
+		<div class="navbar-container">
+			<div class="navbar-logo">
+				<a href="https://luislondono.com/">Luis Hernando Londono</a>
+			</div>
+
+
+			<nav>
+				<ul>
+					<li class="nav-link"><a href="https://luislondono.com/">Home</a></li>
+					<li class="nav-link"><a href="https://docs.google.com/document/d/1av1XlOl_ZTY2W7YGD1Kn3YUUMBhXLhLa5DjAMa0V2_I/edit?usp=sharing">Resume</a></li>
+					<li class="nav-link"><a href="myWork">My Work</a></li>
+					<li class="nav-link" id="dropdown-content">Gallery
+						<!-- <div class="nav-bar-collapsable-column">
+								<a href="#">Facebook</a>
+								<a href="#">Github</a>
+								<a href="#">LinkedIn</a>
+							</div> -->
+					</li>
+
+					<li class="social-media-link"><a href="https://www.github.com/LuisLondono"> <img src="images/githubLogo.svg"
+							 alt=""></a></li>
+					<li class="social-media-link"><a href="https://www.facebook.com/luislondonoramos"><img
+							 src="images/facebookLogo.svg" alt=""></a></li>
+					<li class="social-media-link"><a href="https://www.linkedin.com/in/luislondonoramos"><img
+							 src="images/linkedinLogo.svg" alt=""></a></li>
+
+				</ul>
+
+			</nav>
+
+		</div>
+
+	</header>
+
+	<div class="page-content">
+
+		<h1>Send me an Anonymous Message!</h1>
+		<div class="message-board">
+			<div id= "message-board-posts">
+
+				<div class = "message-board-post">question
+					<div class="message-board-post-question">Question?</div>
+					<div class="message-board-post-answer">My answer</div>
+				</div>
+				
+				<div class = "message-board-post">question 2
+					<div class="message-board-post-question">Question?</div>
+					<div class="message-board-post-answer">My answer</div>
+				</div>
+				
+				<div class = "message-board-post">question 3
+					<div class="message-board-post-question">Question?</div>
+					<div class="message-board-post-answer">My answer</div>
+				</div>
+			</div>
+				
+			<div id="message-board-post-submittor">
+				<textarea name="" id="submittor-question-field" cols="30" rows="5"></textarea>
+				<button id="message-board-post-submittor-button" onclick="handleSubmit()">Submit</button>
+			</div>
+		</div>
+
+
+
+
+
+
+
+
+
+
+
+	</div>
+
+</body>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/6.1.0/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+	 https://firebase.google.com/docs/web/setup#config-web-app -->
+<script src="https://www.gstatic.com/firebasejs/6.1.0/firebase-firestore.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyCSFoOcUMAULAn6ScMSgygfS_fZcnVTpSk",
+    authDomain: "luislondono-com.firebaseapp.com",
+    databaseURL: "https://luislondono-com.firebaseio.com",
+    projectId: "luislondono-com",
+    storageBucket: "luislondono-com.appspot.com",
+    messagingSenderId: "851373763529",
+    appId: "1:851373763529:web:c171fe15b7d82883"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+//   var db = firebase.firestore();
+</script>
+</html>
