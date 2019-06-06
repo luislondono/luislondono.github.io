@@ -2,6 +2,8 @@
     /* background-color: bisque; */
     border: 1px solid black;
     align-content: center;
+    width: 80%;
+    margin: auto;
 }
 .message-board-post{
     position: relative;
