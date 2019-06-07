@@ -6,24 +6,31 @@
     margin: auto;
 }
 .message-board-post{
+    display: flex;
+    flex-direction: row;
     position: relative;
-    background-color: aquamarine;
+    /* background-color: aquamarine; */
     width: 80%;
     margin: 30px auto 30px auto;
     border-radius: 6px;
+    border: black solid 1px;
 }
 
 .message-board-post-question{
-
+    border: black solid 1px;
+    margin: 4px;
+    padding: 4px;
 }
 
 .message-board-post-answer{
-
+    border: black solid 1px;
+    margin: 4px;
+    padding: 4px;
 }
 
 
 #message-board-post-submittor{
-    background-color: aquamarine;
+    /* background-color: aquamarine; */
     width: 80%;
     margin: 30px auto 30px auto;
     display: flex;
@@ -51,4 +58,38 @@
     width: 200px;
     height: 100px;
     margin: auto;
+}
+.message-board-post-rating-container{
+    height: 100%;;
+    margin: auto;
+    align-items: center;
+}
+
+.message-board-post-rating{
+    /* background-color: yellow; */
+    padding: 4px;
+    margin: 0 0 0 4px;
+}
+
+.message-board-post-rating-button-inactive{
+    background-color: transparent;
+    border: none;
+    outline: none;
+    opacity: .2;
+}
+
+.message-board-post-rating-button-active{
+    background-color: transparent;
+    border: none;
+    outline: none;
+    opacity: 1;
+}
+
+.message-board-post-rating-score{
+    text-align: center;
+}
+.message-board-post-content{
+    width: calc(100% - 60px);
+    margin: 4px 8px 4px 0px;
+    /* background-color: blueviolet; */
 }
