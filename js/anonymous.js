@@ -16,7 +16,7 @@ async function updateMessageBoard() {
   messageBoard = firebase.firestore().collection("anonymousMessageBoard")
   ipHistory = firebase.firestore().collection("ipVotingHistory")
 
-  await messageBoard.orderBy("postScore", "desc").orderBy("dateValue").get()
+  await messageBoard.orderBy("postScore", "desc").orderBy("dateValue","asc").get()
     .then(
       querySnapshot => {
         querySnapshot.docs.forEach(doc => {
@@ -92,10 +92,8 @@ function addPostToMessageBoard(postObject, throughSubmit) {
   // const newpost = '<div class = "message-board-post"><div class="message-board-post-question"> Q: ' + postObject["question"] + '</div><div class="message-board-post-answer">' + `${postObject["answer"] == "" ? "Unanswered..." : 'A: ' + postObject["answer"]}` + '</div></div>'
   // '<div class="message-board-post" id = "' + postObject["UUID"] + '"> <div class="message-board-post-rating-container"> <div class="message-board-post-rating"> <button class="message-board-post-rating-button" onclick = "handleVote(' + postObject["UUID"] + ',true)"> <i class="material-icons" style="font-size:24px;">thumb_up</i> </button> <div class="message-board-post-rating-score">0</div> <button class="message-board-post-rating-button" onclick = "handleVote(' + postObject["UUID"] + ',false)"> <i class="material-icons" style="font-size:24px;">thumb_down</i> </button> </div> </div> <div class="message-board-post-content"> <div class="message-board-post-question"> Q: ' + postObject["question"] + '</div> <div class="message-board-post-answer">' + `${postObject["answer"] == "" ? "Unanswered..." : 'A: ' + postObject["answer"]}` + '</div> </div ></div >'
   const newpost = '<div class="message-board-post" id = "' + postObject["UUID"] + '"><div class="message-board-post-rating-container"> <div class="message-board-post-rating"> <button class="message-board-post-rating-button-inactive" onclick = "handleVote(\'' + postObject["UUID"] + '\',true)" > <i class="material-icons" style="font-size:24px;">thumb_up</i> </button > <div class="message-board-post-rating-score" id = "message-board-post-rating-score-' + postObject["UUID"] + '">' + postObject["postScore"] + '</div> <button class="message-board-post-rating-button-inactive" onclick="handleVote(\'' + postObject["UUID"] + '\',false)" > <i class="material-icons" style="font-size:24px;">thumb_down</i> </button > </div > </div > <div class="message-board-post-content"> <div class="message-board-post-question"> Q: ' + postObject["question"] + '</div> <div class="message-board-post-answer">' + `${postObject["answer"] == "" ? "Unanswered..." : 'A: ' + postObject["answer"]}` + '</div> </div ></div > '
-  if (throughSubmit) {
-    messageBoardPosts.push(postObject)
-  }
   if (messageBoardPosts.length == 0) {
+    console.log("Reseting inner html")
     document.getElementById("message-board-posts").innerHTML = newpost;
   }
   else {
@@ -103,6 +101,7 @@ function addPostToMessageBoard(postObject, throughSubmit) {
   }
 
   if (throughSubmit) {
+    messageBoardPosts.push(postObject)
     renderActiveVoteButtons(postObject)
   }
 
@@ -208,6 +207,8 @@ async function handleVote(postUUID, isUpvote) {
       break;
     }
   }
+
+  postInQuestion = messageBoardPosts[postIndex]
   // console.log("Clicked " + `${isUpvote ? "up" : "down"}` + "vote button on post:", postUUID, "@ index: ", postIndex)
   if (isUpvote && messageBoardPosts[postIndex]["upvoters"].indexOf(clientInfo["ip"]) > -1) {
     console.log("Cannot upvote twice!")
@@ -270,5 +271,75 @@ async function handleVote(postUUID, isUpvote) {
     }
   )
 
+  if(!messageBoardPostsInOrder()){
+    console.log("Sorting message board again...")
+    messageBoardPosts.sort(
+      (a,b) => b["postScore"] - a["postScore"]
+    )
+    const newIndex = messageBoardPosts.indexOf(postInQuestion)
+    console.log("Post moved from index ", postIndex, " to ", newIndex)
+    movePost(postIndex,newIndex)
+  }
+}
 
+function messageBoardPostsInOrder(){
+  prevScore = Number.MAX_SAFE_INTEGER
+  for (let index = 0; index < messageBoardPosts.length; index++) {
+    if(messageBoardPosts[index]["postScore"]> prevScore){
+      return false;
+    }
+    else{
+      prevScore = messageBoardPosts[index]["postScore"]
+    }
+  }
+  return true
+}
+
+
+function swapPosts(index1,index2){
+  if (index1 == index2){
+    return
+  }
+  
+  parent = document.getElementById("message-board-posts")
+  child1 = parent.children[index1]
+  child2 = parent.children[index2]
+  if (Math.abs(index1-index2) == 1) {
+    if (index2> index1 ){
+      parent.insertBefore(child2,child1)
+    }
+    else{
+      parent.insertBefore(child1,child2)
+    }
+  }
+  child3 = parent.children[index1+1]
+  // Puts child1 before child2
+  parent.insertBefore(child1,child2)
+
+  parent.insertBefore(child2,child3)
+}
+
+function movePost(initialIndex,finalIndex){
+  parent = document.getElementById("message-board-posts")
+  if (initialIndex == finalIndex){return}
+  if (Math.abs(initialIndex - finalIndex) == 1){
+    swapPosts(initialIndex,finalIndex)
+  }
+  else if (finalIndex == parent.children.length - 1){
+    console.log("Moving to the end")
+    child = parent.children[initialIndex]
+    parent.appendChild(child)
+  }
+
+  // else if(finalIndex == 0){
+  //   parent = document.getElementById("message-board-posts")
+  //   child = parent.children[initialIndex]
+  //   childDestinationNext = parent.children[finalIndex]
+  //   parent.insertBefore(child,childDestinationNext)
+  // }
+  else{
+    child = parent.children[initialIndex]
+    childDestinationNext = parent.children[finalIndex]
+    parent.insertBefore(child,childDestinationNext)
+  }
 }
