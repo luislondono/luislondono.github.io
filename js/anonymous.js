@@ -4,11 +4,14 @@ let ipHistory;
 let messageBoardPosts = []
 let clientInfo;
 let numQuestionsToday = 0;
+let dailylimit = 2;
+let exceededDailyMessagesPopup = "Exceeded max number of posts today!"
 upvoteColor = [255, 174, 26]
 downvoteColor = [144, 215, 243]
-const emptyMessageBoardElement = '<div class = "message-board-post"><h3> No posts have been made :( </h3></div>'
 
+const emptyMessageBoardElement = '<div id="empty-message-board-post"> <div> No posts have been made 😢 </div> </div>'
 
+// const emptyMessageBoardMessage = <div class="message-board-post"><h3> No posts have been made :( </h3></div>
 
 async function updateMessageBoard() {
 
@@ -16,7 +19,7 @@ async function updateMessageBoard() {
   messageBoard = firebase.firestore().collection("anonymousMessageBoard")
   ipHistory = firebase.firestore().collection("ipVotingHistory")
 
-  await messageBoard.orderBy("postScore", "desc").orderBy("dateValue","asc").get()
+  await messageBoard.orderBy("postScore", "desc").orderBy("dateValue", "asc").get()
     .then(
       querySnapshot => {
         querySnapshot.docs.forEach(doc => {
@@ -49,6 +52,10 @@ async function updateMessageBoard() {
 
 
           })
+
+          if (numQuestionsToday >= dailylimit) {
+            document.getElementById("submittor-question-field").placeholder = exceededDailyMessagesPopup
+          }
         }
 
       }
@@ -116,7 +123,8 @@ function handleSubmit() {
   if (questionField.trim() == "") {
     return
   }
-  else if (numQuestionsToday >= 2) {
+  else if (numQuestionsToday >= dailylimit) {
+    handleTooManyPostsToday()
     console.log("You've exceeded the number of questions today!")
     return
   }
@@ -148,6 +156,18 @@ function handleSubmit() {
 
     addPostToMessageBoard(post, true)
     numQuestionsToday += 1
+    const postIndex = messageBoardPosts.indexOf(post)
+
+    if (!messageBoardPostsInOrder()) {
+      console.log("Sorting message board again...")
+      messageBoardPosts.sort(
+        (a, b) => b["postScore"] - a["postScore"]
+      )
+      const newIndex = messageBoardPosts.indexOf(post)
+      console.log("Post moved from index ", postIndex, " to ", newIndex)
+      movePost(postIndex, newIndex)
+    }
+
   }
 }
 
@@ -271,24 +291,24 @@ async function handleVote(postUUID, isUpvote) {
     }
   )
 
-  if(!messageBoardPostsInOrder()){
+  if (!messageBoardPostsInOrder()) {
     console.log("Sorting message board again...")
     messageBoardPosts.sort(
-      (a,b) => b["postScore"] - a["postScore"]
+      (a, b) => b["postScore"] - a["postScore"]
     )
     const newIndex = messageBoardPosts.indexOf(postInQuestion)
     console.log("Post moved from index ", postIndex, " to ", newIndex)
-    movePost(postIndex,newIndex)
+    movePost(postIndex, newIndex)
   }
 }
 
-function messageBoardPostsInOrder(){
+function messageBoardPostsInOrder() {
   prevScore = Number.MAX_SAFE_INTEGER
   for (let index = 0; index < messageBoardPosts.length; index++) {
-    if(messageBoardPosts[index]["postScore"]> prevScore){
+    if (messageBoardPosts[index]["postScore"] > prevScore) {
       return false;
     }
-    else{
+    else {
       prevScore = messageBoardPosts[index]["postScore"]
     }
   }
@@ -296,36 +316,36 @@ function messageBoardPostsInOrder(){
 }
 
 
-function swapPosts(index1,index2){
-  if (index1 == index2){
+function swapPosts(index1, index2) {
+  if (index1 == index2) {
     return
   }
-  
+
   parent = document.getElementById("message-board-posts")
   child1 = parent.children[index1]
   child2 = parent.children[index2]
-  if (Math.abs(index1-index2) == 1) {
-    if (index2> index1 ){
-      parent.insertBefore(child2,child1)
+  if (Math.abs(index1 - index2) == 1) {
+    if (index2 > index1) {
+      parent.insertBefore(child2, child1)
     }
-    else{
-      parent.insertBefore(child1,child2)
+    else {
+      parent.insertBefore(child1, child2)
     }
   }
-  child3 = parent.children[index1+1]
+  child3 = parent.children[index1 + 1]
   // Puts child1 before child2
-  parent.insertBefore(child1,child2)
+  parent.insertBefore(child1, child2)
 
-  parent.insertBefore(child2,child3)
+  parent.insertBefore(child2, child3)
 }
 
-function movePost(initialIndex,finalIndex){
+function movePost(initialIndex, finalIndex) {
   parent = document.getElementById("message-board-posts")
-  if (initialIndex == finalIndex){return}
-  if (Math.abs(initialIndex - finalIndex) == 1){
-    swapPosts(initialIndex,finalIndex)
+  if (initialIndex == finalIndex) { return }
+  if (Math.abs(initialIndex - finalIndex) == 1) {
+    swapPosts(initialIndex, finalIndex)
   }
-  else if (finalIndex == parent.children.length - 1){
+  else if (finalIndex == parent.children.length - 1) {
     console.log("Moving to the end")
     child = parent.children[initialIndex]
     parent.appendChild(child)
@@ -337,9 +357,18 @@ function movePost(initialIndex,finalIndex){
   //   childDestinationNext = parent.children[finalIndex]
   //   parent.insertBefore(child,childDestinationNext)
   // }
-  else{
+  else {
     child = parent.children[initialIndex]
     childDestinationNext = parent.children[finalIndex]
-    parent.insertBefore(child,childDestinationNext)
+    parent.insertBefore(child, childDestinationNext)
   }
+}
+
+function handleTooManyPostsToday() {
+  textareaElement = document.getElementById("submittor-question-field")
+  textareaElement.className = "animated shake 1s"
+  // alert(exceededDailyMessagesPopup)
+  textareaElement.placeholder = exceededDailyMessagesPopup
+  textareaElement.value = exceededDailyMessagesPopup
+  setTimeout(() => { textareaElement.className = "" }, 1000)
 }
