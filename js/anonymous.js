@@ -96,9 +96,13 @@ function renderActiveVoteButtons(postObject) {
 
 
 function addPostToMessageBoard(postObject, throughSubmit) {
-  // const newpost = '<div class = "message-board-post"><div class="message-board-post-question"> Q: ' + postObject["question"] + '</div><div class="message-board-post-answer">' + `${postObject["answer"] == "" ? "Unanswered..." : 'A: ' + postObject["answer"]}` + '</div></div>'
-  // '<div class="message-board-post" id = "' + postObject["UUID"] + '"> <div class="message-board-post-rating-container"> <div class="message-board-post-rating"> <button class="message-board-post-rating-button" onclick = "handleVote(' + postObject["UUID"] + ',true)"> <i class="material-icons" style="font-size:24px;">thumb_up</i> </button> <div class="message-board-post-rating-score">0</div> <button class="message-board-post-rating-button" onclick = "handleVote(' + postObject["UUID"] + ',false)"> <i class="material-icons" style="font-size:24px;">thumb_down</i> </button> </div> </div> <div class="message-board-post-content"> <div class="message-board-post-question"> Q: ' + postObject["question"] + '</div> <div class="message-board-post-answer">' + `${postObject["answer"] == "" ? "Unanswered..." : 'A: ' + postObject["answer"]}` + '</div> </div ></div >'
-  const newpost = '<div class="message-board-post" id = "' + postObject["UUID"] + '"><div class="message-board-post-rating-container"> <div class="message-board-post-rating"> <button class="message-board-post-rating-button-inactive" onclick = "handleVote(\'' + postObject["UUID"] + '\',true)" > <i class="material-icons" style="font-size:24px;">thumb_up</i> </button > <div class="message-board-post-rating-score" id = "message-board-post-rating-score-' + postObject["UUID"] + '">' + postObject["postScore"] + '</div> <button class="message-board-post-rating-button-inactive" onclick="handleVote(\'' + postObject["UUID"] + '\',false)" > <i class="material-icons" style="font-size:24px;">thumb_down</i> </button > </div > </div > <div class="message-board-post-content"> <div class="message-board-post-question"> Q: ' + postObject["question"] + '</div> <div class="message-board-post-answer">' + `${postObject["answer"] == "" ? "Unanswered..." : 'A: ' + postObject["answer"]}` + '</div> </div ></div > '
+  let answerField;
+  if (postObject["answer"] == "") {
+    answerField = "Unanswered..."
+  } else {
+    answerField = "A: " + postObject["answer"]
+  }
+  const newpost = '<div class="message-board-post" id = "' + postObject["UUID"] + '"><div class="message-board-post-rating-container"> <div class="message-board-post-rating"> <button class="message-board-post-rating-button-inactive" onclick = "handleVote(\'' + postObject["UUID"] + '\',true)" > <i class="material-icons" style="font-size:24px;">thumb_up</i> </button > <div class="message-board-post-rating-score" id = "message-board-post-rating-score-' + postObject["UUID"] + '">' + postObject["postScore"] + '</div> <button class="message-board-post-rating-button-inactive" onclick="handleVote(\'' + postObject["UUID"] + '\',false)" > <i class="material-icons" style="font-size:24px;">thumb_down</i> </button > </div > </div > <div class="message-board-post-content"> <div class="message-board-post-question"> Q: ' + postObject["question"] + '</div> <div class="message-board-post-answer">' + answerField + '</div> </div ></div > '
   if (messageBoardPosts.length == 0) {
     console.log("Reseting inner html")
     document.getElementById("message-board-posts").innerHTML = newpost;
@@ -139,6 +143,7 @@ function handleSubmit() {
     post["postScore"] = 1
     post["upvoters"] = [clientInfo["ip"]]
     post["downvoters"] = []
+    post["answer"] = ""
     console.log("Clicked!")
     messageBoard.doc(post["UUID"]).set(
       {
