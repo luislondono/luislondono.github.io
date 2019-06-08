@@ -14,12 +14,14 @@ let ipHistory;
 let messageBoardPosts = []
 let clientInfo;
 let numQuestionsToday = 0;
-let dailylimit = 2;
+let dailylimit = 4;
 let exceededDailyMessagesPopup = "Exceeded max number of posts today!"
 upvoteColor = [255, 174, 26]
 downvoteColor = [144, 215, 243]
 
 bonusProfanities = "fck,"
+profanityAlertMessage = "Want to use adult words? Go to an adult website then..."
+redirectLink = "https://www.pornhub.com"
 
 const emptyMessageBoardElement = '<div id="empty-message-board-post"> <div> No posts have been made 😢 </div> </div>'
 
@@ -174,7 +176,8 @@ function handleSubmit() {
   }
   else if (containsProfanity(questionField)) {
     console.log("Tried to post a profanity...")
-    alert("Don't be rude, asshole")
+    alert(profanityAlertMessage)
+    window.location.replace(redirectLink)
     return
 
   }
