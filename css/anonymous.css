@@ -31,9 +31,14 @@
 
 .message-board-post-answer{
     /* border: black solid 1px; */
-    margin: auto;
     padding: 4px;
     margin: 4px;
+}
+
+.message-board-post-date{
+    padding: 4px;
+    margin: 4px;
+    text-align: right;
 }
 
 
@@ -188,3 +193,4 @@
     background: none repeat scroll 0 0 #FFFFFF;
     outline-width: 0;
 }
+

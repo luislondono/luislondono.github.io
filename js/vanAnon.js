@@ -16,6 +16,8 @@ let clientInfo;
 let numQuestionsToday = 0;
 let dailylimit = 4;
 let exceededDailyMessagesPopup = "Exceeded max number of posts today!"
+let timeZoneOffset = new Date().getTimezoneOffset()/60;
+let typeWriterSpeed = 150
 upvoteColor = [255, 174, 26]
 downvoteColor = [144, 215, 243]
 
@@ -31,19 +33,19 @@ function setUpWindow() {
   firebase.initializeApp(firebaseConfig);
 
   document.getElementById("message-board-post-submittor-button").addEventListener("click", handleSubmit)
-
+  // typewriterAnimate("page-title","ask me anything",7,typeWriterSpeed)
+  // setTimeout(()=>{
+  // },typeWriterSpeed * ("anything".length + 5) )
+  
   updateMessageBoard()
-
 }
 async function updateMessageBoard() {
-
-
 
 
   messageBoard = firebase.firestore().collection("anonymousMessageBoard")
   ipHistory = firebase.firestore().collection("ipVotingHistory")
 
-  await messageBoard.orderBy("postScore", "desc").orderBy("dateValue", "desc").limit(7).get()
+  await messageBoard.orderBy("postScore", "desc").orderBy("dateValue", "desc").limit(10).get()
     .then(
       querySnapshot => {
         querySnapshot.docs.forEach(doc => {
@@ -89,21 +91,6 @@ async function updateMessageBoard() {
 }
 
 function renderActiveVoteButtons(postObject) {
-  // try {
-  //   postWasUpvoted = postObject["upvoters"].indexOf(clientInfo["ip"]) > -1
-  // }
-  // finally {
-  //   postWasUpvoted = false
-  // }
-  // try {
-  //   postWasDownvoted = postObject["downvoters"].indexOf(clientInfo["ip"]) > -1
-  // }
-  // finally {
-  //   postWasDownvoted = false
-  // }
-  // console.log(postObject)
-  // console.log(clientInfo)
-
   postWasUpvoted = postObject["upvoters"].indexOf(clientInfo["ip"]) > -1
   postWasDownvoted = postObject["downvoters"].indexOf(clientInfo["ip"]) > -1
   if (postWasUpvoted) {
@@ -128,7 +115,7 @@ function addPostToMessageBoard(postObject, throughSubmit) {
   } else {
     answerField = "A: " + postObject["answer"]
   }
-  const newpost = '<div class="message-board-post" id = "' + postObject["UUID"] + '"><div class="message-board-post-rating-container"> <div class="message-board-post-rating"> <button class="message-board-post-rating-button-inactive" id="upvote-button-' + postObject["UUID"] + '"> <i class="material-icons" style="font-size:24px;">thumb_up</i> </button > <div class="message-board-post-rating-score" id = "message-board-post-rating-score-' + postObject["UUID"] + '">' + postObject["postScore"] + '</div> <button class="message-board-post-rating-button-inactive" id="downvote-button-' + postObject["UUID"] + '"> <i class="material-icons" style="font-size:24px;">thumb_down</i> </button > </div > </div > <div class="message-board-post-content"> <div class="message-board-post-question"> Q: ' + postObject["question"] + '</div> <div class="message-board-post-answer">' + answerField + '</div> </div ></div > '
+  const newpost = '<div class="message-board-post" id = "' + postObject["UUID"] + '"><div class="message-board-post-rating-container"> <div class="message-board-post-rating"> <button class="message-board-post-rating-button-inactive" id="upvote-button-' + postObject["UUID"] + '"> <i class="material-icons" style="font-size:24px;">thumb_up</i> </button > <div class="message-board-post-rating-score" id = "message-board-post-rating-score-' + postObject["UUID"] + '">' + postObject["postScore"] + '</div> <button class="message-board-post-rating-button-inactive" id="downvote-button-' + postObject["UUID"] + '"> <i class="material-icons" style="font-size:24px;">thumb_down</i> </button > </div > </div > <div class="message-board-post-content"> <div class="message-board-post-question"> Q: ' + postObject["question"] + '</div> <div class="message-board-post-answer">' + answerField + '</div><div class = "message-board-post-date">'+getTimeElapsedString( postObject["date"] )+'</div></div ></div > '
   if (messageBoardPosts.length == 0) {
     console.log("Reseting inner html")
     document.getElementById("message-board-posts").innerHTML = newpost;
@@ -144,15 +131,15 @@ function addPostToMessageBoard(postObject, throughSubmit) {
 
   // addedPostElement = document.getElementById(postObject["UUID"])
   upVoteButton = document.getElementById('upvote-button-' + postObject["UUID"])
-  console.log("grabbing upvote button: ", upVoteButton)
+  // console.log("grabbing upvote button: ", upVoteButton)
   downVoteButton = document.getElementById('downvote-button-' + postObject["UUID"])
-  console.log("grabbing downvote button: ", downVoteButton)
+  // console.log("grabbing downvote button: ", downVoteButton)
   upVoteButton.addEventListener("click", () => {
-    console.log("Attempting to Upvote...")
+    // console.log("Attempting to Upvote...")
     handleVote(postObject["UUID"], true)
   })
   downVoteButton.addEventListener("click", () => {
-    console.log("Attempting to downvote...")
+    // console.log("Attempting to downvote...")
     handleVote(postObject["UUID"], false)
   })
   // onclick = "handleVote(\'' + postObject["UUID"] + '\',true)"
@@ -302,7 +289,7 @@ async function handleVote(postUUID, isUpvote) {
     }
   }
 
-  postInQuestion = messageBoardPosts[postIndex]
+  const postInQuestion = messageBoardPosts[postIndex]
   // console.log("Clicked " + `${isUpvote ? "up" : "down"}` + "vote button on post:", postUUID, "@ index: ", postIndex)
   if (isUpvote && messageBoardPosts[postIndex]["upvoters"].indexOf(clientInfo["ip"]) > -1) {
     console.log("Cannot upvote twice!")
@@ -388,7 +375,7 @@ function messageBoardPostsInOrder() {
     if (score > prevScore) {
       return false;
     }
-    if (score == prevScore && postDateValue < prevDateValue) {
+    if (score == prevScore && postDateValue > prevDateValue) {
       return false
     }
     prevScore = score
@@ -425,26 +412,6 @@ function swapPosts(index1, index2) {
 function movePost(initialIndex, finalIndex) {
   parent = document.getElementById("message-board-posts")
   if (initialIndex == finalIndex) { return }
-  // if (Math.abs(initialIndex - finalIndex) == 1) {
-  //   swapPosts(initialIndex, finalIndex)
-  // }
-  // else if (finalIndex == parent.children.length - 1) {
-  //   console.log("Moving to the end")
-  //   child = parent.children[initialIndex]
-  //   parent.appendChild(child)
-  // }
-
-  // // else if(finalIndex == 0){
-  // //   parent = document.getElementById("message-board-posts")
-  // //   child = parent.children[initialIndex]
-  // //   childDestinationNext = parent.children[finalIndex]
-  // //   parent.insertBefore(child,childDestinationNext)
-  // // }
-  // else {
-  //   child = parent.children[initialIndex]
-  //   childDestinationNext = parent.children[finalIndex]
-  //   parent.insertBefore(child, childDestinationNext)
-  // }
   let currentIndex = initialIndex
   directionDown = (finalIndex > initialIndex)
   while (currentIndex != finalIndex) {
@@ -480,5 +447,51 @@ function sortClassifierScoreDateValue(a, b) {
   }
   if (a["dateValue"] < b["dateValue"]) {
     return 1
+  }
+}
+
+
+function getTimeElapsedString(dateString){
+  nowDate = new Date()
+  thenDate = new Date(Date.parse(dateString))
+  secondDifference = (nowDate - thenDate)/1000
+  let result;
+  if (Math.floor(secondDifference)<60){
+    result = Math.floor(secondDifference) + " second" + (Math.floor(secondDifference) > 1? "s":"")
+  }
+  else if (Math.floor(secondDifference/60) < 60){
+    result = Math.floor(secondDifference/60) + " minute" + (((Math.floor(secondDifference/60)) > 1)? "s":"")
+  }
+  else if (Math.floor(secondDifference/(60*60) ) < 24){
+    result = Math.floor(secondDifference/(60*60)) + " hour" + (((Math.floor(secondDifference/(60*60))) > 1)? "s":"")
+  }
+  else if (Math.floor(secondDifference/(60*60*24)) < 7){
+    result = Math.floor(secondDifference/(60*60*24)) + " day" + (((Math.floor(secondDifference/(60*60*24))) > 1)? "s":"")
+  }
+  else if (Math.floor(secondDifference/(60*60*24*7)) < 4){
+    result = Math.floor(secondDifference/(60*60*24*7)) + " week" + (((Math.floor(secondDifference/(60*60*24*7))) > 1)? "s":"")
+  }
+  else if (Math.floor(secondDifference/(60*60*24*7*4)) < 12){
+    result = Math.floor(secondDifference/(60*60*24*7*4)) + " month" + (((Math.floor(secondDifference/(60*60*24*7*4))) > 1)? "s":"")
+  }
+  return result + " ago"
+}
+
+function typewriterAnimate(idOfElement,text,position,speed){
+  const initialInner = document.getElementById(idOfElement).innerText
+  head = initialInner.substring(0,position)
+  tail = initialInner.substring(position,initialInner.length)
+  console.log("head: ",head,"\ntail: ",tail)
+  typeWriter(idOfElement, 0, head,tail, text,speed)
+}
+
+
+function typeWriter(elementID,i, head,tail,text,speed) {
+  if (i < text.length) {
+
+    document.getElementById(elementID).innerText = head + text.substring(0,i+1) + tail;
+    setTimeout(function(){
+      typeWriter(elementID,i+1,head,tail,text)
+    }, speed);
   }
 }
