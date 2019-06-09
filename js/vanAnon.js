@@ -17,7 +17,7 @@ let numQuestionsToday = 0;
 let dailylimit = 4;
 let exceededDailyMessagesPopup = "Exceeded max number of posts today!"
 let timeZoneOffset = new Date().getTimezoneOffset()/60;
-let typeWriterSpeed = 150
+let typeWriterSpeed = 100
 upvoteColor = [255, 174, 26]
 downvoteColor = [144, 215, 243]
 
@@ -32,18 +32,18 @@ function setUpWindow() {
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
 
+  typewriterAnimate("page-title"," ask me anything",7,typeWriterSpeed)
   document.getElementById("message-board-post-submittor-button").addEventListener("click", handleSubmit)
-  // typewriterAnimate("page-title","ask me anything",7,typeWriterSpeed)
   // setTimeout(()=>{
-  // },typeWriterSpeed * ("anything".length + 5) )
-  
-  updateMessageBoard()
+    // },typeWriterSpeed * ("anything".length + 5) )
+    
+    updateMessageBoard()
 }
 async function updateMessageBoard() {
 
 
   messageBoard = firebase.firestore().collection("anonymousMessageBoard")
-  ipHistory = firebase.firestore().collection("ipVotingHistory")
+  // ipHistory = firebase.firestore().collection("ipVotingHistory")
 
   await messageBoard.orderBy("postScore", "desc").orderBy("dateValue", "desc").limit(10).get()
     .then(
@@ -51,10 +51,10 @@ async function updateMessageBoard() {
         querySnapshot.docs.forEach(doc => {
           messageBoardPosts.push(doc.data());
         });
-        getClientInfo()
+        // getClientInfo()
       }
     ).then(
-      function () {
+      function () { 
         if (messageBoardPosts.length == 0) {
           document.getElementById("message-board-posts").innerHTML = emptyMessageBoardElement
           // getClientInfo()
@@ -66,28 +66,12 @@ async function updateMessageBoard() {
           console.log("Done adding all posts")
           // getClientInfo()
           // console.log(clientInfo)
-
-          messageBoardPosts.forEach(post => {
-            IPsMatch = post["ip"] == clientInfo["ip"]
-            daysMatch = sameDay(new Date(Date.parse(post["date"])), new Date())
-            if (IPsMatch && daysMatch) {
-              numQuestionsToday += 1;
-            }
-
-            renderActiveVoteButtons(post)
-
-
-          })
-
-          if (numQuestionsToday >= dailylimit) {
-            document.getElementById("submittor-question-field").placeholder = exceededDailyMessagesPopup
-          }
         }
-
       }
-    )
-
-
+    ).then(
+      function(){
+        getClientInfo()
+      })
 }
 
 function renderActiveVoteButtons(postObject) {
@@ -227,18 +211,19 @@ async function DeleteAllPosts() {
 
 function getClientInfo() {
   console.log("Getting clientInfo...")
-
-  url = 'https://json.geoiplookup.io/'
-
   var xmlHttp = new XMLHttpRequest();
+  const url = 'https://json.geoiplookup.io/'
+  let result;
 
-  xmlHttp.onreadystatechange = () => {
-    if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+  xmlHttp.onreadystatechange = function(){
+    if (this.readyState == 4 && this.status == 200){
       clientInfo = (JSON.parse(xmlHttp.responseText))
+      countPostsFromIP(clientInfo["ip"])
+    }
   }
-  xmlHttp.open("GET", url, false); // true for asynchronous
-  xmlHttp.send(null);
-
+  xmlHttp.open("GET", url, true); // true for asynchronous
+  xmlHttp.send();
+  // return result
 }
 
 function containsProfanity(text) {
@@ -491,7 +476,32 @@ function typeWriter(elementID,i, head,tail,text,speed) {
 
     document.getElementById(elementID).innerText = head + text.substring(0,i+1) + tail;
     setTimeout(function(){
-      typeWriter(elementID,i+1,head,tail,text)
+      console.log("Calling typewriter again, ", i+1)
+      typeWriter(elementID,i+1,head,tail,text,speed)
     }, speed);
   }
 }
+
+function countPostsFromIP(clientIP){
+  messageBoardPosts.forEach(post => {
+    IPsMatch = post["ip"] == clientIP
+    daysMatch = sameDay(new Date(Date.parse(post["date"])), new Date())
+    if (IPsMatch && daysMatch) {
+      numQuestionsToday += 1;
+    }
+    renderActiveVoteButtons(post)
+  })
+
+  if (numQuestionsToday >= dailylimit) {
+    document.getElementById("submittor-question-field").placeholder = exceededDailyMessagesPopup
+  }
+}
+
+// function recurse(i,speed) {
+//   if (i < 10) {
+//     console.log("i: ", i)
+//     setTimeout(function(){
+//       recurse(i+1,speed)
+//     }, speed);
+//   }
+// }
