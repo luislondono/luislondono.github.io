@@ -2,93 +2,114 @@
 <html lang="en" dir="ltr">
 
 <head>
-	<meta charset="utf-8">
-	<title>Luis Londono</title>
-	<link rel="stylesheet" href="css/main.css">
-	<link rel="shortcut icon" type="image/x-icon" href="images/cornellicon.ico">
-
+    <meta charset="utf-8">
+    <title>Luis Londono</title>
+    <script type="text/javascript" src="./js/global.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="shortcut icon" type="image/x-icon" href="images/cornellicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
-<body class="page">
+<body id="page">
 
-	<header>
-		<div class="navbar-container">
-			<div class="navbar-logo">
-				<a href="https://luislondono.com/">Luis Hernando Londono</a>
-			</div>
-
-
-			<nav>
-				<ul>
-					<li class="nav-link"><a href="https://luislondono.com/">Home</a></li>
-					<li class="nav-link"><a
-							href="https://docs.google.com/document/d/1av1XlOl_ZTY2W7YGD1Kn3YUUMBhXLhLa5DjAMa0V2_I/edit?usp=sharing">Resume</a>
-					</li>
-					<li class="nav-link"><a href="myWork">My Work</a></li>
-					<li class="nav-link" id="dropdown-content">Gallery
-						<!-- <div class="nav-bar-collapsable-column">
-								<a href="#">Facebook</a>
-								<a href="#">Github</a>
-								<a href="#">LinkedIn</a>
-							</div> -->
-					</li>
-
-					<li class="social-media-link"><a href="https://www.github.com/LuisLondono"> <img
-								src="images/githubLogo.svg" alt=""></a></li>
-					<li class="social-media-link"><a href="https://www.facebook.com/luislondonoramos"><img
-								src="images/facebookLogo.svg" alt=""></a></li>
-					<li class="social-media-link"><a href="https://www.linkedin.com/in/luislondonoramos"><img
-								src="images/linkedinLogo.svg" alt=""></a></li>
-
-				</ul>
-
-			</nav>
-
-		</div>
-
-	</header>
-
-	<div class="page-content">
-
-		<h1>About Me</h1>
-		<div id="landing-page-container">
-			<div class="portrait-container">
-
-				<div class="circular-portrait">
-					<img src="images/hyperloopHeadshot.JPG" alt="me">
-				</div>
+    <header>
+        <div class="navbar-container">
+            <div id="navbar-logo-desktop">
+                <a href="https://luislondono.com/">Luis Hernando Londono</a>
+            </div>
 
 
-				<!-- <div id="dummy-portrait-padding"> -->
-				<!-- </div> -->
+            <!-- <nav id="nav-links-desktop">
+                <ul>
+                    <li class="nav-link"><a href="https://luislondono.com/">Home</a></li>
+                    <li class="nav-link"><a href="https://docs.google.com/document/d/1av1XlOl_ZTY2W7YGD1Kn3YUUMBhXLhLa5DjAMa0V2_I/edit?usp=sharing">Resume</a>
+                    </li>
+                    <li class="nav-link"><a href="myWork">My Work</a></li>
+                    <li class="nav-link" id="dropdown-content">Gallery
+                    </li>
 
-			</div>
+                    <li class="social-media-link">
+                        <a href="https://www.github.com/LuisLondono"> <img src="images/icons/githubLogo.svg" alt=""></a>
+                    </li>
+                    <li class="social-media-link">
+                        <a href="https://www.facebook.com/luislondonoramos"><img src="images/icons/facebookLogo.svg" alt=""></a>
+                    </li>
+                    <li class="social-media-link">
+                        <a href="https://www.linkedin.com/in/luislondonoramos"><img src="images/icons/linkedinLogo.svg" alt=""></a>
+                    </li>
 
-			<div class="aboutme-container">
-				<h3> Welcome!</h3>
-				<hr>
-				<p> My name is Luis and I'm a rising junior at Cornell University studying computer science. I am also
-					persuing a minor in Operations Research and Business. </p>
+                </ul>
 
-				<p> Aside from coursework I also stay active on campus in a variety of ways:
-				</p>
-				<ul>
-					<li> I am secretary and Executive Boardmember of the Society of Hispanic Professional Engineers
-						(SHPE)</li>
-					<li>I participate in Intramural Volleyball and biking club</li>
-					<li> I am a web developer for Cornell Hyperloop</li>
-				</ul>
+            </nav> -->
 
-				<p>Currently, I am working at Uber as a Software Engineering Intern under the Customer Obsession team. I
-					hope to have many great updates on my experience as the summer continues!</p>
+            <nav id="nav-links-mobile">
+                <ul>
+                    <li class="nav-link">
+                        <a href="https://luislondono.com/">
+                            <img src="./images/icons/home.svg" alt="home">
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a
+                            href="https://docs.google.com/document/d/1av1XlOl_ZTY2W7YGD1Kn3YUUMBhXLhLa5DjAMa0V2_I/edit?usp=sharing">
+                            <img src="./images/icons/resume.svg" alt="resume">
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="myWork">
+                            <img src="./images/icons/work.svg" alt="work">
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="myWork">
+                            <img src="./images/icons/gallery.svg" alt="home">
+                        </a>
+                    </li>
 
-				<hr>
+                </ul>
 
-				<h4>Feel free to contact me for inquiries!</h4>
-				<p>lhl49@cornell.edu</p>
-			</div>
+            </nav>
 
-		</div>
+        </div>
+
+    </header>
+
+    <div class="page-content">
+
+        <h1>About Me</h1>
+        <div id="landing-page-container">
+            <div class="portrait-container">
+
+                <div class="circular-portrait">
+                </div>
+
+            </div>
+
+            <div class="aboutme-container">
+                <h3> Welcome!</h3>
+                <hr>
+                <p> My name is Luis and I'm a rising junior at Cornell University studying computer science. I am also
+                    persuing a minor in Operations Research and Business. </p>
+
+                <p> Aside from coursework I also stay active on campus in a variety of ways:
+                </p>
+                <ul>
+                    <li> I'm secretary and Executive Boardmember of the Society of Hispanic Professional Engineers
+                        (SHPE)
+                    </li>
+                    <li>I participate in Intramural Volleyball and biking club</li>
+                    <li> I'm a web developer for Cornell Hyperloop</li>
+                </ul>
+
+                <p>Currently, I'm working at Uber as a Software Engineering Intern under the Customer Obsession team. I
+                    hope to have many great updates on my experience as the summer continues!</p>
+
+                <hr>
+
+                <h4>Feel free to contact me for inquiries!</h4>
+                <p>lhl49@cornell.edu</p>
+            </div>
+        </div>
 
 
 
@@ -100,7 +121,22 @@
 
 
 
-	</div>
+
+    </div>
+    <div id="page-footer-navigator">
+        <ul>
+            <li class="social-media-link">
+                <a href="https://www.github.com/LuisLondono"> <img src="images/icons/githubLogo.png" alt=""></a>
+            </li>
+            <li class="social-media-link">
+                <a href="https://www.facebook.com/luislondonoramos"><img src="images/icons/facebookLogo.svg" alt=""></a>
+            </li>
+            <li class="social-media-link">
+                <a href="https://www.linkedin.com/in/luislondonoramos"><img src="images/icons/linkedinLogo.svg"
+                        alt=""></a>
+            </li>
+        </ul>
+    </div>
 
 </body>
 
