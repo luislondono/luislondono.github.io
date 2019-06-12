@@ -1,7 +1,10 @@
+var mobileMenuCollapsed = true;
 window.onload = function () {
     // setInterval(randomizeTheme, 50)
     // randomizeTheme()
+    document.getElementById("mobile-menu-icon-container").addEventListener("click", handleMobileMenuIconClick)
 }
+
 
 var increase = { r: true, g: true, b: true }
 
@@ -97,4 +100,29 @@ function slideValue(value, bound, variability, additive, sporadic) {
         return Math.abs(result)
     }
     return result
+}
+
+
+function handleMobileMenuIconClick() {
+    bunElements = document.getElementsByClassName("hamburger-bun")
+
+    if (mobileMenuCollapsed) {
+        mobileMenuCollapsed = false
+        for (let index = 1; index < 4; index++) {
+            bun = bunElements[index - 1]
+            bun.id = "bun-" + index + "-expanded"
+        }
+        console.log("Expanding mobile menu bar...")
+
+        document.getElementsByClassName("mobile-menu-container")[0].id = "mobile-menu-container-expanded"
+    }
+    else {
+        mobileMenuCollapsed = true
+        for (let index = 1; index < 4; index++) {
+            bun = bunElements[index - 1]
+            bun.id = "bun-" + index + "-collapsed"
+        }
+        console.log("Collapsing mobile menu bar...")
+        document.getElementsByClassName("mobile-menu-container")[0].id = "mobile-menu-container-collapsed"
+    }
 }
