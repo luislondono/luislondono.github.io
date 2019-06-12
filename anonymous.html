@@ -3,13 +3,17 @@
 
 <head>
 	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Luis Londono</title>
 	<link rel="stylesheet" href="css/main.css">
 	<link rel="stylesheet" href="css/anonymous.css">
+
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<link rel="shortcut icon" type="image/x-icon" href="images/cornellicon.ico">
+	<script type="text/javascript" src="./js/global.js"></script>
 	<script type="text/javascript" src="./js/vanAnon.js"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+
 
 </head>
 
@@ -17,34 +21,81 @@
 
 	<header>
 		<div class="navbar-container">
-			<div class="navbar-logo">
-				<a href="https://luislondono.com/">Luis Hernando Londono</a>
-			</div>
 
 
-			<nav>
+
+			<nav id="nav-bar-desktop">
+				<div class="navbar-logo">
+					<a href="https://luislondono.com/">Luis Hernando Londono</a>
+				</div>
 				<ul>
 					<li class="nav-link"><a href="https://luislondono.com/">Home</a></li>
 					<li class="nav-link"><a
 							href="https://docs.google.com/document/d/1av1XlOl_ZTY2W7YGD1Kn3YUUMBhXLhLa5DjAMa0V2_I/edit?usp=sharing">Resume</a>
 					</li>
 					<li class="nav-link"><a href="myWork">My Work</a></li>
-					<li class="nav-link" id="dropdown-content">Gallery
-						<!-- <div class="nav-bar-collapsable-column">
-								<a href="#">Facebook</a>
-								<a href="#">Github</a>
-								<a href="#">LinkedIn</a>
-							</div> -->
+					<li class="nav-link" id="dropdown-content">Gallery</li>
+
+					<li class="social-media-link" id="github-link">
+						<a href="https://www.github.com/LuisLondono"></a>
+					</li>
+					<li class="social-media-link" id="facebook-link">
+						<a href="https://www.facebook.com/luislondonoramos"></a>
+					</li>
+					<li class="social-media-link" id="linkedin-link">
+						<a href="https://www.linkedin.com/in/luislondonoramos"></a>
 					</li>
 
-					<li class="social-media-link"><a href="https://www.github.com/LuisLondono"> <img
-								src="images/githubLogo.svg" alt=""></a></li>
-					<li class="social-media-link"><a href="https://www.facebook.com/luislondonoramos"><img
-								src="images/facebookLogo.svg" alt=""></a></li>
-					<li class="social-media-link"><a href="https://www.linkedin.com/in/luislondonoramos"><img
-								src="images/linkedinLogo.svg" alt=""></a></li>
 
 				</ul>
+
+			</nav>
+
+			<nav id="nav-bar-mobile">
+				<div id="nav-bar-mobile-horizontal-menu">
+					<div id="mobile-menu-icon-container">
+						<div class="hamburger-bun" id="bun-1-collapsed"></div>
+						<div class="hamburger-bun" id="bun-2-collapsed"></div>
+						<div class="hamburger-bun" id="bun-3-collapsed"></div>
+					</div>
+					<div class="navbar-logo" id="logo-first-middle-last">
+						<a href="https://luislondono.com/">Luis Hernando Londono</a>
+					</div>
+					<div class="navbar-logo" id="logo-first-last">
+						<a href="https://luislondono.com/">Luis Londono</a>
+					</div>
+				</div>
+				<div class="mobile-menu-container" id="mobile-menu-container-collapsed">
+					<ul>
+						<li class="nav-link">
+							<a href="https://luislondono.com/">
+								<!-- <img src="./images/icons/home.svg" alt="home"> -->
+								Home
+							</a>
+						</li>
+						<li class="nav-link">
+							<a
+								href="https://docs.google.com/document/d/1av1XlOl_ZTY2W7YGD1Kn3YUUMBhXLhLa5DjAMa0V2_I/edit?usp=sharing">
+								Resume
+								<!-- <img src="./images/icons/resume.svg" alt="resume"> -->
+							</a>
+						</li>
+						<li class="nav-link">
+							<a href="myWork">
+								My Work
+								<!-- <img src="./images/icons/work.svg" alt="work"> -->
+							</a>
+						</li>
+						<li class="nav-link">
+							<a href="myWork">
+								Gallery
+								<!-- <img src="./images/icons/gallery.svg" alt="home"> -->
+							</a>
+						</li>
+
+					</ul>
+				</div>
+
 
 			</nav>
 
@@ -53,7 +104,7 @@
 	</header>
 
 	<div class="page-content">
-		<h1 id = "page-title">👨🏻‍💻 👩🏼‍💻</h1>
+		<h1 id="page-title">👨🏻‍💻 👩🏼‍💻</h1>
 		<!-- <h1 id = "page-title">👨🏻‍💻 ask me anything 👩🏼‍💻</h1> -->
 		<div class="message-board">
 			<div id="message-board-posts">
@@ -74,6 +125,19 @@
 					Nuclear Option
 				</button>
 			</div> -->
+		</div>
+		<div id="page-footer-navigator">
+			<ul>
+				<li class="social-media-link" id="github-link">
+					<a href="https://www.github.com/LuisLondono"></a>
+				</li>
+				<li class="social-media-link" id="facebook-link">
+					<a href="https://www.facebook.com/luislondonoramos"></a>
+				</li>
+				<li class="social-media-link" id="linkedin-link">
+					<a href="https://www.linkedin.com/in/luislondonoramos"></a>
+				</li>
+			</ul>
 		</div>
 
 

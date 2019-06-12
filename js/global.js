@@ -1,8 +1,10 @@
 var mobileMenuCollapsed = true;
 window.onload = function () {
-    // setInterval(randomizeTheme, 50)
-    // randomizeTheme()
     document.getElementById("mobile-menu-icon-container").addEventListener("click", handleMobileMenuIconClick)
+    console.log("Added event listener to mobile-menu-icon-container")
+
+    // Page specific onloads
+    setupSpecificPage()
 }
 
 

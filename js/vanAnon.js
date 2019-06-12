@@ -1,4 +1,3 @@
-window.onload = setUpWindow
 var firebaseConfig = {
   apiKey: "AIzaSyCSFoOcUMAULAn6ScMSgygfS_fZcnVTpSk",
   authDomain: "luislondono-com.firebaseapp.com",
@@ -16,7 +15,7 @@ let clientInfo;
 let numQuestionsToday = 0;
 let dailylimit = 4;
 let exceededDailyMessagesPopup = "Exceeded max number of posts today!"
-let timeZoneOffset = new Date().getTimezoneOffset()/60;
+let timeZoneOffset = new Date().getTimezoneOffset() / 60;
 let typeWriterSpeed = 100
 upvoteColor = [255, 174, 26]
 downvoteColor = [144, 215, 243]
@@ -28,16 +27,16 @@ redirectLink = "https://www.pornhub.com"
 const emptyMessageBoardElement = '<div id="empty-message-board-post"> <div> No posts have been made 😢 </div> </div>'
 
 // const emptyMessageBoardMessage = <div class="message-board-post"><h3> No posts have been made :( </h3></div>
-function setUpWindow() {
+setupSpecificPage = function () {
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
 
-  typewriterAnimate("page-title"," ask me anything",7,typeWriterSpeed)
+  typewriterAnimate("page-title", " ask me anything", 7, typeWriterSpeed)
   document.getElementById("message-board-post-submittor-button").addEventListener("click", handleSubmit)
   // setTimeout(()=>{
-    // },typeWriterSpeed * ("anything".length + 5) )
-    
-    updateMessageBoard()
+  // },typeWriterSpeed * ("anything".length + 5) )
+
+  updateMessageBoard()
 }
 async function updateMessageBoard() {
 
@@ -54,7 +53,7 @@ async function updateMessageBoard() {
         // getClientInfo()
       }
     ).then(
-      function () { 
+      function () {
         if (messageBoardPosts.length == 0) {
           document.getElementById("message-board-posts").innerHTML = emptyMessageBoardElement
           // getClientInfo()
@@ -69,7 +68,7 @@ async function updateMessageBoard() {
         }
       }
     ).then(
-      function(){
+      function () {
         getClientInfo()
       })
 }
@@ -99,7 +98,7 @@ function addPostToMessageBoard(postObject, throughSubmit) {
   } else {
     answerField = "A: " + postObject["answer"]
   }
-  const newpost = '<div class="message-board-post" id = "' + postObject["UUID"] + '"><div class="message-board-post-rating-container"> <div class="message-board-post-rating"> <button class="message-board-post-rating-button-inactive" id="upvote-button-' + postObject["UUID"] + '"> <i class="material-icons" style="font-size:24px;">thumb_up</i> </button > <div class="message-board-post-rating-score" id = "message-board-post-rating-score-' + postObject["UUID"] + '">' + postObject["postScore"] + '</div> <button class="message-board-post-rating-button-inactive" id="downvote-button-' + postObject["UUID"] + '"> <i class="material-icons" style="font-size:24px;">thumb_down</i> </button > </div > </div > <div class="message-board-post-content"> <div class="message-board-post-question"> Q: ' + postObject["question"] + '</div> <div class="message-board-post-answer">' + answerField + '</div><div class = "message-board-post-date">'+getTimeElapsedString( postObject["date"] )+'</div></div ></div > '
+  const newpost = '<div class="message-board-post" id = "' + postObject["UUID"] + '"><div class="message-board-post-rating-container"> <div class="message-board-post-rating"> <button class="message-board-post-rating-button-inactive" id="upvote-button-' + postObject["UUID"] + '"> <i class="material-icons" style="font-size:24px;">thumb_up</i> </button > <div class="message-board-post-rating-score" id = "message-board-post-rating-score-' + postObject["UUID"] + '">' + postObject["postScore"] + '</div> <button class="message-board-post-rating-button-inactive" id="downvote-button-' + postObject["UUID"] + '"> <i class="material-icons" style="font-size:24px;">thumb_down</i> </button > </div > </div > <div class="message-board-post-content"> <div class="message-board-post-question"> Q: ' + postObject["question"] + '</div> <div class="message-board-post-answer">' + answerField + '</div><div class = "message-board-post-date">' + getTimeElapsedString(postObject["date"]) + '</div></div ></div > '
   if (messageBoardPosts.length == 0) {
     console.log("Reseting inner html")
     document.getElementById("message-board-posts").innerHTML = newpost;
@@ -210,13 +209,13 @@ async function DeleteAllPosts() {
 }
 
 function getClientInfo() {
-  console.log("Getting clientInfo...")
+  // console.log("Getting clientInfo...")
   var xmlHttp = new XMLHttpRequest();
   const url = 'https://json.geoiplookup.io/'
   let result;
 
-  xmlHttp.onreadystatechange = function(){
-    if (this.readyState == 4 && this.status == 200){
+  xmlHttp.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
       clientInfo = (JSON.parse(xmlHttp.responseText))
       countPostsFromIP(clientInfo["ip"])
     }
@@ -436,53 +435,53 @@ function sortClassifierScoreDateValue(a, b) {
 }
 
 
-function getTimeElapsedString(dateString){
+function getTimeElapsedString(dateString) {
   nowDate = new Date()
   thenDate = new Date(Date.parse(dateString))
-  secondDifference = (nowDate - thenDate)/1000
+  secondDifference = (nowDate - thenDate) / 1000
   let result;
-  if (Math.floor(secondDifference)<60){
-    result = Math.floor(secondDifference) + " second" + (Math.floor(secondDifference) > 1? "s":"")
+  if (Math.floor(secondDifference) < 60) {
+    result = Math.floor(secondDifference) + " second" + (Math.floor(secondDifference) > 1 ? "s" : "")
   }
-  else if (Math.floor(secondDifference/60) < 60){
-    result = Math.floor(secondDifference/60) + " minute" + (((Math.floor(secondDifference/60)) > 1)? "s":"")
+  else if (Math.floor(secondDifference / 60) < 60) {
+    result = Math.floor(secondDifference / 60) + " minute" + (((Math.floor(secondDifference / 60)) > 1) ? "s" : "")
   }
-  else if (Math.floor(secondDifference/(60*60) ) < 24){
-    result = Math.floor(secondDifference/(60*60)) + " hour" + (((Math.floor(secondDifference/(60*60))) > 1)? "s":"")
+  else if (Math.floor(secondDifference / (60 * 60)) < 24) {
+    result = Math.floor(secondDifference / (60 * 60)) + " hour" + (((Math.floor(secondDifference / (60 * 60))) > 1) ? "s" : "")
   }
-  else if (Math.floor(secondDifference/(60*60*24)) < 7){
-    result = Math.floor(secondDifference/(60*60*24)) + " day" + (((Math.floor(secondDifference/(60*60*24))) > 1)? "s":"")
+  else if (Math.floor(secondDifference / (60 * 60 * 24)) < 7) {
+    result = Math.floor(secondDifference / (60 * 60 * 24)) + " day" + (((Math.floor(secondDifference / (60 * 60 * 24))) > 1) ? "s" : "")
   }
-  else if (Math.floor(secondDifference/(60*60*24*7)) < 4){
-    result = Math.floor(secondDifference/(60*60*24*7)) + " week" + (((Math.floor(secondDifference/(60*60*24*7))) > 1)? "s":"")
+  else if (Math.floor(secondDifference / (60 * 60 * 24 * 7)) < 4) {
+    result = Math.floor(secondDifference / (60 * 60 * 24 * 7)) + " week" + (((Math.floor(secondDifference / (60 * 60 * 24 * 7))) > 1) ? "s" : "")
   }
-  else if (Math.floor(secondDifference/(60*60*24*7*4)) < 12){
-    result = Math.floor(secondDifference/(60*60*24*7*4)) + " month" + (((Math.floor(secondDifference/(60*60*24*7*4))) > 1)? "s":"")
+  else if (Math.floor(secondDifference / (60 * 60 * 24 * 7 * 4)) < 12) {
+    result = Math.floor(secondDifference / (60 * 60 * 24 * 7 * 4)) + " month" + (((Math.floor(secondDifference / (60 * 60 * 24 * 7 * 4))) > 1) ? "s" : "")
   }
   return result + " ago"
 }
 
-function typewriterAnimate(idOfElement,text,position,speed){
+function typewriterAnimate(idOfElement, text, position, speed) {
   const initialInner = document.getElementById(idOfElement).innerText
-  head = initialInner.substring(0,position)
-  tail = initialInner.substring(position,initialInner.length)
-  console.log("head: ",head,"\ntail: ",tail)
-  typeWriter(idOfElement, 0, head,tail, text,speed)
+  head = initialInner.substring(0, position)
+  tail = initialInner.substring(position, initialInner.length)
+  // console.log("head: ", head, "\ntail: ", tail)
+  typeWriter(idOfElement, 0, head, tail, text, speed)
 }
 
 
-function typeWriter(elementID,i, head,tail,text,speed) {
+function typeWriter(elementID, i, head, tail, text, speed) {
   if (i < text.length) {
 
-    document.getElementById(elementID).innerText = head + text.substring(0,i+1) + tail;
-    setTimeout(function(){
-      console.log("Calling typewriter again, ", i+1)
-      typeWriter(elementID,i+1,head,tail,text,speed)
+    document.getElementById(elementID).innerText = head + text.substring(0, i + 1) + tail;
+    setTimeout(function () {
+      // console.log("Calling typewriter again, ", i+1)
+      typeWriter(elementID, i + 1, head, tail, text, speed)
     }, speed);
   }
 }
 
-function countPostsFromIP(clientIP){
+function countPostsFromIP(clientIP) {
   messageBoardPosts.forEach(post => {
     IPsMatch = post["ip"] == clientIP
     daysMatch = sameDay(new Date(Date.parse(post["date"])), new Date())

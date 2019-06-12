@@ -24,9 +24,10 @@
 
 }
 
-#page {
+.page {
     position: relative;
     min-height: 100vh;
+    width: 100vw;
 }
 
 @media only screen and (max-width: 600px) {
@@ -36,15 +37,21 @@
     #nav-bar-desktop {
         display: none;
     }
+    #logo-first-middle-last{
+        display: none;
+    }
+    #logo-first-last{
+        display: inherit;
+    }
 
 }
 
 @media only screen and (min-width: 600px) {
     /* For tablets: */
-
-    #nav-bar-mobile {
-        /* background-color: royalblue; */
+    #logo-first-last{
+        display: none;
     }
+
     .circular-portrait {
         width: 50%;
     }
@@ -56,6 +63,7 @@
 
 @media only screen and (min-width: 1024px) {
     /* For desktop: */
+
     .navbar-container {
         height: var(--desktop-nav-height);
     }
@@ -132,7 +140,7 @@
     transition: linear;
 }
 
-#navbar-logo {
+.navbar-logo {
     float: left;
     height: 100%;
     /* width: 300px; */
@@ -164,7 +172,7 @@
     font-size: 20px;
 }
 
-#navbar-logo a {
+.navbar-logo a {
     font-family: 'Roboto';
     /* color: #eaeaea; */
     color: var(--themeColor);
@@ -177,7 +185,7 @@
     transition-duration: .35s;
 }
 
-#navbar-logo a:hover {
+.navbar-logo a:hover {
     font-size: 1.7em;
 }
 
@@ -288,9 +296,6 @@ nav ul li:hover {
 }
 
 .page-content h1 {
-    height: 48px;
-    line-height: 48px;
-    margin: 8px 0px;
     text-align: center;
     /* margin: 4px; */
 }
@@ -619,7 +624,7 @@ nav ul li:hover {
     height: var(--mobile-nav-height);
     justify-content: center;
 }
-#nav-bar-mobile-horizontal-menu #navbar-logo a{
+#nav-bar-mobile-horizontal-menu .navbar-logo a{
     line-height: var(--mobile-nav-height);
     text-align: center;
 }

@@ -1,9 +1,31 @@
+@media only screen and (max-width: 600px) {
+    .message-board{
+        width: 100%;
+        font-size: 1.1em;
+    }
+}
+
+@media only screen and (min-width: 600px) {
+    /* For tablets: */
+    .message-board{
+        width: 100%;
+        font-size: 1.2em;
+    }
+}
+
+@media only screen and (min-width: 1024px) {
+    .message-board{
+        width: 80%;
+        font-size: 1.3em;
+    }
+}
+
+
 .message-board{
-    /* background-color: bisque; */
-    /* border: 1px solid black; */
     align-content: center;
-    width: 80%;
+    max-width: 900px;
     margin: auto;
+
 }
 .message-board-post{
     display: flex;
