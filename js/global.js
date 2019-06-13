@@ -17,8 +17,6 @@ window.onload = function () {
     document.getElementById("mobile-menu-icon-container").addEventListener("click", handleMobileMenuIconClick)
 
     console.log("Added event listener to mobile-menu-icon-container")
-    console.log("Min Content Height : ", minContentHeight)
-    // Page specific onloads
     setupSpecificPage()
 }
 
