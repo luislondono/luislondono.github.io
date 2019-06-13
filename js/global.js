@@ -1,11 +1,23 @@
 var mobileMenuCollapsed = true;
 const navBarDiv = '<div class="navbar-container"> <nav id="nav-bar-desktop"> <div class="navbar-logo"> <a href="https://luislondono.com/">Luis Hernando Londono</a> </div> <ul> <li class="nav-link"><a href="https://luislondono.com/">Home</a></li> <li class="nav-link"><a href="https://docs.google.com/document/d/1av1XlOl_ZTY2W7YGD1Kn3YUUMBhXLhLa5DjAMa0V2_I/edit?usp=sharing">Resume</a> </li> <li class="nav-link"><a href="myWork">My Work</a></li> <li class="nav-link" id="dropdown-content">Gallery</li> <li class="social-media-link" id="github-link"> <a href="https://www.github.com/LuisLondono"></a> </li> <li class="social-media-link" id="facebook-link"> <a href="https://www.facebook.com/luislondonoramos"></a> </li> <li class="social-media-link" id="linkedin-link"> <a href="https://www.linkedin.com/in/luislondonoramos"></a> </li> </ul> </nav> <nav id="nav-bar-mobile"> <div id="nav-bar-mobile-horizontal-menu"> <div id="mobile-menu-icon-container"> <div class="hamburger-bun" id="bun-1-collapsed"></div> <div class="hamburger-bun" id="bun-2-collapsed"></div> <div class="hamburger-bun" id="bun-3-collapsed"></div> </div> <div class="navbar-logo" id="logo-first-middle-last"> <a href="https://luislondono.com/">Luis Hernando Londono</a> </div> <div class="navbar-logo" id="logo-first-last"> <a href="https://luislondono.com/">Luis Londono</a> </div> </div> <div class="mobile-menu-container" id="mobile-menu-container-collapsed"> <ul> <li class="nav-link"> <a href="https://luislondono.com/"> Home </a> </li> <li class="nav-link"> <a href="https://docs.google.com/document/d/1av1XlOl_ZTY2W7YGD1Kn3YUUMBhXLhLa5DjAMa0V2_I/edit?usp=sharing"> Resume </a> </li> <li class="nav-link"> <a href="myWork"> My Work </a> </li> <li class="nav-link"> <a href="myWork"> Gallery </a> </li> </ul> </div> </nav> </div>'
 
+const footerMenuDiv = '<div id="page-footer-navigator"> <ul> <li class="social-media-link" id="github-link"> <a href="https://www.github.com/LuisLondono"></a> </li> <li class="social-media-link" id="facebook-link"> <a href="https://www.facebook.com/luislondonoramos"></a> </li> <li class="social-media-link" id="linkedin-link"> <a href="https://www.linkedin.com/in/luislondonoramos"></a> </li> </ul> </div>'
+
 window.onload = function () {
     document.getElementsByTagName("header")[0].innerHTML = navBarDiv
-    document.getElementById("mobile-menu-icon-container").addEventListener("click", handleMobileMenuIconClick)
-    console.log("Added event listener to mobile-menu-icon-container")
 
+
+
+
+    document.getElementById("page-content").insertAdjacentHTML("beforeend", footerMenuDiv)
+
+
+
+    // Event listeners
+    document.getElementById("mobile-menu-icon-container").addEventListener("click", handleMobileMenuIconClick)
+
+    console.log("Added event listener to mobile-menu-icon-container")
+    console.log("Min Content Height : ", minContentHeight)
     // Page specific onloads
     setupSpecificPage()
 }

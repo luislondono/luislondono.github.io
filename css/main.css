@@ -8,7 +8,7 @@
 
 :root {
     --cornellRed: rgb(179, 27, 27);
-    --webpageWidth: 960px;
+    --headerMarginBottom: 16px;
     --halfwebpageWidth: 480px;
     --headerHeight: 13em;
     --coolBlue: rgb(0, 132, 255);
@@ -43,6 +43,9 @@
     #logo-first-last{
         display: inherit;
     }
+    #page-content {
+        min-height: calc(100vh - var(--mobile-nav-height) - var(--headerMarginBottom))
+    }
 
 }
 
@@ -58,11 +61,17 @@
     #nav-bar-desktop {
         display: none;
     }
+    #page-content {
+        min-height: calc(100vh - var(--mobile-nav-height) - var(--headerMarginBottom))
+    }
 
 }
 
 @media only screen and (min-width: 1024px) {
     /* For desktop: */
+    #page-content {
+        min-height: calc(100vh - var(--desktop-nav-height) - var(--headerMarginBottom))
+    }
 
     .navbar-container {
         height: var(--desktop-nav-height);
@@ -78,7 +87,7 @@
         display: none;
     }
 
-    .page-content h1 {
+    #page-content h1 {
         font-size: 2.7em;
         text-align: center;
         padding-top: 30px;
@@ -192,7 +201,7 @@
 header {
     border-bottom: solid 1.5px #bdbdbd;
     box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.01), 0 3px 24px rgba(0, 0, 0, 0.8);
-    margin-bottom: 16px;
+    margin-bottom: var(--headerMarginBottom);
 
 }
 
@@ -227,9 +236,9 @@ nav ul li:hover {
     opacity: 1;
 }
 
-#dropdown-content {
-    /* transition: ease-in; */
-    /* transition-duration: 3s; */
+#page{
+    min-width: 100vw;
+    min-height: 100vh;
 }
 
 #dropdown-content .nav-bar-collapsable-column {
@@ -280,7 +289,7 @@ nav ul li:hover {
     left: 10%;
 }
 
-.page-content {
+#page-content {
     display: flex;
     flex-direction: column;
     margin: 0px auto 0px auto;
@@ -288,6 +297,7 @@ nav ul li:hover {
     font-family: Arial;
     align-content: center;
     padding-bottom: var(--footerHeight);
+    height: 100%;
 }
 
 #landing-page-container h1 {
@@ -295,7 +305,7 @@ nav ul li:hover {
     display: block;
 }
 
-.page-content h1 {
+#page-content h1 {
     text-align: center;
     /* margin: 4px; */
 }

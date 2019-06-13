@@ -1,78 +1,69 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8" />
-    <title>Luis Londono</title>
-    <link rel="stylesheet" href="css/main.css" />
-    <link
-      rel="shortcut icon"
-      type="image/x-icon"
-      href="images/cornellicon.ico"
-    />
-    <script type="text/javascript" src="./js/clicker.js"></script>
-  </head>
 
-  <body class="page">
-    <header>
-      <div class="navbar-container">
-        <div class="navbar-logo">
-          <a href="https://luislondono.com/">Luis Hernando Londono</a>
-        </div>
+<head>
+  <meta charset="utf-8" />
+  <title>Luis Londono</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="shortcut icon" type="image/x-icon" href="images/cornellicon.ico" />
+  <script type="text/javascript" src="./js/clicker.js"></script>
+</head>
 
-        <nav>
-          <ul>
-            <li class="nav-link">
-              <a href="https://luislondono.com/">Home</a>
-            </li>
-            <li class="nav-link">
-              <a
-                href="https://docs.google.com/document/d/1av1XlOl_ZTY2W7YGD1Kn3YUUMBhXLhLa5DjAMa0V2_I/edit?usp=sharing"
-                >Resume</a
-              >
-            </li>
-            <li class="nav-link"><a href="myWork">My Work</a></li>
-            <li class="nav-link" id="dropdown-content">
-              Gallery
-              <!-- <div class="nav-bar-collapsable-column">
+<body class="page">
+  <header>
+    <div class="navbar-container">
+      <div class="navbar-logo">
+        <a href="https://luislondono.com/">Luis Hernando Londono</a>
+      </div>
+
+      <nav>
+        <ul>
+          <li class="nav-link">
+            <a href="https://luislondono.com/">Home</a>
+          </li>
+          <li class="nav-link">
+            <a
+              href="https://docs.google.com/document/d/1av1XlOl_ZTY2W7YGD1Kn3YUUMBhXLhLa5DjAMa0V2_I/edit?usp=sharing">Resume</a>
+          </li>
+          <li class="nav-link"><a href="myWork">My Work</a></li>
+          <li class="nav-link" id="dropdown-content">
+            Gallery
+            <!-- <div class="nav-bar-collapsable-column">
 								<a href="#">Facebook</a>
 								<a href="#">Github</a>
 								<a href="#">LinkedIn</a>
 							</div> -->
-            </li>
+          </li>
 
-            <li class="social-media-link">
-              <a href="https://www.github.com/LuisLondono">
-                <img src="images/githubLogo.svg" alt=""
-              /></a>
-            </li>
-            <li class="social-media-link">
-              <a href="https://www.facebook.com/luislondonoramos"
-                ><img src="images/facebookLogo.svg" alt=""
-              /></a>
-            </li>
-            <li class="social-media-link">
-              <a href="https://www.linkedin.com/in/luislondonoramos"
-                ><img src="images/linkedinLogo.svg" alt=""
-              /></a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
+          <li class="social-media-link">
+            <a href="https://www.github.com/LuisLondono">
+              <img src="images/githubLogo.svg" alt="" /></a>
+          </li>
+          <li class="social-media-link">
+            <a href="https://www.facebook.com/luislondonoramos"><img src="images/facebookLogo.svg" alt="" /></a>
+          </li>
+          <li class="social-media-link">
+            <a href="https://www.linkedin.com/in/luislondonoramos"><img src="images/linkedinLogo.svg" alt="" /></a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
-    <div class="page-content">
-      <h1>Clicker!</h1>
-      <div id="landing-page-container" style="align-items: center">
-        <div style="margin: auto; align-items: center">
-          <h3>Click Amount</h3>
-          <h4 id="click-amount" style="text-align:center"></h4>
-          <button style="margin: auto" onclick="handleClicker()">
-            Click me!
-          </button>
-        </div>
+  <div id="page-content">
+    <h1>Clicker!</h1>
+    <div id="landing-page-container" style="align-items: center">
+      <div style="margin: auto; align-items: center">
+        <h3>Click Amount</h3>
+        <h4 id="click-amount" style="text-align:center"></h4>
+        <button style="margin: auto" onclick="handleClicker()">
+          Click me!
+        </button>
       </div>
     </div>
-  </body>
-  <script src="https://www.gstatic.com/firebasejs/6.1.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/6.1.0/firebase-firestore.js"></script>
+  </div>
+</body>
+<script src="https://www.gstatic.com/firebasejs/6.1.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/6.1.0/firebase-firestore.js"></script>
+
 </html>
