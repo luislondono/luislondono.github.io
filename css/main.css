@@ -492,6 +492,11 @@ nav ul li:hover {
     margin: 0px 8px;
     box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.01), 0 3px 24px rgba(0, 0, 0, 0.8);
 }
+#page-footer-navigator .social-media-link a{
+    display: inline-block;
+    height: inherit;
+    width: inherit;
+}
 
 #nav-bar-mobile ul li a img{
     height: 40px;
