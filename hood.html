@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title>Luis Londono</title>
+
+    <link rel="stylesheet" href="css/main.css">
+
+
+    <!-- <link rel="stylesheet" href="css/pageName.css"> -->
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="images/cornellicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body id="page">
+
+    <header>
+    </header>
+
+    <div id="page-content">
+        <div id="pull">
+
+        </div>
+        <div id="portfolio-calculator">
+            <h1>Title</h1>
+            <h3>Value:</h3>
+            <input id="symbol-field" name="symbol" type="text" placeholder="symbol" value="cron">
+            </input>
+            <button onclick="handleGetQuote()"> Get Quote</button>
+            <p id="quote-response">None</p>
+            <p id="portfolio-value"></p>
+        </div>
+
+
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-firestore.js"></script>
+    <script type="text/javascript" src="./js/global.js"></script>
+    <script type="text/javascript" src="./js/hood.js"></script>
+</body>
+
+</html>

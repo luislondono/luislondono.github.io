@@ -5,13 +5,7 @@ const footerMenuDiv = '<div id="page-footer-navigator"> <ul> <li class="social-m
 
 window.onload = function () {
     document.getElementsByTagName("header")[0].innerHTML = navBarDiv
-
-
-
-
     document.getElementById("page-content").insertAdjacentHTML("beforeend", footerMenuDiv)
-
-
 
     // Event listeners
     document.getElementById("mobile-menu-icon-container").addEventListener("click", handleMobileMenuIconClick)
