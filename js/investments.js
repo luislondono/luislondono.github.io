@@ -18,6 +18,7 @@ var userEmail;
 function setupSpecificPage() {
     const pageName = window.location.pathname.split("/").pop()
     console.log("Setting up: ", pageName)
+    messageBoard = firebase.firestore().collection("anonymousMessageBoard")
     firebase.initializeApp(firebaseConfig);
 
 
@@ -33,7 +34,8 @@ function setupSpecificPage() {
         var user = result.user;
         userEmail = user.email
         console.log(user)
-        document.getElementById("page-title").insertAdjacentHTML("afterend", `<h3 id = "client-name-title" >${user.displayName}</h3 >`)
+        document.getElementById("page-title").insertAdjacentHTML("afterend", `<h3 id = "client-name-title" >bill balls</h3 >`)
+        fetchPortfolio(userEmail)
 
         // ...
     }).catch(function (error) {
@@ -115,5 +117,9 @@ function handleGetQuote() {
         document.getElementById("quote-response").innerText = JSON.stringify(json)
     }
     )
+
+}
+
+function fetchPortfolio() {
 
 }
