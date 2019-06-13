@@ -1,0 +1,38 @@
+#client-name-title{
+    width: 100%;
+    text-align: center;
+}
+
+#portfolio-container{
+    display: flex;
+    background-color: beige;
+}
+
+#portfolio-list-container{
+    background-color: aqua;
+    width: 30%;
+}
+.stock-container{
+    background-color: lightblue;
+    margin: 4px 8px;
+    display: flex;
+}
+
+.company-info{
+    margin: 4px 8px;
+    min-width: 60%;
+}
+
+.company-info span{
+    display: flex;
+    flex-direction: row;
+}
+
+.company-price-container{
+
+    margin: 0 0 0 auto;
+    vertical-align: 0;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}

@@ -12,6 +12,8 @@ var firebaseConfig = {
 // var provider;
 var messageBoard;
 
+var userEmail;
+
 
 function setupSpecificPage() {
     const pageName = window.location.pathname.split("/").pop()
@@ -29,7 +31,10 @@ function setupSpecificPage() {
         var token = result.credential.accessToken;
         // The signed-in user info.
         var user = result.user;
+        userEmail = user.email
         console.log(user)
+        document.getElementById("page-title").insertAdjacentHTML("afterend", `<h3 id = "client-name-title" >${user.displayName}</h3 >`)
+
         // ...
     }).catch(function (error) {
         // Handle Errors here.

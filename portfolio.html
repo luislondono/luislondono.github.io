@@ -6,9 +6,7 @@
     <title>Luis Londono</title>
 
     <link rel="stylesheet" href="css/main.css">
-
-
-    <!-- <link rel="stylesheet" href="css/pageName.css"> -->
+    <link rel="stylesheet" href="css/portfolioManager.css">
 
 
     <link rel="shortcut icon" type="image/x-icon" href="images/cornellicon.ico">
@@ -21,10 +19,8 @@
     </header>
 
     <div id="page-content">
-        <h1 id="page-title">Portfolio Manager</h1>
-        <div id="pull">
-
-        </div>
+        <h1 id="page-title">PM</h1>
+        <!-- <h3 id="client-name-title">client name</h3> -->
         <div id="portfolio-calculator">
             <h3>Value:</h3>
             <input id="symbol-field" name="symbol" type="text" placeholder="symbol" value="cron">
@@ -32,6 +28,27 @@
             <button onclick="handleGetQuote()"> Get Quote</button>
             <p id="quote-response">None</p>
             <p id="portfolio-value"></p>
+        </div>
+        <div id="portfolio-container">
+            <div id="portfolio-list-container">
+                <h2>folio</h2>
+                <div class="stock-container">
+                    <div class="company-info">
+                        <span>
+                            <h4>Company Name</h4>
+                            <h4>&nbsp$(&nbsp</h4>
+                            <h4>Ticker</h4>
+                            <h4>&nbsp)</h4>
+                        </span>
+                        <span>
+                            <h5 class="num-shares-label">n shares</h5>
+                        </span>
+                    </div>
+                    <div class="company-price-container">
+                        <h4>Price</h4>
+                    </div>
+                </div>
+            </div>
         </div>
 
 
