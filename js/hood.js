@@ -41,6 +41,12 @@ function setupSpecificPage() {
     //     // ...
     // });
 
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+            console.log("Signed in !")
+        }
+    })
+
     firebase.auth().signInWithRedirect(provider);
 
     firebase.auth().getRedirectResult().then(function (result) {
