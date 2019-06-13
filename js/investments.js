@@ -18,8 +18,8 @@ var userEmail;
 function setupSpecificPage() {
     const pageName = window.location.pathname.split("/").pop()
     console.log("Setting up: ", pageName)
-    messageBoard = firebase.firestore().collection("anonymousMessageBoard")
     firebase.initializeApp(firebaseConfig);
+    portfolioCollection = firebase.firestore().collection("portfolioManager")
 
 
     var provider = new firebase.auth.GoogleAuthProvider();
