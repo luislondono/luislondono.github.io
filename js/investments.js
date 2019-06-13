@@ -10,16 +10,15 @@ var firebaseConfig = {
 
 
 // var provider;
-var messageBoard;
-
 var userEmail;
+var portfolioCollection;
 
 
 function setupSpecificPage() {
     const pageName = window.location.pathname.split("/").pop()
     console.log("Setting up: ", pageName)
     firebase.initializeApp(firebaseConfig);
-    portfolioCollection = firebase.firestore().collection("portfolioManager")
+    portfolioCollection = firebase.firestore().collection("portfolioCollection")
 
 
     var provider = new firebase.auth.GoogleAuthProvider();
@@ -34,7 +33,7 @@ function setupSpecificPage() {
         var user = result.user;
         userEmail = user.email
         console.log(user)
-        document.getElementById("page-title").insertAdjacentHTML("afterend", `<h3 id = "client-name-title" >bill balls</h3 >`)
+        document.getElementById("page-title").insertAdjacentHTML("afterend", `<h3 id = "client-name-title" >${user.email}</h3 >`)
         fetchPortfolio(userEmail)
 
         // ...
@@ -120,6 +119,42 @@ function handleGetQuote() {
 
 }
 
-function fetchPortfolio() {
+function fetchPortfolio(email) {
+    portfolioCollection.doc(email).get().then(function (doc) {
+        if (doc.exists) {
+            console.log("Document data:", doc.data());
+        } else {
+            // doc.data() will be undefined in this case
+            console.log("No such document!");
+        }
+    }).catch(function (error) {
+        console.log("Error getting document:", error);
+    });
+}
 
+function updatePorfolio(email, portfolio) {
+    portfolioCollection.doc(email).update(portfolio)
+        .then(function () {
+            console.log("Document successfully updated!");
+        })
+        .catch(function (error) {
+            // The document probably doesn't exist.
+            console.error("Error updating document: ", error);
+        });
+}
+
+folio = {
+    latestPortfolio: {
+        date: new Date(),
+        "APPL": {
+            "shares": 5,
+            "price": 100,
+            "companyName": "Apple"
+        },
+        "MSFT": {
+            "shares": 3,
+            "price": 90,
+            "companyName": "Microsoft"
+        }
+    }
 }
