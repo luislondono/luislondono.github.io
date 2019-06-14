@@ -11,7 +11,10 @@ var firebaseConfig = {
 
 // var provider;
 var userEmail;
+var userDocument;
 var portfolioCollection;
+
+
 
 
 function setupSpecificPage() {
@@ -34,7 +37,8 @@ function setupSpecificPage() {
         userEmail = user.email
         console.log(user)
         document.getElementById("page-title").insertAdjacentHTML("afterend", `<h3 id = "client-name-title" >${user.email}</h3 >`)
-        fetchPortfolio(userEmail)
+        userDocument = await fetchPortfolio(userEmail)
+        renderUserPortfolio()
 
         // ...
     }).catch(function (error) {
@@ -75,6 +79,9 @@ function setupSpecificPage() {
     //     var credential = error.credential;
     //     // ...
     // });
+
+
+
 
 }
 
@@ -119,17 +126,28 @@ function handleGetQuote() {
 
 }
 
-function fetchPortfolio(email) {
-    portfolioCollection.doc(email).get().then(function (doc) {
+const getPortfolio = function (email) {
+
+}
+
+
+
+
+async function fetchPortfolio(email) {
+    result = await portfolioCollection.doc(email).get().then(function (doc) {
         if (doc.exists) {
-            console.log("Document data:", doc.data());
+            // console.log("Document data:", doc.data());
+            return (doc.data())
         } else {
             // doc.data() will be undefined in this case
             console.log("No such document!");
+            return (null)
         }
     }).catch(function (error) {
         console.log("Error getting document:", error);
+        return (null)
     });
+    return result
 }
 
 function updatePorfolio(email, portfolio) {
@@ -143,18 +161,15 @@ function updatePorfolio(email, portfolio) {
         });
 }
 
-folio = {
-    latestPortfolio: {
-        date: new Date(),
-        "APPL": {
-            "shares": 5,
-            "price": 100,
-            "companyName": "Apple"
-        },
-        "MSFT": {
-            "shares": 3,
-            "price": 90,
-            "companyName": "Microsoft"
-        }
-    }
+// folio = { latestPortfolio: { date: new Date(), "APPL": { "shares": 5, "price": 100, "companyName": "Apple" }, "MSFT": { "shares": 3, "price": 90, "companyName": "Microsoft" } } }
+
+
+function renderUserPortfolio() {
+    portfolioHTMLContainer = document.getElementById("portfolio-list-container")
+    Object.entries(userDocument.latestPortfolio).forEach(security => {
+        ticker = security[0]
+        assetInfo = security[1]
+        const stockComponentHTML = '<div class="stock-container"> <div class="company-info"> <span> <h4>' + assetInfo.companyName + '</h4> <h4>&nbsp$(&nbsp</h4> <h4>' + ticker + '</h4> <h4>&nbsp)</h4> </span> <span> <h5 class="num-shares-label">' + assetInfo.shares + '</h5> </span> </div> <div class="company-price-container"> <h4>' + assetInfo.price + '</h4> </div> </div>';
+        portfolioHTMLContainer.insertAdjacentHTML("beforeend", stockComponentHTML)
+    });
 }
