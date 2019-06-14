@@ -17,7 +17,7 @@ var portfolioCollection;
 
 
 
-function setupSpecificPage() {
+async function setupSpecificPage() {
     const pageName = window.location.pathname.split("/").pop()
     console.log("Setting up: ", pageName)
     firebase.initializeApp(firebaseConfig);
