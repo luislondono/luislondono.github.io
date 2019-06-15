@@ -13,6 +13,9 @@ var firebaseConfig = {
 var userEmail;
 var userDocument;
 var portfolioCollection;
+var stockSearchBarElement;
+var searchBarTimeout = null;
+var cashedQuery = null;
 
 
 
@@ -79,7 +82,13 @@ async function setupSpecificPage() {
     //     var credential = error.credential;
     //     // ...
     // });
-
+    stockSearchBarElement = document.getElementById('stock-search-bar')
+    stockSearchBarElement.onkeyup = function (e) {
+        clearTimeout(searchBarTimeout);
+        searchBarTimeout = setTimeout(function () {
+            executeStockSearchQuery()
+        }, 500);
+    }
 
 
 
@@ -105,6 +114,7 @@ function constructEndpoint(request) {
 function queryAlphaVantage(request, callback) {
     // var xmlHttp = new XMLHttpRequest();
     const url = constructEndpoint(request)
+    console.log("Endpoint: ", url)
     fetch(url).then(function (response) {
         return response.json();
     }).then(function (json) {
@@ -167,4 +177,32 @@ function renderUserPortfolio() {
         const stockComponentHTML = '<div class="stock-container"> <div class="company-info"> <span> <h4>' + assetInfo.companyName + '</h4> <h4>&nbsp$(&nbsp</h4> <h4>' + ticker + '</h4> <h4>&nbsp)</h4> </span> <span> <h5 class="num-shares-label">' + assetInfo.shares + '</h5> </span> </div> <div class="company-price-container"> <h4>' + assetInfo.price + '</h4> </div> </div>';
         portfolioHTMLContainer.insertAdjacentHTML("beforeend", stockComponentHTML)
     });
+}
+
+function executeStockSearchQuery() {
+    query = stockSearchBarElement.value
+    if (query != cashedQuery) {
+        cashedQuery = query
+        const req = {
+            "function": "SYMBOL_SEARCH",
+            "keywords": query
+        }
+        queryAlphaVantage(req, function (result) {
+            console.log(result.bestMatches)
+            if (result != undefined) {
+                document.getElementsByClassName("search-results-container")[0].innerHTML = null
+                document.getElementsByClassName("search-results-container")[0].id = null;
+                document.getElementsByClassName("stock-search-bar-container")[0].id = "stock-search-bar-container-with-results"
+                result.bestMatches.forEach(match => renderSearchMatchResult(match))
+            }
+        })
+    }
+
+}
+
+function renderSearchMatchResult(match) {
+    if (match["4. region"] == "United States") {
+        const resultElement = '<div class="search-result"> <h4 class="search-result-symbol">' + match["1. symbol"] + '</h4> <h4 class="search-result-company-name">' + match["2. name"] + '</h4> </div>'
+        document.getElementsByClassName("search-results-container")[0].insertAdjacentHTML("beforeend", resultElement)
+    }
 }
