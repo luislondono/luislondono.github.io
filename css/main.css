@@ -29,8 +29,26 @@
     min-height: 100vh;
     width: 100vw;
 }
+@media only screen and (max-width: 1024px){
+    /* Phone & tablet styles */
+    .aboutme-container {
+        margin: 8px auto;
+    }
+    #landing-page-container {
+        display: flex;
+        flex-direction: column;
+    }
+    .portrait-container {
+        width: 80%;
+        margin: 16px auto;
+    }
+    #page-content {
+        padding-bottom: var(--footerHeight);
+    }
+}
 
 @media only screen and (max-width: 600px) {
+    
     .circular-portrait{
         width: 80%;
     }
@@ -51,6 +69,12 @@
 
 @media only screen and (min-width: 600px) {
     /* For tablets: */
+    
+
+    
+
+    
+
     #logo-first-last{
         display: none;
     }
@@ -94,11 +118,8 @@
 
     }
     #landing-page-container {
-        display: flex;
-        min-height: calc(100vh - 62px - 79px - 79px - 100px);
         padding-bottom: 10%;
         padding-top: 5%;
-        /* float: left; */
     }
 
     .portrait-container {
@@ -132,15 +153,26 @@
         transition-duration: .4s;
         border: 3px solid var(--themeColor);
     }
+    #landing-page-container {
+        flex-direction: row;
+        justify-content: center;
+    }
+    .portrait-container {
+        margin: auto;
+    }
+    .aboutme-container {
+        margin: auto 5% auto 0;
+        text-align: center;
+    }
+    .portrait-container {
+        width: 50%;
+        margin: auto 0 auto 5%;
+    }
 }
 
 
 #landing-page-container {
     display: flex;
-    /* min-height: calc(100vh - 62px - 79px - 79px - 100px); */
-    /* padding-bottom: 10%; */
-    /* padding-top: 5%; */
-    flex-direction: column;
 }
 
 .navbar-container {
@@ -296,7 +328,6 @@ nav ul li:hover {
     position: relative;
     font-family: Arial;
     align-content: center;
-    padding-bottom: var(--footerHeight);
     height: 100%;
 }
 
@@ -310,14 +341,6 @@ nav ul li:hover {
     /* margin: 4px; */
 }
 
-.portrait-container {
-    width: 80%;
-    position: relative;
-    justify-content: center;
-    flex-direction: column;
-    margin: 8px 0px;
-    margin: 8px auto;
-}
 
 .circular-portrait {
     height: auto;
@@ -360,7 +383,6 @@ nav ul li:hover {
 
 .aboutme-container {
     width: 80%;
-    margin: 8px auto;
     text-align: center;
 }
 
@@ -377,9 +399,9 @@ nav ul li:hover {
 }
 
 .aboutme-container h3 {
-    height: 24px;
-    line-height: 24px;
-    font-size: 24px;
+    /* height: 24px; */
+    /* line-height: 24px; */
+    /* font-size: 24px; */
 }
 
 .aboutme-container p {

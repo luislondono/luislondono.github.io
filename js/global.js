@@ -9,9 +9,16 @@ window.onload = function () {
 
     // Event listeners
     document.getElementById("mobile-menu-icon-container").addEventListener("click", handleMobileMenuIconClick)
-
     console.log("Added event listener to mobile-menu-icon-container")
-    setupSpecificPage()
+
+
+    try {
+        setupSpecificPage()
+    } catch (error) {
+        if (error instanceof ReferenceError){
+            console.log("No page-specific JS file found!")
+        }
+    }
 }
 
 
