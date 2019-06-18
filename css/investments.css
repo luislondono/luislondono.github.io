@@ -2,6 +2,23 @@
 --searchBarHeight:42px;
 }
 
+@media only screen and (max-width: 1024px){
+    #portfolio-container{
+        /* flex-direction: column; */
+        flex-direction: column-reverse
+    }
+    #portfolio-list-container{
+    }
+    #portfolio-container{
+        width: 90%;
+        margin: 0 auto;
+    }
+}
+
+#portfolio-list-container{
+    display: inline-block;
+}
+
 #client-name-title{
     width: 100%;
     text-align: center;
@@ -9,32 +26,45 @@
 
 #portfolio-container{
     display: flex;
-    background-color: beige;
+    /* background-color: beige; */
 }
 
-#portfolio-list-container{
-    background-color: aqua;
-    width: 30%;
-}
+
 .stock-container{
-    background-color: lightblue;
-    margin: 4px 8px;
+    /* width: 30%; */
+    margin-top: 8px;
+    margin-bottom: 8px;
+
     display: flex;
+    border: 1px solid darkgray;
+    border-radius: 10px;
 }
 
 .company-info{
     margin: 4px 8px;
     min-width: 60%;
+    display: flex;
+    flex-direction: column;
 }
 
 .company-info span{
+    align-items: baseline;
     display: flex;
     flex-direction: row;
 }
+.company-info-name{
+    /* margin-left: 3px; */
+}
+.company-info-ticker{
+    /* margin-left: 3px; */
+}
+
+#chart-container{
+    background-color: burlywood;
+}
 
 .company-price-container{
-
-    margin: 0 0 0 auto;
+    margin: 0 2% 0 auto;
     vertical-align: 0;
     justify-content: center;
     align-items: center;
@@ -98,17 +128,21 @@
     border-right: 1px solid lightgray;
     border-bottom: 1px solid lightgray;
     border-radius: 0 0 10px 10px;
-    background-color: whitesmoke;
+    background-color: white;
     width: 100%;
     position: absolute;
     top: var(--searchBarHeight);
+    overflow: hidden;
 }
 
 .search-result{
-    width: calc(100% - 2 * var(--searchBarHeight));
-    margin: calc(.1 * var(--searchBarHeight)) var(--searchBarHeight);
+    width: 100%;
+    /* width: calc(100% - 2 * var(--searchBarHeight)); */
+    padding: calc(.1 * var(--searchBarHeight)) var(--searchBarHeight);
     display: flex;
     flex-direction: row;
+    cursor: pointer;
+    opacity: .75;
 }
 
 .search-result .search-result-symbol{
@@ -117,8 +151,10 @@
     color: var(--themeColor);
     /* opacity: .4; */
 }
-.search-result:hover .search-result-symbol{
-    /* opacity: 1; */
+.search-result:hover{
+    opacity: 1;
+    background-color: whitesmoke;
+
 }
 
 .search-result .search-result-company-name{
@@ -126,6 +162,9 @@
 }
 
 #search-results-container-empty{
+    display: none;
     border: none;
     height: 0px;
+}
+#search-results-container-with-results{
 }

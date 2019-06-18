@@ -32,40 +32,38 @@
                         </g>
                     </svg>
                 </div>
-                <input id="stock-search-bar" type="text" class="textbox" placeholder="Search">
+                <input id="stock-search-bar" autocomplete="off" type="text" class="textbox" placeholder="Search">
             </div>
             <div class="search-results-container" id="search-results-container-empty"></div>
 
         </div>
         <div id="portfolio-container">
             <div id="portfolio-list-container">
-                <h2>folio</h2>
-                <div class="stock-container">
-                    <div class="company-info">
-                        <span>
-                            <h4>Company Name</h4>
-                            <h4>&nbsp$(&nbsp</h4>
-                            <h4>Ticker</h4>
-                            <h4>&nbsp)</h4>
-                        </span>
-                        <span>
-                            <h5 class="num-shares-label">n shares</h5>
-                        </span>
-                    </div>
-                    <div class="company-price-container">
-                        <h4>Price</h4>
-                    </div>
-                </div>
+                <h2>Portfolio</h2>
+                <!-- <div class="stock-container"> <div class="company-info"> <span> <h4 class="company-info-name">Apple Inc.</h4> <h4></h4><h4>&nbsp;$</h4><h4 class="company-info-ticker">AAPL</h4> </span> <h5 class="num-shares-label">1&nbsp;share</h5> </div> <div class="company-price-container"> <h4>Price</h4> </div> </div> -->
+
+            </div>
+            <div id="chart-container">
+                Chart container
             </div>
         </div>
 
 
     </div>
+    <!-- <div id="myModal" class="modal">
+        <div class="modal-container"> 
+            <button class="close" onclick="closeModal()">&times;</button> 
+            <div class="modal-content">
+                <p>Some text in the Modal..</p> 
+            </div>
+        </div>
+    </div> -->
     <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-firestore.js"></script>
     <script type="text/javascript" src="./js/global.js"></script>
     <script type="text/javascript" src="./js/investments.js"></script>
 </body>
+
 
 </html>
