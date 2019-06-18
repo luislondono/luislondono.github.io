@@ -48,7 +48,7 @@
 }
 
 @media only screen and (max-width: 600px) {
-    
+
     .circular-portrait{
         width: 80%;
     }
@@ -69,11 +69,11 @@
 
 @media only screen and (min-width: 600px) {
     /* For tablets: */
-    
 
-    
 
-    
+
+
+
 
     #logo-first-last{
         display: none;
@@ -669,7 +669,7 @@ nav ul li:hover {
     /* display: none; Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
+    padding-top: 20%; /* Location of the box */
     left: 0;
     top: 0;
     width: 100%; /* Full width */
@@ -678,7 +678,7 @@ nav ul li:hover {
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
   }
-  
+
   /* Modal Content */
   .modal-container {
     background-color: #fefefe;
@@ -699,7 +699,7 @@ nav ul li:hover {
     outline: none;
     border: none;
   }
-  
+
   .close:hover,
   .close:focus {
     color: #000;

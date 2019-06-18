@@ -15,6 +15,15 @@
     }
 }
 
+@media only screen and (min-width: 1024px) {
+    .modal-content-securities{
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+
 #portfolio-list-container{
     display: inline-block;
 }
@@ -167,4 +176,66 @@
     height: 0px;
 }
 #search-results-container-with-results{
+}
+
+#add-to-portfolio-button{
+    width: auto;
+    align-self: flex-end;
+    margin: auto 4% auto auto;
+    display: flex;
+
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    vertical-align: middle;
+    z-index: 1;
+    transition: .3s ease-out;
+
+    text-decoration: none;
+    color: #fff;
+    background-color: var(--themeColor);
+    text-align: center;
+    letter-spacing: .5px;
+    font-size: 1em;
+    outline: 0;
+    border: none;
+    border-radius: 2px;
+    height: auto;
+    line-height: 36px;
+    padding: 2px 16px;
+    text-transform: uppercase;
+    vertical-align: middle;
+    -webkit-tap-highlight-color: transparent;
+
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+
+    -webkit-appearance: button;
+}
+#add-to-portfolio-button i{
+    font-size: 1.3rem;
+    line-height: inherit;
+    margin: auto auto auto 15px;
+    white-space: nowrap;
+    direction: ltr;
+    text-rendering: optimizeLegibility;
+}
+
+.modal-content-securities{
+    display: flex;
+}
+
+.modal-content-number-shares input{
+    outline: none;
+    border: 1px solid darkgray;
+    line-height: inherit;
+    font-size: inherit;
+    margin-left: 4px;
+    width: 3em;
+}
+
+.modal-content-number-shares {
+    line-height: 1em;
 }

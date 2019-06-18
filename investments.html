@@ -7,6 +7,7 @@
 
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/investments.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 
     <link rel="shortcut icon" type="image/x-icon" href="images/cornellicon.ico">
@@ -50,14 +51,27 @@
 
 
     </div>
-    <!-- <div id="myModal" class="modal">
-        <div class="modal-container"> 
-            <button class="close" onclick="closeModal()">&times;</button> 
-            <div class="modal-content">
-                <p>Some text in the Modal..</p> 
+    <div id="add-stock-from-search-modal" class="modal">
+        <div class="modal-container">
+            <button class="close" onclick="closeModal()">&times;</button>
+            <div class="modal-content-securities">
+                <div class="modal-content-security-info">
+                    <span>
+                        <h2>CompanyName
+                            <h3>$TICK</h3>
+                        </h2>
+                    </span>
+                    <h3 class="modal-content-number-shares">Number of shares<input type="text"></h3>
+                    <h3 class="modal-content-security-trading-price">Current Price: $<span>10.40</span></h3>
+                </div>
+
+                <Button id="add-to-portfolio-button" onclick="handleAddSecurityToPortfolioFromModal()">
+                    Add
+                    <i class="material-icons right">send</i>
+                </Button>
             </div>
         </div>
-    </div> -->
+    </div>
     <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-firestore.js"></script>
