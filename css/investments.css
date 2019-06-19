@@ -227,15 +227,36 @@
     display: flex;
 }
 
-.modal-content-number-shares input{
+
+.modal-content-security-info h3{
+    display: flex;
+    position: relative;
+    line-height: 1.5em;
+}
+.modal-content-trade-info-inputs{
+    width: 25%;
+    align-content: center;
+    display: flex;
+    text-align: center;
+    margin-left: 2%;
+}
+.modal-content-trade-info-inputs input{
     outline: none;
     border: 1px solid darkgray;
-    line-height: inherit;
+    margin: calc(1.5em*.1) auto ;
+    line-height: calc(1.5em*.8);
     font-size: inherit;
-    margin-left: 4px;
-    width: 3em;
+    width: 100%;
+    text-align: center;
 }
 
-.modal-content-number-shares {
-    line-height: 1em;
+.modal-content-trade-info-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.modal-content-trade-info-inputs,.modal-content-trade-info-labels{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }

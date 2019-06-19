@@ -20,7 +20,10 @@
     </header>
 
     <div id="page-content">
-        <h1 id="page-title">PM</h1>
+        <div id="page-title">
+            <h1 id="page-title">Portfolio Manager</h1>
+            <h4></h4>
+        </div>
         <!-- <h3 id="client-name-title">client name</h3> -->
         <div id="stock-search-container">
             <div class="stock-search-bar-container" id="stock-search-bar-container-no-results">
@@ -51,18 +54,28 @@
 
 
     </div>
-    <div id="add-stock-from-search-modal" class="modal">
+    <!-- <div id="add-stock-from-search-modal" class="modal">
         <div class="modal-container">
             <button class="close" onclick="closeModal()">&times;</button>
             <div class="modal-content-securities">
                 <div class="modal-content-security-info">
                     <span>
-                        <h2>CompanyName
-                            <h3>$TICK</h3>
+                        <h2>'+companyName+'
+                            <h3>$'+ticker+'</h3>
                         </h2>
                     </span>
-                    <h3 class="modal-content-number-shares">Number of shares<input type="text"></h3>
-                    <h3 class="modal-content-security-trading-price">Current Price: $<span>10.40</span></h3>
+                    <div class="modal-content-trade-info-container">
+                        <div class="modal-content-trade-info-labels">
+                            <h3 class="modal-content-number-shares">Number of shares:</h3>
+                            <h3 class="modal-content-buy-price">Purchased at:</h3>
+                            <h3 class="modal-content-security-trading-price">Current Price: </h3>
+                        </div>
+                        <div class="modal-content-trade-info-inputs">
+                            <h3>&nbsp;&nbsp;&nbsp;<input type="text" value="'+numSharesInPortfolio+'"></h3>
+                            <h3>$&nbsp;<input type="text"></h3>
+                            <h3>$&nbsp;<span>10.40</span></h3>
+                        </div>
+                    </div>
                 </div>
 
                 <Button id="add-to-portfolio-button" onclick="handleAddSecurityToPortfolioFromModal()">
@@ -71,7 +84,7 @@
                 </Button>
             </div>
         </div>
-    </div>
+    </div> -->
     <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-firestore.js"></script>
