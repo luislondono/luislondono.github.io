@@ -22,6 +22,7 @@ var displayResultsContainer = false;
 var apiKeyCounter = 0;
 var modalActive = false;
 var sellingSecurity = null;
+var quandlKey = 'xXj3VxSfn6yF5ghJpgTF'
 
 
 
@@ -133,7 +134,9 @@ async function setupSpecificPage() {
     if (userDocument === undefined) {
         userDocument = {
             "historicalPortfolioValue": {},
-            "latestPortfolio": {}
+            "latestPortfolio": {
+                "Cash": 1000
+            }
         }
         userEmail = "luislondono.acct@gmail.com"
     }
@@ -173,7 +176,7 @@ function constructEndpoint(request) {
 function queryAlphaVantage(request, callback) {
     // var xmlHttp = new XMLHttpRequest();
     const url = constructEndpoint(request)
-    // console.log("Endpoint: ", url)
+    console.log("Endpoint: ", url)
     fetch(url).then(function (response) {
         return response.json();
     }).then(function (json) {
@@ -237,15 +240,22 @@ function renderUserPortfolio() {
 }
 
 function executeStockSearchQuery() {
-    query = stockSearchBarInputElement.value.trim()
+    const query = stockSearchBarInputElement.value.trim()
     if (query != "" && query != cachedQuery) {
-        // console.log("Continuing with requested query: ", query)
+        console.log("Continuing with requested query: ", query)
         const req = {
             "function": "SYMBOL_SEARCH",
             "keywords": query
         }
+        // const symbolLookupEndpoint = 'http://d.yimg.com/autoc.finance.yahoo.com/autoc?lang=en&query=' + query
+
+        // fetch(symbolLookupEndpoint).then(function (response) {
+        //     return response.json();
+        // })
+
+
         queryAlphaVantage(req, function (result) {
-            // console.log(result)
+            console.log(result)
 
             if (!result.hasOwnProperty("bestMatches")) {
                 console.log("Overloaded API, try again later")
@@ -335,7 +345,7 @@ function generateAddSecurityModal(companyName, ticker) {
         innerContainer = '<div class="modal-content-initial-trade-info-container"> <div class="modal-content-trade-info-labels"> <h3 class="modal-content-number-shares">Number of shares:</h3> <h3 class="modal-content-buy-price">Purchased at:</h3> <h3 class="modal-content-security-trading-price">Current Price: </h3> </div> <div class="modal-content-trade-info-inputs"> <h3>&nbsp;&nbsp;&nbsp;<input type="text" value="' + numSharesInPortfolio + '"></h3> <h3>$&nbsp;<input type="text"></h3> <h3>$&nbsp;<span>Loading...</span></h3> </div> </div>'
     }
 
-    var modal = '<div id="add-stock-from-search-modal" class="modal"> <div class="modal-container"> <button class="close" onclick="closeModal()">&times;</button> <div class="modal-content-securities"> <div class="modal-content-security-info"> <div class="modal-content-security-info-identifiers"> <h2>' + companyName + ' <h3>$' + ticker + '</h3> </h2> </div> <div class="modal-content-portfolio-editor-container">' + innerContainer + '</div> </div> <Button id="add-to-portfolio-button" onclick="' + (existingPosition ? 'editSecurityInPortfolio()' : 'handleAddSecurityToPortfolioFromModal()') + '">'+(existingPosition ? 'Update' : 'Add')+'<i class="material-icons right">send</i> </Button> </div> </div> </div>'
+    var modal = '<div id="add-stock-from-search-modal" class="modal"> <div class="modal-container"> <button class="close" onclick="closeModal()">&times;</button> <div class="modal-content-securities"> <div class="modal-content-security-info"> <div class="modal-content-security-info-identifiers"> <h2>' + companyName + ' <h3>$' + ticker + '</h3> </h2> </div> <div class="modal-content-portfolio-editor-container">' + innerContainer + '</div> </div> <Button id="add-to-portfolio-button" onclick="' + (existingPosition ? 'editSecurityInPortfolio()' : 'handleAddSecurityToPortfolioFromModal()') + '">' + (existingPosition ? 'Update' : 'Add') + '<i class="material-icons right">send</i> </Button> </div> </div> </div>'
     // console.log(element)
     document.getElementById("page-content").insertAdjacentHTML("afterend", modal)
 
@@ -441,30 +451,31 @@ function handleBuySellSwitch() {
 function editSecurityInPortfolio() {
     console.log("Submitting edit to security already in your portfolio")
     const numSharesTraded = parseFloat(document.getElementsByClassName("modal-content-trade-info-inputs")[0].children[0].children[0].value)
-    
-    const executionPrice =  parseFloat(document.getElementsByClassName("modal-content-trade-info-inputs")[0].children[1].children[0].value)
+
+    const executionPrice = parseFloat(document.getElementsByClassName("modal-content-trade-info-inputs")[0].children[1].children[0].value)
     const ticker = document.getElementsByClassName("modal-content-security-info-identifiers")[0].children[1].innerText.substring(1)
     const currentPrice = parseFloat(document.getElementsByClassName("modal-content-trade-info-inputs")[0].children[2].children[0].innerText)
 
     userDocument.latestPortfolio[ticker].lastPrice = currentPrice
-    if (sellingSecurity){
-        if (numSharesTraded > userDocument.latestPortfolio[ticker].shares){
+    if (sellingSecurity) {
+        if (numSharesTraded > userDocument.latestPortfolio[ticker].shares) {
             throw Error
             return
         }
         userDocument.latestPortfolio[ticker].shares -= numSharesTraded
         creditCashAccount(numSharesTraded * executionPrice)
     }
-    else{
-        if (numSharesTraded * executionPrice > userDocument.latestPortfolio.Cash){
+    else {
+        if (numSharesTraded * executionPrice > userDocument.latestPortfolio.Cash) {
             console.log("Not enough cash on hand")
             return
         }
+        creditCashAccount(-numSharesTraded * executionPrice)
         const totalCost = userDocument.latestPortfolio[ticker].averageCost * userDocument.latestPortfolio[ticker].shares + numSharesTraded * executionPrice
         // console.log("Current num shares ", userDocument.latestPortfolio[ticker].shares)
         userDocument.latestPortfolio[ticker].shares += numSharesTraded
         // console.log("After buying ",numSharesTraded, " shares...total: ", userDocument.latestPortfolio[ticker].shares)
-        const newAverageCost = totalCost/userDocument.latestPortfolio[ticker].shares
+        const newAverageCost = totalCost / userDocument.latestPortfolio[ticker].shares
         userDocument.latestPortfolio[ticker].averageCost = newAverageCost
         const newTotalReturn = (userDocument.latestPortfolio[ticker].lastPrice - newAverageCost) * userDocument.latestPortfolio[ticker].shares
         userDocument.latestPortfolio[ticker].totalReturn = floatToCurrency(newTotalReturn)
@@ -474,23 +485,23 @@ function editSecurityInPortfolio() {
     sellingSecurity = null;
     closeModal()
 }
-function creditCashAccount(amount){
+function creditCashAccount(amount) {
     userDocument.latestPortfolio.Cash += amount
     if (userDocument.latestPortfolio.Cash < 0) {
         console.log("You are broke...")
     }
 }
 
-function floatToCurrency(float){
+function floatToCurrency(float) {
     return parseFloat(float.toFixed(2))
 }
-function updatePorfolioHTML(ticker = null){
+function updatePorfolioHTML(ticker = null) {
     if (ticker == null) {
-        
+
     } else {
         positionComponent = document.getElementById("stock-container-" + ticker)
         numSharesLabel = positionComponent.children[0].children[1]
         console.log(numSharesLabel)
-        numSharesLabel.innerText = String(userDocument.latestPortfolio[ticker].shares).concat((userDocument.latestPortfolio[ticker].shares > 1)? ' shares': ' share')
+        numSharesLabel.innerText = String(userDocument.latestPortfolio[ticker].shares).concat((userDocument.latestPortfolio[ticker].shares > 1) ? ' shares' : ' share')
     }
 }
