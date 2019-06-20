@@ -54,26 +54,88 @@
 
 
     </div>
-    <!-- <div id="add-stock-from-search-modal" class="modal">
+    <div id="add-stock-from-search-modal" class="modal">
         <div class="modal-container">
             <button class="close" onclick="closeModal()">&times;</button>
             <div class="modal-content-securities">
                 <div class="modal-content-security-info">
-                    <span>
+                    <div class="modal-content-security-info-identifiers">
                         <h2>'+companyName+'
                             <h3>$'+ticker+'</h3>
                         </h2>
-                    </span>
-                    <div class="modal-content-trade-info-container">
-                        <div class="modal-content-trade-info-labels">
-                            <h3 class="modal-content-number-shares">Number of shares:</h3>
-                            <h3 class="modal-content-buy-price">Purchased at:</h3>
-                            <h3 class="modal-content-security-trading-price">Current Price: </h3>
+                    </div>
+                    <div class="modal-content-portfolio-editor-container">
+                        INSERTHERE
+                    </div>
+                </div>
+
+                <Button id="add-to-portfolio-button" onclick="handleAddSecurityToPortfolioFromModal()">
+                    Add
+                    <i class="material-icons right">send</i>
+                </Button>
+            </div>
+        </div>
+    </div>
+    <div id="add-stock-from-search-modal" class="modal">
+        <div class="modal-container">
+            <button class="close" onclick="closeModal()">&times;</button>
+            <div class="modal-content-securities">
+                <div class="modal-content-security-info">
+                    <div class="modal-content-security-info-identifiers">
+                        <h2>'+companyName+'
+                            <h3>$'+ticker+'</h3>
+                        </h2>
+                    </div>
+                    <div class="modal-content-portfolio-editor-container">
+                        <div class="modal-content-initial-trade-info-container">
+                            <div class="modal-content-trade-info-labels">
+                                <h3 class="modal-content-number-shares">Number of shares:</h3>
+                                <h3 class="modal-content-buy-price">Purchased at:</h3>
+                                <h3 class="modal-content-security-trading-price">Current Price: </h3>
+                            </div>
+                            <div class="modal-content-trade-info-inputs">
+                                <h3>&nbsp;&nbsp;&nbsp;<input type="text" value="'+numSharesInPortfolio+'"></h3>
+                                <h3>$&nbsp;<input type="text"></h3>
+                                <h3>$&nbsp;<span>10.40</span></h3>
+                            </div>
                         </div>
-                        <div class="modal-content-trade-info-inputs">
-                            <h3>&nbsp;&nbsp;&nbsp;<input type="text" value="'+numSharesInPortfolio+'"></h3>
-                            <h3>$&nbsp;<input type="text"></h3>
-                            <h3>$&nbsp;<span>10.40</span></h3>
+
+                        <div class="modal-content-edit-position-container">
+                            <div class="modal-content-edit-position-portfolio-details-container">
+                                <div class="modal-content-portfolio-info-labels">
+                                    <h3 class="modal-content-number-shares">Current Position:</h3>
+                                    <h3 class="modal-content-buy-price">Average Cost:</h3>
+                                    <h3 class="modal-content-security-trading-price">Total Return: </h3>
+                                </div>
+                                <div class="modal-content-portfolio-info-inputs">
+                                    <h3>&nbsp;'+numSharesInPortfolio+'></h3>
+                                    <h3>$&nbsp;'+avgPrice+'</h3>
+                                    <h3>$&nbsp;<span>'+totalReturn+'</span></h3>
+                                </div>
+
+                            </div>
+                            <div class="modal-content-edit-position-trade-container">
+                                <div class="modal-content-edit-position-trade-details-container">
+
+                                    <div class="modal-content-edit-position-trade-info-labels">
+                                        <h3 class="modal-content-number-shares">Number of shares:</h3>
+                                        <h3 class="modal-content-buy-price">Purchased at:</h3>
+                                        <h3 class="modal-content-security-trading-price">Current Price: </h3>
+                                    </div>
+                                    <div class="modal-content-trade-info-inputs">
+                                        <h3>&nbsp;&nbsp;&nbsp;<input type="text" value="'+numSharesInPortfolio+'"></h3>
+                                        <h3>$&nbsp;<input type="text"></h3>
+                                        <h3>$&nbsp;<span>10.40</span></h3>
+                                    </div>
+                                </div>
+
+                                <div class="buy-sell-switch-container">
+                                    <span class="slider-half">Bought</span>
+                                    <div class="buy-sell-switch-container-slider" id="bought-toggle"><button
+                                            onclick="handleBuySellSwitch()"></button></div>
+                                    <span class="slider-half">Sold</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -84,7 +146,7 @@
                 </Button>
             </div>
         </div>
-    </div> -->
+    </div>
     <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-firestore.js"></script>

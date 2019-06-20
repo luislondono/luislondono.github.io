@@ -1,5 +1,8 @@
 :root{
 --searchBarHeight:42px;
+--sliderWidth: 140px;
+--sliderPadding: 4px;
+--sliderHeight: 30px;
 }
 
 @media only screen and (max-width: 1024px){
@@ -234,7 +237,7 @@
     line-height: 1.5em;
 }
 .modal-content-trade-info-inputs{
-    width: 25%;
+    width: 100px;
     align-content: center;
     display: flex;
     text-align: center;
@@ -250,13 +253,91 @@
     text-align: center;
 }
 
-.modal-content-trade-info-container{
+.modal-content-initial-trade-info-container{
+    display: flex;
+    flex-direction: row;
+    margin: 0 8px;
+}
+.modal-content-trade-info-labels, .modal-content-portfolio-info-labels{
+    min-width: 154px;
+}
+
+.modal-content-trade-info-inputs,.modal-content-portfolio-info-labels, .modal-content-portfolio-info-inputs{
+    display: flex;
+    flex-direction: column;
+}
+.modal-content-security-info-identifiers h3{
+    color: var(--themeColor)
+}
+
+.modal-content-edit-position-container{
+    display: flex;
+}
+
+.modal-content-portfolio-editor-container{
+    display: flex;
+}
+
+
+.buy-sell-switch-container{
+    box-sizing: content-box;
+    position: relative;
+    display: flex;
+    flex-grow: inherit;
+    border: 1px solid darkgray;
+    border-radius: 1000px;
+    background-color: lightsteelblue;
+    padding: var(--sliderPadding);
+    width: var(--sliderWidth);
+    height: var(--sliderHeight);
+}
+.buy-sell-switch-container-slider{
+    position: absolute;
+    top: var(--sliderPadding);
+    height: calc(100% - var(--sliderPadding) * 2);
+    margin-top: auto;
+    margin-bottom: auto;
+    width: calc( var(--sliderWidth) * .5);
+    transition: .5s ease-in-out;
+    border-radius: 1000px;
+    border: 1px solid rgba(97, 97, 255,.5);
+    overflow: hidden;
+}
+.buy-sell-switch-container-slider button{
+    background-color: rgba(97, 97, 255);
+    height: 100%;
+    width: 100%;
+    border: none;
+    outline: none;
+
+}
+#bought-toggle{
+    margin-left: 0;
+}
+#sold-toggle{
+   margin-left: calc( var(--sliderWidth) * .5 );
+}
+.slider-half{
+    min-width: calc(50% - var(--sliderPadding));
+    text-align: center;
+    margin: auto;
+    font-size: 1.1em;
+}
+
+
+.modal-content-edit-position-details-container{
     display: flex;
     flex-direction: row;
 }
 
-.modal-content-trade-info-inputs,.modal-content-trade-info-labels{
+.modal-content-edit-position-portfolio-details-container, .modal-content-edit-position-trade-details-container{
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    flex-direction: row;
+}
+
+.modal-content-edit-position-trade-info-labels{
+    min-width: 155px;
+}
+.modal-content-edit-position-trade-container{
+    margin-left: 16px;
 }
