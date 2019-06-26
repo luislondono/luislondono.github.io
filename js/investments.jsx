@@ -473,32 +473,21 @@ function generateAddSecurityModal(companyName, ticker) {
         </div>`
     // console.log(element)
     document.getElementById("page-content").insertAdjacentHTML("afterend", modal)
-    handleAddSecurityToPortfolioFromModal()
-    // Update Last Traded Price
-    // queryAlphaVantage(req, function (json) {
-    //     // console.log(json)
-    //     if (!json.hasOwnProperty("Global Quote")) {
-    //         console.log("Blew past rate limit")
-    //         document.getElementsByClassName("modal-content-trade-info-inputs")[0].children[2].innerText = " Try again later!"
-    //     }
-    //     else {
-    //         currentPrice = parseFloat(json["Global Quote"]["05. price"]).toFixed(2)
-    //         document.getElementsByClassName("modal-content-trade-info-inputs")[0].children[2].children[0].innerText = currentPrice
-    //         console.log("Updated Current price in modal to: ", currentPrice)
-    //     }
-    // })
-
     
     getStockQuote(ticker, (json)=>{
         if (json != undefined){
-            currentPrice = parseFloat(json["lastSalePrice"]).toFixed(2)
+            currentPrice = parseFloat(json["delayedPrice"]).toFixed(2)
             document.getElementsByClassName("modal-content-trade-info-inputs")[0].children[2].children[0].innerText = currentPrice
             submitButton = document.getElementById("submit-to-portfolio-button")
             if(existingPosition){
-                submitButton.addEventListener("click",handleEditSecurityInPortfolioFromModal(ticker))
+                submitButton.addEventListener("click",function(){
+                    handleEditSecurityInPortfolioFromModal(ticker)
+                })
             }
             else{
-                submitButton.addEventListener("click",handleAddSecurityToPortfolioFromModal(ticker,companyName,currentPrice,sha))
+                submitButton.addEventListener("click",function(){
+                    handleAddSecurityToPortfolioFromModal(ticker,companyName)
+                })
             }
             onclick=" ${existingPosition ? `handleEditSecurityInPortfolioFromModal('${ticker}')` : `handleAddSecurityToPortfolioFromModal('${ticker}','${companyName}','${}')`} "
         }
@@ -531,11 +520,7 @@ function windowOnClickForActiveModal(event) {
 }
 
 function handleAddSecurityToPortfolioFromModal(ticker,name,currentPrice,numShares,purchasePrice) {
-    const ModalElement = document.getElementById("add-stock-from-search-modal")
-    // const companyName = document.getElementsByClassName("modal-content-security-info")[0].children[0].children[0].innerText
-    // const currentPrice = parseFloat(document.getElementsByClassName("modal-content-trade-info-inputs")[0].children[2].children[0].innerText)
-    // const numShares = parseInt(document.getElementsByClassName("modal-content-trade-info-inputs")[0].children[0].children[0].value, 10)
-    // const purchasePrice = parseFloat(document.getElementsByClassName("modal-content-trade-info-inputs")[0].children[1].children[0].value)
+    console.log("Executing handleaddsec")
     let averageCost;
 
     if (!(numShares === parseFloat(document.getElementsByClassName("modal-content-trade-info-inputs")[0].children[0].children[0].value)) || numShares <= 0) {
@@ -641,20 +626,21 @@ function updatePortfolioPositionHTML(ticker = null) {
     if (ticker == null || !userDocument.latestPortfolio.hasOwnProperty(ticker)) {
         return
     }
-    // else if(ticker == "Cash"){
-    //     //  console.log("Unimplemented Cash")
-    //     return
-    // }
     else {
         positionComponent = document.getElementById("stock-container-" + ticker)
         if (positionComponent != null){
-            numSharesLabel = positionComponent.children[0].children[1]
-            console.log(numSharesLabel)
-            numSharesLabel.innerText = String(userDocument.latestPortfolio[ticker].shares).concat((userDocument.latestPortfolio[ticker].shares > 1) ? ' shares' : ' share')
+            if(ticker == "Cash"){
+                document.getElementById("stock-container-Cash").children[1].innerText = `$${userDocument.latestPortfolio.Cash}`
+            }
+            else{
+                numSharesLabel = positionComponent.children[0].children[1]
+                console.log(numSharesLabel)
+                numSharesLabel.innerText = String(userDocument.latestPortfolio[ticker].shares).concat((userDocument.latestPortfolio[ticker].shares > 1) ? ' shares' : ' share')
+            }
         }
         else{
             // Create the HTML
-            console.log("Need to generate the position's HTML")
+            // console.log("Need to generate the position's HTML")
             const positionHTML = generatePortfolioPositionHTML(ticker)
             document.getElementById("portfolio-list-container").insertAdjacentHTML("beforeend",positionHTML)
         }
@@ -663,7 +649,7 @@ function updatePortfolioPositionHTML(ticker = null) {
 function updatePortfolioHTML(){
     Object.keys(userDocument.latestPortfolio).forEach(position => {
         if (position != "undefined"){
-            console.log(position)
+            // console.log(position)
             updatePortfolioPositionHTML(position)
         }
     });
@@ -671,9 +657,12 @@ function updatePortfolioHTML(){
 
 
 function getStockQuote(ticker,callback) {
-    fetch(`https://api.iextrading.com/1.0/tops/?symbols=${ticker}`).then(function (response) {
-        return response.json();
-    }).then(function (json) {
-        callback(json[0])
+    fetch(`https://cloud.iexapis.com/stable/stock/${ticker}/delayed-quote/?token=sk_a149a5ec86134cafb9d1f13e78bf3af6`).then(
+        (resp)=>{
+            return resp.json()
+        }
+    ).then((json)=>{
+        // console.log(json)
+        callback(json)
     })
 }
