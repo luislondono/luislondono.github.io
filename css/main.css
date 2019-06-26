@@ -683,9 +683,10 @@ background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 background-color: #fefefe;
 border-radius: 10px;
 margin: auto;
-padding: 20px;
 border: 1px solid #888;
+overflow: hidden;
 width: 90%;
+position: relative;
 }
 
 .close {
@@ -693,7 +694,9 @@ color: #aaaaaa;
 float: right;
 font-size: 28px;
 line-height: 8px;
-top: 0px;
+top: 20px;
+right: 15px;
+position: absolute;
 font-weight: bold;
 outline: none;
 border: none;

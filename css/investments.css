@@ -182,21 +182,22 @@
 }
 
 #add-to-portfolio-button{
-    width: auto;
-    align-self: flex-end;
-    margin: auto 4% auto auto;
+    margin: auto auto auto 0;
     display: flex;
+    top: 0;
+    bottom: 0;
+    /* left: 0; */
+    right: 50px;
+    height: 45px;
 
-    position: relative;
+    position: absolute;
     cursor: pointer;
     overflow: hidden;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
     vertical-align: middle;
-    z-index: 1;
     transition: .3s ease-out;
-
     text-decoration: none;
     color: #fff;
     background-color: var(--themeColor);
@@ -205,12 +206,10 @@
     font-size: 1em;
     outline: 0;
     border: none;
-    border-radius: 2px;
-    height: auto;
+    border-radius: 10px;
     line-height: 36px;
     padding: 2px 16px;
     text-transform: uppercase;
-    vertical-align: middle;
     -webkit-tap-highlight-color: transparent;
 
     box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
@@ -228,6 +227,7 @@
 
 .modal-content-securities{
     display: flex;
+    padding: 20px;
 }
 
 
@@ -268,6 +268,10 @@
 }
 .modal-content-security-info-identifiers h3{
     color: var(--themeColor)
+}
+
+.modal-content-security-info-identifiers{
+    margin-right: 20px;
 }
 
 .modal-content-edit-position-container{
@@ -340,4 +344,36 @@
 }
 .modal-content-edit-position-trade-container{
     margin-left: 16px;
+}
+
+#buy-sell-button-container{
+    display: flex;
+    top: 30px;
+    left: 100px;
+    right: 0px;
+    width: 200px;
+    /* margin: 0 auto; */
+    /* border: 1px solid black; */
+}
+
+.trade-type-button{
+    width: 45%;
+    margin: auto;
+    height: 30px;
+    outline: none;
+    border: 2px solid var(--themeColor);
+    border-radius: 10px;
+    font-size: 1.1em;
+    font-weight: 900;
+    letter-spacing: .5px;
+    cursor: pointer;
+    transition: .15s ease-in-out;
+}
+
+.modal-content-security-header{
+    display: flex;
+}
+#trade-type-button-active{
+    background-color: var(--themeColor);
+    color: white;
 }

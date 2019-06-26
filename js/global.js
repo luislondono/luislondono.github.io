@@ -4,12 +4,12 @@ const navBarDiv = '<div class="navbar-container"> <nav id="nav-bar-desktop"> <di
 const footerMenuDiv = '<div id="page-footer-navigator"> <ul> <li class="social-media-link" id="github-link"> <a href="https://www.github.com/LuisLondono"></a> </li> <li class="social-media-link" id="facebook-link"> <a href="https://www.facebook.com/luislondonoramos"></a> </li> <li class="social-media-link" id="linkedin-link"> <a href="https://www.linkedin.com/in/luislondonoramos"></a> </li> </ul> </div>'
 
 window.onload = function () {
-    document.getElementsByTagName("header")[0].innerHTML = navBarDiv
-    document.getElementById("page-content").insertAdjacentHTML("beforeend", footerMenuDiv)
+    // document.getElementsByTagName("header")[0].innerHTML = navBarDiv
+    // document.getElementById("page-content").insertAdjacentHTML("beforeend", footerMenuDiv)
 
     // Event listeners
-    document.getElementById("mobile-menu-icon-container").addEventListener("click", handleMobileMenuIconClick)
-    console.log("Added event listener to mobile-menu-icon-container")
+    // document.getElementById("mobile-menu-icon-container").addEventListener("click", handleMobileMenuIconClick)
+    // console.log("Added event listener to mobile-menu-icon-container")
 
 
     try {
