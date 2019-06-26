@@ -1,0 +1,75 @@
+.color-selector-container{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    margin: auto;
+}
+
+.color-selector-input,.color-selector-sample-text-wrapper{
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    border-radius: 20px 20px 0 0;
+    margin: auto;
+    min-height: 200px;
+}
+.color-selector-sample-text{
+    margin: 5%;
+}
+
+#color-picker{
+    width: 100%;
+    height: 50%;
+}
+.labeling-buttons-container{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+.labeling-buttons-container button{
+    width: 50%;
+    height: var(--mobile-nav-height);
+    font-size: calc(var(--mobile-nav-height) * .5);
+    outline: none;
+}
+
+#neural-network-diagram-container{
+    display: flex;
+    flex-direction: row;
+    margin: 5% 20%;
+    border: 1px solid black;
+    justify-content: center;
+}
+
+.neural-layer{
+    display: flex;
+    min-height: 100%;
+    flex-direction: column;
+    background-color: antiquewhite;
+    justify-content: center;
+}
+
+.node{
+    height: 50px;
+    width: 50px;
+    margin: 10px 0;
+    border-radius: 50%;
+    border: 1px solid black;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+.node-value-label{
+    margin: auto;
+}
+
+.connection-element{
+    background-color: burlywood;
+    height: 100%;
+    width: 3%;
+}
+
+#line_0-0--1-0{
+    x1="0" y1="0" x2="200" y2="200" style="stroke:rgb(255,0,0);stroke-width:2"
+}
