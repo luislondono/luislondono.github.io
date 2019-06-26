@@ -21,7 +21,6 @@
 @media only screen and (min-width: 1024px) {
     .modal-content-securities{
         flex-direction: row;
-        justify-content: center;
         align-items: center;
     }
 }
@@ -68,6 +67,7 @@
     /* margin-left: 3px; */
 }
 .company-info-ticker{
+    color: var(--themeColor);
     /* margin-left: 3px; */
 }
 
@@ -181,7 +181,7 @@
 #search-results-container-with-results{
 }
 
-#add-to-portfolio-button{
+#submit-to-portfolio-button{
     margin: auto auto auto 0;
     display: flex;
     top: 0;
@@ -216,7 +216,7 @@
 
     -webkit-appearance: button;
 }
-#add-to-portfolio-button i{
+#submit-to-portfolio-button i{
     font-size: 1.3rem;
     line-height: inherit;
     margin: auto auto auto 15px;
@@ -237,6 +237,7 @@
     line-height: 1.5em;
 }
 .modal-content-trade-info-inputs{
+    white-space: nowrap;
     width: 100px;
     align-content: center;
     display: flex;

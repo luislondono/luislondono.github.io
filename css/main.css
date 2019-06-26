@@ -30,21 +30,24 @@ min-height: 100vh;
 width: 100vw;
 }
 @media only screen and (max-width: 1024px){
-/* Phone & tablet styles */
-.aboutme-container {
-    margin: 8px auto;
-}
-#landing-page-container {
-    display: flex;
-    flex-direction: column;
-}
-.portrait-container {
-    width: 80%;
-    margin: 16px auto;
-}
-#page-content {
-    padding-bottom: var(--footerHeight);
-}
+    /* Phone & tablet styles */
+    .aboutme-container {
+        margin: 8px auto;
+    }
+    #landing-page-container {
+        display: flex;
+        flex-direction: column;
+    }
+    .portrait-container {
+        width: 80%;
+        margin: 16px auto;
+    }
+    #page-content {
+        padding-bottom: var(--footerHeight);
+    }
+    .modal-container {
+        width: 90%;
+    }
 }
 
 @media only screen and (max-width: 600px) {
@@ -92,82 +95,85 @@ width: 100vw;
 }
 
 @media only screen and (min-width: 1024px) {
-/* For desktop: */
-#page-content {
-    min-height: calc(100vh - var(--desktop-nav-height) - var(--headerMarginBottom))
-}
+    /* For desktop: */
+    #page-content {
+        min-height: calc(100vh - var(--desktop-nav-height) - var(--headerMarginBottom))
+    }
 
-.navbar-container {
-    height: var(--desktop-nav-height);
-}
-#nav-bar-desktop {
-    display: flex;
-}
+    .navbar-container {
+        height: var(--desktop-nav-height);
+    }
+    #nav-bar-desktop {
+        display: flex;
+    }
 
-#page-footer-navigator{
-    display: none;
-}
-#nav-bar-mobile {
-    display: none;
-}
+    #page-footer-navigator{
+        display: none;
+    }
+    #nav-bar-mobile {
+        display: none;
+    }
 
-#page-content h1 {
-    font-size: 2.7em;
-    text-align: center;
-    padding-top: 30px;
+    #page-content h1 {
+        font-size: 2.7em;
+        text-align: center;
+        padding-top: 30px;
 
-}
-#landing-page-container {
-    padding-bottom: 10%;
-    padding-top: 5%;
-}
+    }
+    #landing-page-container {
+        padding-bottom: 10%;
+        padding-top: 5%;
+    }
 
-.portrait-container {
-    height: 100%;
-    width: 40%;
-    /* background-color: lightgray; */
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-}
-.aboutme-container {
-    width: 60%;
-    margin: auto;
-    text-align: center;
-}
-.aboutme-container hr {
-    border-top: 3px solid var(--themeColor);
-    margin-top: 25px;
-    margin-bottom: 25px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 70%;
-}
-.circular-portrait {
-    width: 336px;
-    height: 336px;
-    margin: auto auto auto auto;
-    overflow: hidden;
-    border-radius: 50%;
-    position: relative;
-    transition-duration: .4s;
-    border: 3px solid var(--themeColor);
-}
-#landing-page-container {
-    flex-direction: row;
-    justify-content: center;
-}
-.portrait-container {
-    margin: auto;
-}
-.aboutme-container {
-    margin: auto 5% auto 0;
-    text-align: center;
-}
-.portrait-container {
-    width: 50%;
-    margin: auto 0 auto 5%;
-}
+    .portrait-container {
+        height: 100%;
+        width: 40%;
+        /* background-color: lightgray; */
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+    .aboutme-container {
+        width: 60%;
+        margin: auto;
+        text-align: center;
+    }
+    .aboutme-container hr {
+        border-top: 3px solid var(--themeColor);
+        margin-top: 25px;
+        margin-bottom: 25px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 70%;
+    }
+    .circular-portrait {
+        width: 336px;
+        height: 336px;
+        margin: auto auto auto auto;
+        overflow: hidden;
+        border-radius: 50%;
+        position: relative;
+        transition-duration: .4s;
+        border: 3px solid var(--themeColor);
+    }
+    #landing-page-container {
+        flex-direction: row;
+        justify-content: center;
+    }
+    .portrait-container {
+        margin: auto;
+    }
+    .aboutme-container {
+        margin: auto 5% auto 0;
+        text-align: center;
+    }
+    .portrait-container {
+        width: 50%;
+        margin: auto 0 auto 5%;
+    }
+    .modal-container {
+        width: 800px;
+    }
 }
 
 
@@ -685,7 +691,6 @@ border-radius: 10px;
 margin: auto;
 border: 1px solid #888;
 overflow: hidden;
-width: 90%;
 position: relative;
 }
 
