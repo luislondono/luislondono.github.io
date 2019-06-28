@@ -96,6 +96,10 @@ async function setupSpecificPage() {
     //     // ...
     // });
 
+    if (devMode) {
+        devModeSetup()
+    }
+
     stockSearchBarInputElement = document.getElementById('stock-search-bar')
     searchResultsContainerElement = document.getElementsByClassName("search-results-container")[0];
     // stockSearchBarInputElement.onkeyup = function (e) {
@@ -110,6 +114,8 @@ async function setupSpecificPage() {
             executeStockSearchQuery()
         }
     }
+
+
 
 
     document.getElementById("page-content").onclick = function (e) {
@@ -148,37 +154,11 @@ async function setupSpecificPage() {
     // document.getElementById("page-title").children[1].innerText = userEmail
     document.getElementById("page-title").insertAdjacentHTML("afterend", `<h3 id = "client-name-title" >${userEmail}</h3 >`)
 
+    renderPortfolioChart()
 
 
 
 
-    if (devMode) {
-        // Do whatever you want to develop
-        userDocument = {
-            "historicalPortfolioValue": {},
-            "latestPortfolio": {
-                "Cash": 1000,
-                "AAPL": {
-                    "companyName": "Apple",
-                    "averageCost": 200,
-                    "lastPrice": 195.64,
-                    "shares": 12,
-                    "totalReturn": -52.32
-                },
-                "GM": {
-                    "companyName": "General Motors",
-                    "averageCost": 25,
-                    "lastPrice": 28,
-                    "shares": 5,
-                    "totalReturn": -4.32
-                }
-            }
-        }
-
-        updatePortfolioHTML()
-        generateAddSecurityModal('General Motors', 'GM')
-
-    }
 
 }
 
@@ -473,7 +453,13 @@ function generateAddSecurityModal(companyName, ticker) {
 
     getStockQuoteIEXCloud(ticker, (json) => {
         if (json != undefined) {
-            currentPrice = parseFloat(json["delayedPrice"]).toFixed(2)
+            let currentPrice;
+            if ("cachedResult" in json) {
+                currentPrice = parseFloat(json["cachedResult"]).toFixed(2)
+            }
+            else {
+                currentPrice = parseFloat(json["delayedPrice"]).toFixed(2)
+            }
             document.getElementsByClassName("modal-content-trade-info-inputs")[0].children[2].children[0].innerText = currentPrice
             submitButton = document.getElementById("submit-to-portfolio-button")
             if (existingPosition) {
@@ -491,7 +477,13 @@ function generateAddSecurityModal(companyName, ticker) {
         else {
             getStockQuoteIEX(ticker, (json) => {
                 if (json != undefined) {
-                    currentPrice = parseFloat(json["lastSalePrice"]).toFixed(2)
+                    let currentPrice;
+                    if ("cachedResult" in json) {
+                        currentPrice = parseFloat(json["cachedResult"]).toFixed(2)
+                    }
+                    else {
+                        currentPrice = parseFloat(json["lastSalePrice"]).toFixed(2)
+                    }
                     document.getElementsByClassName("modal-content-trade-info-inputs")[0].children[2].children[0].innerText = currentPrice
                     submitButton = document.getElementById("submit-to-portfolio-button")
                     if (existingPosition) {
@@ -511,7 +503,7 @@ function generateAddSecurityModal(companyName, ticker) {
             })
         }
     })
-    console.log("Done making modal")
+    // console.log("Done making modal")
     setTimeout(setUpPageOnClickForActiveModal, 1)
     // document.getElementById("page").onclick = pageOnClickForActiveModal
 }
@@ -669,7 +661,7 @@ function updatePortfolioPositionHTML(ticker = null) {
             document.getElementById("portfolio-list-container").insertAdjacentHTML("beforeend", positionHTML)
             if (ticker != "Cash") {
                 document.getElementById(`stock-container-${ticker}`).onclick = () => {
-                    generateAddSecurityModal(ticker, userDocument.latestPortfolio[ticker]["companyName"])
+                    generateAddSecurityModal(userDocument.latestPortfolio[ticker]["companyName"], ticker)
                 }
             }
         }
@@ -686,10 +678,11 @@ function updatePortfolioHTML() {
 
 
 function getStockQuoteIEXCloud(ticker, callback) {
-    console.log(ticker)
-    console.log(userDocument.latestPortfolio[ticker])
-    if ("latestQuoteSearchDate" in userDocument.latestPortfolio[ticker] && (new Date() - userDocument.latestPortfolio[ticker]["latestQuoteSearchDate"]) < SearchCacheBufferMilliseconds) {
+    // console.log(ticker)
+    // console.log(userDocument["latestPortfolio"][ticker])
+    if ("latestQuoteSearchDate" in userDocument["latestPortfolio"][ticker] && (new Date() - userDocument.latestPortfolio[ticker]["latestQuoteSearchDate"]) < SearchCacheBufferMilliseconds) {
         console.log("pulling from Cache")
+        callback({ "cachedResult": userDocument["latestPortfolio"][ticker]["lastPrice"] })
     }
     else {
         fetch(`https://cloud.iexapis.com/stable/stock/${ticker}/delayed-quote/?token=sk_a149a5ec86134cafb9d1f13e78bf3af6`).then((resp) => {
@@ -703,56 +696,126 @@ function getStockQuoteIEXCloud(ticker, callback) {
 }
 
 function getStockQuoteIEX(ticker, callback) {
-    fetch(`https://api.iextrading.com/1.0/tops?symbols=${ticker}`).then(
-        (resp) => {
-            return resp.json()
-        }
-    ).then((json) => {
-        // console.log(json)
-        callback(json[0])
-    })
+    if ("latestQuoteSearchDate" in userDocument["latestPortfolio"][ticker] && (new Date() - userDocument.latestPortfolio[ticker]["latestQuoteSearchDate"]) < SearchCacheBufferMilliseconds) {
+        console.log("pulling from Cache")
+        callback({ "cachedResult": userDocument["latestPortfolio"][ticker]["lastPrice"] })
+
+    }
+    else {
+        fetch(`https://api.iextrading.com/1.0/tops?symbols=${ticker}`).then(
+            (resp) => {
+                return resp.json()
+            }
+        ).then((json) => {
+            userDocument.latestPortfolio[ticker]["latestQuoteSearchDate"] = new Date()
+            callback(json[0])
+        })
+    }
 }
 
-// Load the Visualization API and the corechart package.
-      google.charts.load('current', {'packages':['corechart']});
+function renderPortfolioChart() {
 
-      // Set a callback to run when the Google Visualization API is loaded.
-      google.charts.setOnLoadCallback(drawChart);
+    // Load the Visualization API and the corechart package.
+    google.charts.load('current', { 'packages': ['corechart'] });
 
-      // Callback that creates and populates a data table,
-      // instantiates the pie chart, passes in the data and
-      // draws it.
-      function drawChart() {
+    // Set a callback to run when the Google Visualization API is loaded.
+    google.charts.setOnLoadCallback(drawChart);
+
+    // Callback that creates and populates a data table,
+    // instantiates the pie chart, passes in the data and
+    // draws it.
+    function drawChart() {
 
         // Create the data table.
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'Company');
         data.addColumn('number', 'Equity');
-        data.addRows(genChartData());
 
+        stockRows = genChartData()
+        // console.log(stockRows)
+        data.addRows(stockRows);
+
+        pieDivWidth = document.getElementById("portfolio-pie-div").getBoundingClientRect().width
+        pieDivHeight = document.getElementById("portfolio-pie-div").getBoundingClientRect().height
+        // console.log("HxW : ", pieDivHeight, " x ", pieDivWidth)
         // Set chart options
+        // var options = {}
         var options = {
-            'title':'Portfolio',
-            'width':400,
-            'height':300,
-            pieHole: .4,
+            // title: 'none',
+            titleTextStyle: {
+                color: 'black',
+                fontName: 'Roboto',
+                fontSize: 30,
+            },
+            tooltip: {
+                showColorCode: true,
+                text: 'value'
+            },
+
+            "chartArea": {
+                // left: 0,
+                // top: 0,
+                width: pieDivWidth * .95,
+                height: pieDivHeight * .95,
+            },
+            "legend": {
+                alignment: 'center',
+                position: 'labeled',
+                textStyle: {
+                    color: 'black'
+                },
+                fontSize: 20
+            },
+            pieHole: .35,
+            pieSliceText: 'none',
+            //     // is3D: true,
         };
 
         // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        var chart = new google.visualization.PieChart(document.getElementById('portfolio-pie-div'));
         chart.draw(data, options);
-      }
+    }
+}
 
-function genChartData(){
+function genChartData() {
     result = []
+    // console.log(userDocument)
     for (let security of Object.getOwnPropertyNames(userDocument.latestPortfolio)) {
-        console.log(userDocument.latestPortfolio.security);
-        if (security != "Cash"){
+        // console.log(userDocument["latestPortfolio"][security]);
+        if (security != "Cash") {
             result.push([security, userDocument.latestPortfolio[security]["shares"] * userDocument.latestPortfolio[security]["lastPrice"]])
         }
-        else{
-            result.push(["Cash",userDocument.latestPortfolio.Cash])
+        else {
+            result.push(["Cash", userDocument.latestPortfolio.Cash])
         }
     }
     return result
+}
+
+function devModeSetup() {
+    // Do whatever you want to develop
+    userDocument = {
+        "historicalPortfolioValue": {},
+        "latestPortfolio": {
+            "Cash": 1000,
+            "AAPL": {
+                "companyName": "Apple",
+                "averageCost": 200,
+                "lastPrice": 195.64,
+                "shares": 12,
+                "totalReturn": -52.32
+            },
+            "GM": {
+                "companyName": "General Motors",
+                "averageCost": 25,
+                "lastPrice": 28,
+                "shares": 5,
+                "totalReturn": -4.32
+            }
+        }
+    }
+
+    updatePortfolioHTML()
+    // generateAddSecurityModal('General Motors', 'GM')
+
 }

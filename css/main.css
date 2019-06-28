@@ -92,6 +92,7 @@ width: 100vw;
     min-height: calc(100vh - var(--mobile-nav-height) - var(--headerMarginBottom))
 }
 
+
 }
 
 @media only screen and (min-width: 1024px) {
@@ -120,6 +121,9 @@ width: 100vw;
         padding-top: 30px;
 
     }
+
+
+
     #landing-page-container {
         padding-bottom: 10%;
         padding-top: 5%;
@@ -179,6 +183,11 @@ width: 100vw;
 
 #landing-page-container {
 display: flex;
+}
+
+#page-content> div:nth-last-child(2){
+    margin-bottom: 1em;
+    /* background-color: red; */
 }
 
 .navbar-container {
@@ -737,4 +746,14 @@ animation: shake .5s linear;
 0%, 100% {
     -webkit-transform: translateX(0);
 }
+}
+
+.flex-centered{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex{
+    display: flex;
 }

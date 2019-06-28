@@ -6,22 +6,59 @@
 }
 
 @media only screen and (max-width: 1024px){
-    #portfolio-container{
-        /* flex-direction: column; */
-        flex-direction: column-reverse
-    }
-    #portfolio-list-container{
-    }
-    #portfolio-container{
+    .portfolio-sub-container{
         width: 90%;
         margin: 0 auto;
     }
+    .portfolio-summary-container{
+        height: 450px;
+        width: 100%;
+        margin: 1em 0;
+    }
+    .portfolio-summary-container h2{
+        text-align: left;
+    }
+    #portfolio-makeup-info-container{
+        flex-direction: column-reverse;
+    }
+    #portfolio-container{
+        width: 100%;
+    }
+    .portfolio-vertical-divider{
+        display: none;
+    }
+
 }
 
 @media only screen and (min-width: 1024px) {
     .modal-content-securities{
         flex-direction: row;
         align-items: center;
+    }
+
+
+    #portfolio-container{
+        width: 1024px;
+    }
+
+
+    #portfolio-list-container{
+        min-width: 300px;
+        width: 20%;
+    }
+    .portfolio-vertical-divider{
+        margin: 0 auto;
+        width: 2px;
+        background-color: darkgray;
+        border: none;
+        /* border: 1px solid darkgray; */
+    }
+    .portfolio-summary-container{
+        min-height: 400px;
+        min-width: 600px;
+        max-height: 600px;
+        max-width: 900px;
+        margin-bottom: 28px;
     }
 }
 
@@ -35,10 +72,12 @@
     text-align: center;
 }
 
-#portfolio-container{
-    display: flex;
-    /* background-color: beige; */
+.portfolio-sub-container{
+    margin-top: 1em;
+    margin-bottom: 1em;
 }
+
+
 
 
 .stock-container{
@@ -71,10 +110,34 @@
     /* margin-left: 3px; */
 }
 
-#chart-container{
-    background-color: burlywood;
+.portfolio-summary-container{
+    text-align: center;
+    justify-content: center;
+    overflow: hidden;
 }
 
+#portfolio-pie-wrapper{
+    border: 1px solid darkgray;
+    border-radius: 10px;
+    margin: 8px auto;
+    padding-bottom: 28px;
+    height: calc(100% - 44px);
+    position: relative;
+    overflow: hidden;
+    /* background-color: bisque; */
+
+}
+#portfolio-pie-div{
+    position: absolute;
+    top: 0px;
+    height: calc(100% - 16px);
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    /* height: 100%; */
+    /* overflow: hidden; */
+    margin: auto;
+}
 .company-price-container{
     margin: 0 2% 0 auto;
     vertical-align: 0;
@@ -129,6 +192,7 @@
 
 #stock-search-container{
     width: 70%;
+    max-width: calc(1024px * .75);
     margin: 10px auto;
     display: flex;
     flex-direction: column;
@@ -377,4 +441,26 @@
 #trade-type-button-active{
     background-color: var(--themeColor);
     color: white;
+}
+
+#portfolio-to-date-info-container{
+
+}
+
+#portfolio-total-value{
+    color: var(--themeColor);
+    font-size: 36px;
+}
+
+.portfolio-sub-container{
+    display: flex;
+}
+
+#portfolio-container{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#portfolio-makeup-info-container{
+    position: relative;
 }
