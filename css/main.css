@@ -682,7 +682,7 @@ text-align: center;
 .modal {
 /* display: none; Hidden by default */
 position: fixed; /* Stay in place */
-z-index: 1; /* Sit on top */
+z-index: 1000; /* Sit on top */
 padding-top: 20%; /* Location of the box */
 left: 0;
 top: 0;
@@ -753,7 +753,21 @@ animation: shake .5s linear;
     justify-content: center;
     align-items: center;
 }
-
 .flex{
     display: flex;
+}
+
+.flex-column{
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-end{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.flex-row{
+    display: flex;
+    flex-direction: row;
 }

@@ -43,23 +43,72 @@
 
         </div>
         <div id="portfolio-container">
-            <div class="portfolio-sub-container" id="portfolio-to-date-info-container">
-                <h2 id="portfolio-total-value">$3240</h2>
-                <h3 id="portfolio-percent-change">+3%</h3>
+            <div class="portfolio-sub-container flex-column" id="portfolio-info-container-parent-div">
+                <!-- <div class="portfolio-info-container-button-wrapper flex-end">
+                    <button class="selector-button" onclick="handleViewInfoContainer('summary')">Summary</button>
+                    <button class="selector-button"
+                        onclick="handleViewInfoContainer('performance')">Performance</button>
+                </div> -->
+                <h2 id="portfolio-info-container-title">Portfolio Summary</h2>
+                <div class="portfolio-info-container-view-window ">
+                    <div class="portfolio-info-container" id="portfolio-summary-container">
+                        <!-- <h2>Portfolio Summary</h2> -->
+                        <div class="portfolio-info-container-content flex" id="portfolio-pie-wrapper">
+                            <div id="portfolio-pie-div"></div>
+                        </div>
+                    </div>
+                    <div class="portfolio-info-container" id="portfolio-performance-container">
+                        <!-- <h2>Performance</h2> -->
+                        <div class="portfolio-info-container-content" id="portfolio-performance-graph-wrapper">
+                            <div id="portfolio-graph-div">
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="portfolio-info-container">
+                        <!-- <h2>Title 1</h2> -->
+                        <div class="portfolio-info-container-content">
+                            Content 1
+                        </div>
+                    </div>
+                    <div class="portfolio-info-container">
+                        <!-- <h2>Title 2</h2> -->
+                        <div class="portfolio-info-container-content">
+                            Content 2
+                        </div>
+                    </div>
+                    <div class="portfolio-info-container">
+                        <!-- <h2>Title 3</h2> -->
+                        <div class="portfolio-info-container-content">
+                            Content 3
+                        </div>
+                    </div>
+                    <div class="portfolio-info-container">
+                        <!-- <h2>Title 4</h2> -->
+                        <div class="portfolio-info-container-content">
+                            Content 4
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+
+                </div>
             </div>
-            <div class="portfolio-sub-container flex" id="portfolio-makeup-info-container">
+            <div class="portfolio-sub-container" id="portfolio-makeup-info-container">
                 <div id="portfolio-list-container">
                     <h2>Portfolio</h2>
                 </div>
-                <hr class="portfolio-vertical-divider">
-                <div class="portfolio-summary-container">
-                    <h2>Portfolio Summary</h2>
-                    <div id="portfolio-pie-wrapper">
-                        <div id="portfolio-pie-div"></div>
-                    </div>
-                </div>
             </div>
         </div>
+    </div>
+
 
 
     </div>

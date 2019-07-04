@@ -10,12 +10,7 @@
         width: 90%;
         margin: 0 auto;
     }
-    .portfolio-summary-container{
-        height: 450px;
-        width: 100%;
-        margin: 1em 0;
-    }
-    .portfolio-summary-container h2{
+    #portfolio-summary-container h2{
         text-align: left;
     }
     #portfolio-makeup-info-container{
@@ -45,20 +40,6 @@
     #portfolio-list-container{
         min-width: 300px;
         width: 20%;
-    }
-    .portfolio-vertical-divider{
-        margin: 0 auto;
-        width: 2px;
-        background-color: darkgray;
-        border: none;
-        /* border: 1px solid darkgray; */
-    }
-    .portfolio-summary-container{
-        min-height: 400px;
-        min-width: 600px;
-        max-height: 600px;
-        max-width: 900px;
-        margin-bottom: 28px;
     }
 }
 
@@ -110,32 +91,19 @@
     /* margin-left: 3px; */
 }
 
-.portfolio-summary-container{
-    text-align: center;
+#portfolio-summary-container{
     justify-content: center;
     overflow: hidden;
 }
 
 #portfolio-pie-wrapper{
-    border: 1px solid darkgray;
     border-radius: 10px;
-    margin: 8px auto;
-    padding-bottom: 28px;
-    height: calc(100% - 44px);
     position: relative;
     overflow: hidden;
-    /* background-color: bisque; */
-
 }
 #portfolio-pie-div{
-    position: absolute;
-    top: 0px;
-    height: calc(100% - 16px);
-    bottom: 0px;
-    left: 0px;
-    right: 0px;
-    /* height: 100%; */
-    /* overflow: hidden; */
+    height: 95%;
+    width: 95%;
     margin: auto;
 }
 .company-price-container{
@@ -209,6 +177,7 @@
     position: absolute;
     top: var(--searchBarHeight);
     overflow: hidden;
+    z-index: 100;
 }
 
 .search-result{
@@ -420,10 +389,12 @@
     /* margin: 0 auto; */
     /* border: 1px solid black; */
 }
-
 .trade-type-button{
     width: 45%;
     margin: auto;
+}
+
+.selector-button{
     height: 30px;
     outline: none;
     border: 2px solid var(--themeColor);
@@ -438,12 +409,12 @@
 .modal-content-security-header{
     display: flex;
 }
-#trade-type-button-active{
+.trade-type-button-active{
     background-color: var(--themeColor);
     color: white;
 }
 
-#portfolio-to-date-info-container{
+#portfolio-graph-container{
 
 }
 
@@ -463,4 +434,45 @@
 
 #portfolio-makeup-info-container{
     position: relative;
+}
+
+#portfolio-performance-container{
+}
+
+.portfolio-info-container{
+    display: inline-block;
+    scroll-snap-align: start;
+}
+
+#portfolio-performance-graph{
+    width: 100%;
+    height: 400px;
+    background-color: red;
+}
+
+.rounded-gray-border{
+    border: 1px solid darkgray;
+    border-radius: 10px;
+}
+
+.portfolio-info-container-view-window{
+    overflow-x: scroll;
+    white-space: nowrap;
+    position: relative;
+    overflow-y: hidden;
+    border: 1px solid darkgray;
+    box-sizing: content-box;
+    scroll-snap-type: x mandatory;
+}
+.portfolio-info-container-view-window::-webkit-scrollbar {
+    display: none;
+}
+
+.portfolio-info-container-content{
+    height: calc(100% - 28px);
+}
+
+#portfolio-info-container-title{
+    transition: 1.5s ease-in;
+
 }

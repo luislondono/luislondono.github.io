@@ -67,35 +67,35 @@ async function setupSpecificPage() {
             // ...
         });
     }
+    /*
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+            console.log("Signed in !")
+        }
+    })
 
-    // firebase.auth().onAuthStateChanged(function (user) {
-    //     if (user) {
-    //         console.log("Signed in !")
-    //     }
-    // })
+    firebase.auth().signInWithRedirect(provider);
 
-    // firebase.auth().signInWithRedirect(provider);
-
-    // firebase.auth().getRedirectResult().then(function (result) {
-    //     if (result.credential) {
-    //         // This gives you a Google Access Token. You can use it to access the Google API.
-    //         var token = result.credential.accessToken;
-    //         console.log(token)
-    //         // ...
-    //     }
-    //     // The signed-in user info.
-    //     var user = result.user;
-    // }).catch(function (error) {
-    //     // Handle Errors here.
-    //     var errorCode = error.code;
-    //     var errorMessage = error.message;
-    //     // The email of the user's account used.
-    //     var email = error.email;
-    //     // The firebase.auth.AuthCredential type that was used.
-    //     var credential = error.credential;
-    //     // ...
-    // });
-
+    firebase.auth().getRedirectResult().then(function (result) {
+        if (result.credential) {
+            // This gives you a Google Access Token. You can use it to access the Google API.
+            var token = result.credential.accessToken;
+            console.log(token)
+            // ...
+        }
+        // The signed-in user info.
+        var user = result.user;
+    }).catch(function (error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // The email of the user's account used.
+        var email = error.email;
+        // The firebase.auth.AuthCredential type that was used.
+        var credential = error.credential;
+        // ...
+    });
+    */
     if (devMode) {
         devModeSetup()
     }
@@ -154,9 +154,21 @@ async function setupSpecificPage() {
     // document.getElementById("page-title").children[1].innerText = userEmail
     document.getElementById("page-title").insertAdjacentHTML("afterend", `<h3 id = "client-name-title" >${userEmail}</h3 >`)
 
+
+
+    window.onresize = function () {
+        handleWindowResize()
+    }
+
+    document.getElementsByClassName('portfolio-info-container-view-window')[0].onscroll = function () {
+        handleInfoContainerViewWindowScroll()
+    }
+
+    handleViewInfoContainer('performance')
+
+    resizePortfolioInfoContainerViewWindow()
+    renderPerformanceGraph()
     renderPortfolioChart()
-
-
 
 
 
@@ -188,7 +200,6 @@ function constructEndpoint(request) {
     return result
 }
 
-
 function queryAlphaVantage(request, callback) {
     // var xmlHttp = new XMLHttpRequest();
     const url = constructEndpoint(request)
@@ -211,8 +222,6 @@ function handleGetQuote() {
     }
     )
 }
-
-
 
 async function fetchPortfolio(email) {
     result = await portfolioCollection.doc(email).get().then(function (doc) {
@@ -241,8 +250,6 @@ function updatePortfolio(email, portfolio) {
             console.error("Error updating document: ", error);
         });
 }
-
-
 
 function executeStockSearchQuery() {
     const query = stockSearchBarInputElement.value.trim()
@@ -365,8 +372,8 @@ function generateAddSecurityModal(companyName, ticker) {
     /*html*/
     const buySellButtons = `
         <div id= "buy-sell-button-container">
-            <Button onclick = "handleTradeTypeButtonClick(false)" class = "trade-type-button" >Buy</Button>
-            <Button onclick = "handleTradeTypeButtonClick(true)"class = "trade-type-button" id = "trade-type-button-active">Sell</Button>
+            <Button onclick = "handleTradeTypeButtonClick(false)" class = "selector-button trade-type-button" id = "modal-buy-button">Buy</Button>
+            <Button onclick = "handleTradeTypeButtonClick(true)"class = "selector-button trade-type-button trade-type-button-active" id= "modal-sell-button">Sell</Button>
         </div>
     `
 
@@ -564,16 +571,18 @@ function handleAddSecurityToPortfolioFromModal(ticker, companyName, currentPrice
 }
 
 function handleTradeTypeButtonClick(isSell) {
+    buyButton = document.getElementById("modal-buy-button")
+    sellButton = document.getElementById("modal-sell-button")
     if (isSell) {
         sellingSecurity = true
-        document.getElementById("trade-type-button-active").id = ""
-        document.getElementsByClassName("trade-type-button")[1].id = "trade-type-button-active"
+        sellButton.classList.add("trade-type-button-active")
+        buyButton.classList.remove("trade-type-button-active")
         document.getElementsByClassName("modal-content-execution-price")[0].innerText = "Sold at:"
     }
     else {
         sellingSecurity = false
-        document.getElementById("trade-type-button-active").id = ""
-        document.getElementsByClassName("trade-type-button")[0].id = "trade-type-button-active"
+        sellButton.classList.remove("trade-type-button-active")
+        buyButton.classList.add("trade-type-button-active")
         document.getElementsByClassName("modal-content-execution-price")[0].innerText = "Bought at:"
     }
 }
@@ -639,6 +648,7 @@ function creditCashAccount(amount) {
 function floatToCurrency(float) {
     return parseFloat(float.toFixed(2))
 }
+
 function updatePortfolioPositionHTML(ticker = null) {
     if (ticker == null || !userDocument.latestPortfolio.hasOwnProperty(ticker)) {
         return
@@ -667,6 +677,7 @@ function updatePortfolioPositionHTML(ticker = null) {
         }
     }
 }
+
 function updatePortfolioHTML() {
     Object.keys(userDocument.latestPortfolio).forEach(position => {
         if (position != "undefined") {
@@ -675,7 +686,6 @@ function updatePortfolioHTML() {
         }
     });
 }
-
 
 function getStockQuoteIEXCloud(ticker, callback) {
     // console.log(ticker)
@@ -714,6 +724,13 @@ function getStockQuoteIEX(ticker, callback) {
 }
 
 function renderPortfolioChart() {
+    parentWidth = document.getElementById('portfolio-container').children[0].getBoundingClientRect().width
+    pieWrapper = document.getElementById('portfolio-pie-wrapper')
+    var pieWrapperWidth = pieWrapper.getBoundingClientRect().width
+    var pieWrapperHeight = pieWrapper.getBoundingClientRect().height
+
+    console.log(`PieWrapperDimensions:  height ${pieWrapperHeight} , width ${pieWrapperWidth}`)
+    console.log(pieWrapper.style.height)
 
     // Load the Visualization API and the corechart package.
     google.charts.load('current', { 'packages': ['corechart'] });
@@ -735,9 +752,8 @@ function renderPortfolioChart() {
         // console.log(stockRows)
         data.addRows(stockRows);
 
-        pieDivWidth = document.getElementById("portfolio-pie-div").getBoundingClientRect().width
-        pieDivHeight = document.getElementById("portfolio-pie-div").getBoundingClientRect().height
-        // console.log("HxW : ", pieDivHeight, " x ", pieDivWidth)
+
+        // console.log("HxW : ", pieWrapperHeight, " x ", pieWrapperWidth)
         // Set chart options
         // var options = {}
         var options = {
@@ -755,8 +771,8 @@ function renderPortfolioChart() {
             "chartArea": {
                 // left: 0,
                 // top: 0,
-                width: pieDivWidth * .95,
-                height: pieDivHeight * .95,
+                width: pieWrapperWidth * .85,
+                height: pieWrapperHeight * .75,
             },
             "legend": {
                 alignment: 'center',
@@ -817,5 +833,102 @@ function devModeSetup() {
 
     updatePortfolioHTML()
     // generateAddSecurityModal('General Motors', 'GM')
+
+}
+
+function handleViewInfoContainer(infoType) {
+    // console.log("Switching to info container: ", infoType)
+    // summaryContainer = document.getElementById('portfolio-summary-container')
+    // performanceContainer = document.getElementById('portfolio-performance-container')
+    // switch (infoType) {
+    //     case 'summary':
+    //         summaryContainer.style.display = "unset"
+    //         performanceContainer.style.display = "none"
+    //         renderPortfolioChart()
+    //         break;
+    //     case 'performance':
+    //         summaryContainer.style.display = "none"
+    //         performanceContainer.style.display = "unset"
+    //         renderPerformanceGraph()
+    //         break
+
+    //     default:
+    //         break;
+    // }
+
+}
+
+function handleWindowResize() {
+    resizePortfolioInfoContainerViewWindow()
+}
+
+function resizeInfoContainerParentDiv() {
+    infoContainerParent = document.getElementById('portfolio-info-container-parent-div')
+    infoContainerParentWidth = infoContainerParent.getBoundingClientRect().width
+    switch (windowWidth = window.innerWidth) {
+        case windowWidth >= 1024:
+
+        case windowWidth > 600 && windowWidth < 1024:
+
+        case windowWidth < 600:
+
+        default:
+        // infoContainerParent.style.maxHeight = String(infoContainerParentWidth * 9 / 16) + "px"
+    }
+}
+
+function renderPerformanceGraph() {
+}
+
+function resizePortfolioInfoContainerViewWindow() {
+    windowFrame = document.getElementsByClassName('portfolio-info-container-view-window')[0]
+    switch (windowWidth = window.innerWidth) {
+        case windowWidth >= 1024:
+
+        case windowWidth > 600 && windowWidth < 1024:
+
+        case windowWidth < 600:
+
+        default:
+            windowFrame.style.height = String(9 * windowFrame.getBoundingClientRect().width / 16) + "px"
+    }
+    for (let index = 0; index < windowFrame.children.length; index++) {
+        const infoContainerElement = windowFrame.children[index];
+        // console.log(infoContainerElement)
+        infoContainerElement.style.position = "absolute"
+        infoContainerElement.style.top = "0px"
+        infoContainerElement.style.left = windowFrame.getBoundingClientRect().width * index + "px"
+        infoContainerElement.style.height = windowFrame.getBoundingClientRect().height + "px"
+        infoContainerElement.style.width = windowFrame.getBoundingClientRect().width + "px"
+
+    }
+    renderPerformanceGraph()
+    renderPortfolioChart()
+}
+
+function handleInfoContainerViewWindowScroll() {
+    InfoContainerTitleElement = document.getElementById("portfolio-info-container-title")
+    windowFrame = document.getElementsByClassName('portfolio-info-container-view-window')[0]
+    windowWidth = windowFrame.getBoundingClientRect().width
+    console.log(windowFrame.scrollLeft)
+    if (windowFrame.scrollLeft > 0 && windowFrame.scrollLeft < windowWidth / 2) {
+        console.log("Looking at Summary")
+        if (InfoContainerTitleElement.innerText != 'Portfolio Summary') {
+            InfoContainerTitleElement.innerText = 'Portfolio Summary'
+        }
+    } else if (windowFrame.scrollLeft >= windowWidth / 2 && windowFrame.scrollLeft <= 3 / 2 * windowWidth) {
+        console.log("Looking at Graph")
+        if (InfoContainerTitleElement.innerText != 'All-time Chart') {
+            InfoContainerTitleElement.innerText = 'All-time Chart'
+        }
+    }
+    // switch (left = windowFrame.scrollLeft) {
+    //     case (windowFrame.scrollLeft > 0 && windowFrame.scrollLeft <= windowWidth):
+    //         break;
+    //     case windowFrame.scrollLeft > windowWidth && windowFrame.scrollLeft <= 2 * windowWidth:
+    //         break;
+    //     case left > 0:
+    //         console.log(left)
+    // }
 
 }
