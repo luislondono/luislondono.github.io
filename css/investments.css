@@ -462,7 +462,7 @@
     overflow-y: hidden;
     border: 1px solid darkgray;
     box-sizing: content-box;
-    scroll-snap-type: x mandatory;
+    /* scroll-snap-type: x mandatory; */
 }
 .portfolio-info-container-view-window::-webkit-scrollbar {
     display: none;
