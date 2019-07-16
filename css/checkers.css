@@ -1,0 +1,130 @@
+.game-initiation-button-container{
+width: fit-content;
+margin-left: auto;
+margin-right: auto;
+border: 1px solid black;
+}
+
+.game-initiation-button-container button{
+    font-size: 1.1em;
+    outline: none;
+}
+
+#create-checkers-game{
+    background-color: white;
+    color: var(--themeColor);
+    font-weight: bolder;
+}
+
+#join-checkers-game{
+
+}
+
+.checkers-row{
+    display: flex;
+    width: fit-content;
+    width: 100%;
+    height: 12.5%;
+}
+
+.checkers-square{
+    /* opacity: .6; */
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    width: 12.5%;
+    border: 1px solid black;
+
+}
+.checkers-row:nth-child(8n){
+    /* flex-direction: row-reverse; */
+}
+
+.checkers-board{
+    padding: 40px 0px;
+    box-sizing: content-box;
+    margin: auto;
+    height: 500px;
+    width: 500px;
+}
+
+.primary-square{
+    /* background-color: red; */
+}
+
+.secondary-square:before{
+    content: "";
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: -50%;
+    left: -50%;
+    z-index: -1;
+    background: url(./../images/textures/oak-texture.jpeg) 0 0 repeat;
+    background-blend-mode: lighten;
+    -webkit-transform: rotate(30deg);
+    transform: rotate(30deg);
+}
+.primary-square:before{
+    content: "";
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: -50%;
+    left: -50%;
+    z-index: -1;
+    background: url(./../images/textures/cherry-texture.jpeg) 0 0 repeat;
+    -webkit-transform: rotate(30deg);
+    transform: rotate(30deg);
+}
+
+.primary-square:nth-child(5n):before{
+    transform: rotate(80deg);
+}
+.primary-square:nth-child(5n+1):before{
+    transform: rotate(20deg);
+}
+.primary-square:nth-child(5n+2):before{
+    transform: rotate(50deg);
+}
+
+.secondary-square:nth-child(5n):before{
+    transform: rotate(80deg);
+}
+.secondary-square:nth-child(5n+1):before{
+    transform: rotate(20deg);
+}
+.secondary-square:nth-child(5n+2):before{
+    transform: rotate(50deg);
+}
+
+
+.checker{
+    width: 80%;
+    height: 80%;
+    border-radius: 50%;
+    z-index: 10;
+    /* box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17); */
+    box-shadow:inset 0 -0.6em 0 -0.35em rgba(255,255,255,0.17);
+    border: none;
+    outline: none;
+    /* opacity: 1; */
+    margin: auto;
+}
+.primary-checker{
+    background-color: black;
+}
+
+.secondary-checker{
+    background-color: white;
+}
+
+
+.primary-square-2{
+    background-color: rgba(50,100,50,.5);
+}
+
+.secondary-square-2{
+    background-color: antiquewhite;
+}
