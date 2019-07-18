@@ -1,3 +1,67 @@
+
+:root{
+    --checkerBoardSizeDesktop: 550px;
+    --checkerBoardSizeTablet: 400px;
+    --checkerBoardSizePhone: 300px;
+}
+@media only screen and (max-width: 600px) {
+    .checkers-board{
+        width: var(--checkerBoardSizePhone);
+        height: var(--checkerBoardSizePhone);
+    }
+    #checkers-game-info-wrapper{
+        width: calc((100% - var(--checkerBoardSizePhone))/2);
+        height: var(--checkerBoardSizePhone);
+    }
+    #checkers-game-container{
+        display: flex;
+        flex-direction: column;
+    }
+    .game-info-player-turn-container{
+        left: calc(var(--checkerBoardSizePhone) + 20px);
+        margin: auto 0 auto 0;
+        top: 0;
+        bottom: 0;
+        height: calc(var(--checkerBoardSizePhone)/8);
+        width: calc(var(--checkerBoardSizePhone)/8);
+
+    }
+    .checkers-game-player-info-container{
+        display: flex;
+        border-radius: 10px;
+        align-items: center;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        margin-left: auto;
+        margin-right: auto;
+        width: fit-content;
+    }
+}
+
+@media only screen and (min-width: 600px) {
+    .checkers-board{
+        width: var(--checkerBoardSizeTablet);
+        height: var(--checkerBoardSizeTablet);
+    }
+    #checkers-game-info-wrapper{
+        width: calc((100% - var(--checkerBoardSizeTablet))/2);
+        height: var(--checkerBoardSizeTablet);
+    }
+}
+
+@media only screen and (min-width: 1024px) {
+    /* For desktop: */
+    .checkers-board{
+        width: var(--checkerBoardSizeDesktop);
+        height: var(--checkerBoardSizeDesktop);
+    }
+    #checkers-game-info-wrapper{
+        width: calc((100% - var(--checkerBoardSizeDesktop))/2);
+        height: var(--checkerBoardSizeDesktop);
+    }
+}
+
+
 .game-initiation-button-container{
 width: fit-content;
 margin-left: auto;
@@ -42,11 +106,10 @@ border: 1px solid black;
 }
 
 .checkers-board{
-    padding: 40px 0px;
+    border: 1px solid black;
     box-sizing: content-box;
-    margin: auto;
-    height: 500px;
-    width: 500px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .primary-square{
@@ -131,4 +194,46 @@ border: 1px solid black;
 
 .toggled-tile{
     border: 2px solid red;
+}
+
+
+#checkers-game-container{
+    position: relative;
+    border: 1px solid black;
+    width: fit-content;
+    margin: auto;
+}
+
+#checkers-game-info-wrapper{
+    align-items: center;
+    /* border: 1px solid black; */
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto 0 auto auto;
+}
+
+.checkers-game-player-info-container{
+    border: 2px solid black;
+    padding: 5px;
+}
+
+
+.checkers-game-info-sub-wrapper{
+height: 100%;
+width: 100%;
+position: relative;
+}
+
+.stop-clock{
+    display: flex;
+    font-size: 1.4em;
+}
+
+.game-info-player-turn-container{
+    position: absolute;
+    background-color: lightgray;
+    border: 1px solid black;
 }

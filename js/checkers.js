@@ -18,18 +18,23 @@ var selectedPieceID = null;
 var lockedSelectedPieceID = null;
 var possibleMoves = null;
 var currentTurn = 0
+var initialTimeSeconds = 309
+var primaryStopwatchTime = initialTimeSeconds;
+var secondaryStopwatchTime = initialTimeSeconds;
+
 
 
 setupSpecificPage = function () {
     console.log("Setting up Checkers.html")
     firebase.initializeApp(firebaseConfig);
     gameInitializerContainer = document.getElementsByClassName("game-initiation-button-container")[0]
-
+    handleCreateNewGame()
 }
 
 function handleCreateNewGame() {
     gameInitializerContainer.style.display = "none"
     drawCheckersBoard()
+    setupStopWatches()
 }
 
 function handleJoinGame() {
@@ -90,13 +95,10 @@ function drawCheckersBoard() {
         checkersBoard.appendChild(checkersRow)
     }
 
-    document.getElementsByClassName("game-initiation-button-container")[0].insertAdjacentElement('afterend', checkersBoard)
-
-    // document.getElementById("page-content").insertAdjacentElement('afterbegin', checkersBoard)
-
+    document.getElementById("checkers-board-container").insertAdjacentElement('afterbegin', checkersBoard)
 }
 
-function handleSelectPiece(checkerDiv) {
+function handleSelectPiece() {
     // console.log(event.target)
     checkerID = event.target.id
     checkerPosition = piecesState[checkerID]
@@ -107,10 +109,9 @@ function handleSelectPiece(checkerDiv) {
         return
     }
 
-    // console.log(`checkerID : ${checkerID}, position:(${piecesState[checkerID][0]},${piecesState[checkerID][1]})`)
-    // console.log(`Possible Moves: ${genPossibleMoves(checkerPosition)}`)
     if (lockedSelectedPieceID != null && checkerID != lockedSelectedPieceID) {
         console.warn("You must move piece: ", lockedSelectedPieceID)
+        return
     }
 
     // if checkerID
@@ -138,15 +139,24 @@ function handleSelectPiece(checkerDiv) {
 
 }
 
-function genPossibleMoves(position) {
-    pieceID = pieceIDAtPosition(position)
+function genPossibleMoves(checkerData) {
+    if (!checkerData.hasOwnProperty("x") || !checkerData.hasOwnProperty("y") || !checkerData.hasOwnProperty("king")) {
+        throw error;
+        console.error("checkerData not in correct format!")
+        return
+    }
+    console.log("generating possible moves for position: ", checkerData)
+    pieceID = pieceIDAtPosition([checkerData["x"], checkerData["y"]])
     result = []
     targetPositions = [
-        [position[0] - 1, position[1] - 1],
-        [position[0] + 1, position[1] - 1],
-        [position[0] - 1, position[1] + 1],
-        [position[0] + 1, position[1] + 1],
+        [checkerData["x"] - 1, checkerData["y"] - 1],
+        [checkerData["x"] + 1, checkerData["y"] - 1],
+        [checkerData["x"] - 1, checkerData["y"] + 1],
+        [checkerData["x"] + 1, checkerData["y"] + 1],
     ]
+    console.log(targetPositions)
+
+
     targetPositions.forEach(potentialTarget => {
         if (!isValidCoordinate(potentialTarget)) {
             return;
@@ -163,17 +173,18 @@ function genPossibleMoves(position) {
 
             if (pieceIDAtTargetPositionSide != currentTurn) {
                 // Can skip over 'eat' oponent
-                const eatOpponentPieceCoord = [position[0] + (2 * (potentialTarget[0] - position[0])),
-                position[1] + (2 * (potentialTarget[1] - position[1]))]
+                const eatOpponentPieceCoord = [checkerData["x"] + (2 * (potentialTarget[0] - checkerData["x"])),
+                checkerData["y"] + (2 * (potentialTarget[1] - checkerData["y"]))]
                 pieceAtEatOpponentPieceCoord = pieceIDAtPosition(eatOpponentPieceCoord)
+                console.log("Can eat opponent and land on: ", eatOpponentPieceCoord)
                 if (isValidCoordinate(eatOpponentPieceCoord) && pieceAtEatOpponentPieceCoord == null) {
                     result.push(eatOpponentPieceCoord)
                 }
             }
         }
     })
-    console.log("Possible moves are: ")
-    console.log(result)
+    // console.log("Possible moves are: ")
+    // console.log(result)
     return result
 }
 
@@ -184,9 +195,9 @@ function isValidCoordinate(coord) {
 function pieceIDAtPosition(targetCoord) {
     for (const piece in piecesState) {
         if (piecesState.hasOwnProperty(piece)) {
-            const pieceCoord = piecesState[piece];
+            const pieceData = piecesState[piece];
             // console.log(pieceCoord)
-            if (pieceCoord != null && pieceCoord[0] == targetCoord[0] && pieceCoord[1] == targetCoord[1]) {
+            if (pieceData != null && pieceData.x == targetCoord[0] && pieceData.y == targetCoord[1]) {
                 return piece
             }
         }
@@ -205,7 +216,11 @@ function createChecker(isPrimary, checkerSquareElement, x, y) {
     else { secondaryPieceCount += 1 }
     checker.id = subClassName + checkerNumber
 
-    piecesState[checker.id] = [x, y]
+    piecesState[checker.id] = {
+        "x": x,
+        "y": y,
+        "king": false,
+    }
 
     checker.addEventListener('click', function (e) {
         handleSelectPiece(e.target)
@@ -257,43 +272,48 @@ function toggleTileHighlight(coord) {
 
 function moveSelectedPieceToTile(tileElement) {
     selectedPiece = document.getElementById(selectedPieceID)
-    selectedPieceCoord = piecesState[selectedPieceID]
+    selectedPieceData = piecesState[selectedPieceID]
     destinationTileCoord = getCoordFromTileElement(tileElement)
-    eatOpponentMove = Math.abs(selectedPieceCoord[0] - destinationTileCoord[0]) > 1
-    const eatenPieceCoord = [
-        selectedPieceCoord[0] + ((destinationTileCoord[0] - selectedPieceCoord[0]) / 2),
-        selectedPieceCoord[1] + ((destinationTileCoord[1] - selectedPieceCoord[1]) / 2)
-    ]
-
+    const eatOpponentMove = Math.abs(selectedPieceData["x"] - destinationTileCoord[0]) > 1
     if (eatOpponentMove) {
-
-        console.log(`Current Position ${selectedPieceCoord} , target Position: ${destinationTileCoord} , eat Position: ${eatenPieceCoord}`)
+        console.log("Eating an opponent")
+    }
+    event.target.appendChild(selectedPiece)
+    // Untoggle current possible Moves
+    possibleMoves.forEach(coord => toggleTileHighlight(coord))
+    const eatenPieceCoord = [
+        selectedPieceData["x"] + ((destinationTileCoord[0] - selectedPieceData["x"]) / 2),
+        selectedPieceData["y"] + ((destinationTileCoord[1] - selectedPieceData["y"]) / 2)
+    ]
+    piecesState[selectedPieceID]["x"] = destinationTileCoord[0]
+    piecesState[selectedPieceID]["y"] = destinationTileCoord[1]
+    if (eatOpponentMove) {
+        // console.log(`Current Position ${selectedPieceCoord} , target Position: ${destinationTileCoord} , eat Position: ${eatenPieceCoord}`)
 
         removePieceAtPosition(eatenPieceCoord)
         lockedSelectedPieceID = selectedPieceID;
 
-    }
-
-
-    piecesState[selectedPieceID] = destinationTileCoord
-
-    event.target.appendChild(selectedPiece)
-    possibleMoves.forEach(coord => toggleTileHighlight(coord))
-
-
-    if (eatOpponentMove) {
-        possibleMoves = genPossibleMoves(destinationTileCoord)
+        possibleMoves = genPossibleMoves({
+            "x": destinationTileCoord[0],
+            "y": destinationTileCoord[1],
+            "king": selectedPieceData["king"]
+        })
+        console.log("Retoggling after an eat move: ", possibleMoves)
         possibleMoves.forEach(coord => {
             toggleTileHighlight(coord)
         })
 
     }
     else {
-        selectedPieceID = null;
-        possibleMoves = null;
+
+        console.log("Changing turn")
+        handleChangeTurn()
     }
 
-    currentTurn = eatOpponentMove ? currentTurn : (currentTurn + 1) % 2
+    if (primaryStopwatchTime == initialTimeSeconds && secondaryStopwatchTime == initialTimeSeconds) {
+        setInterval(() => { updateStockWatch() }, 1000)
+    }
+
 }
 
 function getCoordFromTileElement(tileElement) {
@@ -309,4 +329,55 @@ function removePieceAtPosition(coord) {
     piecesState[eatenPieceID] = null
     eatenPiece = document.getElementById(eatenPieceID)
     eatenPiece.remove()
+}
+
+function handleChangeTurn() {
+    console.log("Turn has changed")
+    prevTurnString = (currentTurn == 0) ? "primary" : "secondary"
+    currentTurn = (currentTurn + 1) % 2
+    currentTurnString = (currentTurn == 0) ? "primary" : "secondary"
+    turnInfoChecker = document.getElementsByClassName("game-info-player-turn-container")[0].children[0]
+    turnInfoChecker.classList.remove(prevTurnString + "-checker")
+    turnInfoChecker.classList.add(currentTurnString + "-checker")
+    lockedSelectedPieceID = null;
+    selectedPieceID = null;
+    possibleMoves = null;
+}
+
+function updateStockWatch() {
+    // console.log("Updating stop-watch")
+    const currentPlayer = currentTurn == 0 ? "primary" : "secondary"
+    let minutes;
+    let secs;
+    if (currentTurn == 0) {
+        primaryStopwatchTime -= 1
+        secs = primaryStopwatchTime % 60
+        minutes = (primaryStopwatchTime - (primaryStopwatchTime % 60)) / 60
+    }
+    else {
+        secondaryStopwatchTime -= 1
+        secs = secondaryStopwatchTime % 60
+        minutes = (secondaryStopwatchTime - (secondaryStopwatchTime % 60)) / 60
+    }
+    stopwatch = document.getElementById(currentPlayer + "-player-info").getElementsByClassName("player-stop-watch")[0]
+    stopwatch.children[0].innerText = minutes
+    stopwatch.children[2].innerText = (secs < 10) ? "0" + secs : secs;
+}
+
+function setupStopWatches() {
+    primaryStopwatch = document.getElementById("primary-player-info").getElementsByClassName("player-stop-watch")[0]
+    secondaryStopwatch = document.getElementById("secondary-player-info").getElementsByClassName("player-stop-watch")[0]
+
+    primarySeconds = primaryStopwatchTime % 60
+    primaryMinutes = (primaryStopwatchTime - (primaryStopwatchTime % 60)) / 60
+    secondarySeconds = secondaryStopwatchTime % 60
+    secondaryMinutes = (secondaryStopwatchTime - (secondaryStopwatchTime % 60)) / 60
+
+    console.log(`stopwatch P: ${primaryStopwatchTime}, stopwatch S: ${secondaryStopwatchTime}`)
+
+    primaryStopwatch.children[0].innerText = primaryMinutes
+    primaryStopwatch.children[2].innerText = primarySeconds < 10 ? "0" + primarySeconds : primarySeconds;
+
+    secondaryStopwatch.children[0].innerText = secondaryMinutes;
+    secondaryStopwatch.children[2].innerText = secondarySeconds < 10 ? "0" + secondarySeconds : secondarySeconds;
 }

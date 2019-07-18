@@ -184,8 +184,6 @@ display: flex;
 }
 
 #page-content> div:nth-last-child(2){
-    margin-bottom: 1em;
-    /* background-color: red; */
 }
 
 .navbar-container {
