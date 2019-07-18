@@ -13,6 +13,12 @@ var boardState;
 var piecesState = {};
 var primaryPieceCount = 0
 var secondaryPieceCount = 0
+var toggledTileIDS = []
+var selectedPieceID = null;
+var lockedSelectedPieceID = null;
+var possibleMoves = null;
+var currentTurn = 0
+
 
 setupSpecificPage = function () {
     console.log("Setting up Checkers.html")
@@ -84,7 +90,9 @@ function drawCheckersBoard() {
         checkersBoard.appendChild(checkersRow)
     }
 
-    document.getElementById("page-content").insertAdjacentElement('beforeend', checkersBoard)
+    document.getElementsByClassName("game-initiation-button-container")[0].insertAdjacentElement('afterend', checkersBoard)
+
+    // document.getElementById("page-content").insertAdjacentElement('afterbegin', checkersBoard)
 
 }
 
@@ -93,54 +101,92 @@ function handleSelectPiece(checkerDiv) {
     checkerID = event.target.id
     checkerPosition = piecesState[checkerID]
 
-    console.log(`checkerID : ${checkerID}, position:(${piecesState[checkerID][0]},${piecesState[checkerID][1]})`)
+    currentTurnSide = checkerID.substring(0, 7) == "primary" ? 0 : 1
+    if (currentTurnSide != currentTurn) {
+        console.warn("Trying to move a piece not during the correct turn!")
+        return
+    }
+
+    // console.log(`checkerID : ${checkerID}, position:(${piecesState[checkerID][0]},${piecesState[checkerID][1]})`)
     // console.log(`Possible Moves: ${genPossibleMoves(checkerPosition)}`)
+    if (lockedSelectedPieceID != null && checkerID != lockedSelectedPieceID) {
+        console.warn("You must move piece: ", lockedSelectedPieceID)
+    }
 
     // if checkerID
-    moves = genPossibleMoves(checkerPosition)
+    if (selectedPieceID == null) {
+        selectedPieceID = checkerID
+        possibleMoves = genPossibleMoves(checkerPosition)
+        possibleMoves.forEach(coord => {
+            toggleTileHighlight(coord)
+        })
+    }
+    else {
+        if (checkerID != selectedPieceID) {
+            console.warn("Selected piece that wasn't currently selected")
+            return
+        }
+        else {
+            selectedPieceID = null;
+            possibleMoves = genPossibleMoves(checkerPosition)
+            possibleMoves.forEach(coord => {
+                toggleTileHighlight(coord)
+            })
+        }
+    }
     // console.log(moves)
-    moves.forEach(coord => {
-        toggleTileHighlight(coord)
-    })
 
 }
 
 function genPossibleMoves(position) {
+    pieceID = pieceIDAtPosition(position)
     result = []
-    // North-West
-    nwPosition = [position[0] - 1, position[1] - 1]
-    // NortiEast
-    nePosition = [position[0] + 1, position[1] + 1]
-    // SoutiWest
-    swPosition = [position[0] - 1, position[1] - 1]
-    // SoutiEast
-    sePosition = [position[0] + 1, position[1] - 1]
-    positions = [
+    targetPositions = [
         [position[0] - 1, position[1] - 1],
         [position[0] + 1, position[1] - 1],
         [position[0] - 1, position[1] + 1],
         [position[0] + 1, position[1] + 1],
     ]
-    positions.forEach(position => {
-        if (isValidCoordinate(position) && (pieceAtPosition(position) == null)) {
-            result.push(position)
+    targetPositions.forEach(potentialTarget => {
+        if (!isValidCoordinate(potentialTarget)) {
+            return;
         }
-    });
 
+        pieceIDAtTargetPosition = pieceIDAtPosition(potentialTarget)
+
+        console.log(`Checking position (${potentialTarget[0]},${potentialTarget[1]})`)
+        if (pieceIDAtTargetPosition == null) {
+            result.push(potentialTarget)
+        }
+        if (pieceIDAtTargetPosition != null) {
+            pieceIDAtTargetPositionSide = pieceIDAtTargetPosition.substring(0, 7) == "primary" ? 0 : 1
+
+            if (pieceIDAtTargetPositionSide != currentTurn) {
+                // Can skip over 'eat' oponent
+                const eatOpponentPieceCoord = [position[0] + (2 * (potentialTarget[0] - position[0])),
+                position[1] + (2 * (potentialTarget[1] - position[1]))]
+                pieceAtEatOpponentPieceCoord = pieceIDAtPosition(eatOpponentPieceCoord)
+                if (isValidCoordinate(eatOpponentPieceCoord) && pieceAtEatOpponentPieceCoord == null) {
+                    result.push(eatOpponentPieceCoord)
+                }
+            }
+        }
+    })
+    console.log("Possible moves are: ")
+    console.log(result)
     return result
-
 }
 
 function isValidCoordinate(coord) {
     return coord[0] <= 7 && coord[0] >= 0 && coord[1] <= 7 && coord[1] >= 0
 }
 
-function pieceAtPosition(targetCoord) {
+function pieceIDAtPosition(targetCoord) {
     for (const piece in piecesState) {
         if (piecesState.hasOwnProperty(piece)) {
             const pieceCoord = piecesState[piece];
             // console.log(pieceCoord)
-            if (pieceCoord[0] == targetCoord[0] && pieceCoord[1] == targetCoord[1]) {
+            if (pieceCoord != null && pieceCoord[0] == targetCoord[0] && pieceCoord[1] == targetCoord[1]) {
                 return piece
             }
         }
@@ -193,5 +239,74 @@ function createCheckerSquare(x, y) {
 
 function toggleTileHighlight(coord) {
     tile = document.getElementById(`checkers-square-${coord[0]}-${coord[1]}`)
-    tile.style.border = (tile.style.border == "3px solid red") ? "" : "3px solid red"
+
+    if (!toggledTileIDS.includes(tile.id)) {
+        toggledTileIDS.push(tile.id)
+        tile.classList.add("toggled-tile")
+        tile.onclick = function (event) {
+            moveSelectedPieceToTile(event.target)
+        }
+    }
+    else {
+        toggledTileIDS.splice(toggledTileIDS.indexOf(tile.id), 1)
+        tile.classList.remove("toggled-tile")
+        tile.onclick = undefined;
+    }
+
+}
+
+function moveSelectedPieceToTile(tileElement) {
+    selectedPiece = document.getElementById(selectedPieceID)
+    selectedPieceCoord = piecesState[selectedPieceID]
+    destinationTileCoord = getCoordFromTileElement(tileElement)
+    eatOpponentMove = Math.abs(selectedPieceCoord[0] - destinationTileCoord[0]) > 1
+    const eatenPieceCoord = [
+        selectedPieceCoord[0] + ((destinationTileCoord[0] - selectedPieceCoord[0]) / 2),
+        selectedPieceCoord[1] + ((destinationTileCoord[1] - selectedPieceCoord[1]) / 2)
+    ]
+
+    if (eatOpponentMove) {
+
+        console.log(`Current Position ${selectedPieceCoord} , target Position: ${destinationTileCoord} , eat Position: ${eatenPieceCoord}`)
+
+        removePieceAtPosition(eatenPieceCoord)
+        lockedSelectedPieceID = selectedPieceID;
+
+    }
+
+
+    piecesState[selectedPieceID] = destinationTileCoord
+
+    event.target.appendChild(selectedPiece)
+    possibleMoves.forEach(coord => toggleTileHighlight(coord))
+
+
+    if (eatOpponentMove) {
+        possibleMoves = genPossibleMoves(destinationTileCoord)
+        possibleMoves.forEach(coord => {
+            toggleTileHighlight(coord)
+        })
+
+    }
+    else {
+        selectedPieceID = null;
+        possibleMoves = null;
+    }
+
+    currentTurn = eatOpponentMove ? currentTurn : (currentTurn + 1) % 2
+}
+
+function getCoordFromTileElement(tileElement) {
+    idLength = tileElement.id.length
+    x = parseInt(tileElement.id.substring(idLength - 3, idLength - 2))
+    y = parseInt(tileElement.id.substring(idLength - 1, idLength))
+    return [x, y]
+}
+
+function removePieceAtPosition(coord) {
+    console.log(`Removing piece at ${coord}`)
+    eatenPieceID = pieceIDAtPosition(coord)
+    piecesState[eatenPieceID] = null
+    eatenPiece = document.getElementById(eatenPieceID)
+    eatenPiece.remove()
 }

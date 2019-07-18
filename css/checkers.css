@@ -128,3 +128,7 @@ border: 1px solid black;
 .secondary-square-2{
     background-color: antiquewhite;
 }
+
+.toggled-tile{
+    border: 2px solid red;
+}
