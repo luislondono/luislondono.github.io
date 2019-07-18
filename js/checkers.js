@@ -9,8 +9,10 @@ var firebaseConfig = {
 };
 
 var gameInitializerContainer;
-var boardState;
 var piecesState = {};
+var gameMetaData = {
+    "piecesState": piecesState,
+};
 var primaryPieceCount = 0
 var secondaryPieceCount = 0
 var toggledTileIDS = []
@@ -21,81 +23,191 @@ var currentTurn = 0
 var initialTimeSeconds = 309
 var primaryStopwatchTime = initialTimeSeconds;
 var secondaryStopwatchTime = initialTimeSeconds;
+var gameInitializerFormContainer;
+var playerName;
+var gameroomName;
 
+// Firebase
+var checkersCollection;
+var gameroomDoc;
 
 
 setupSpecificPage = function () {
     console.log("Setting up Checkers.html")
     firebase.initializeApp(firebaseConfig);
+    checkersCollection = firebase.firestore().collection("checkers")
     gameInitializerContainer = document.getElementsByClassName("game-initiation-button-container")[0]
-    handleCreateNewGame()
+    gameInitializerFormContainer = document.getElementsByClassName("game-initiation-form-container")[0]
+    // handleCreateNewGame()
 }
 
-function handleCreateNewGame() {
+async function handleCreateNewGame() {
     gameInitializerContainer.style.display = "none"
+    playerName = gameInitializerFormContainer.children[0].value
+    gameroomName = gameInitializerFormContainer.children[1].value
+    let gameRoomNameOK = false;
+
+    if (playerName == "") {
+        console.warn("You need a player name!")
+        shakeElement(gameInitializerFormContainer.children[0])
+        return
+    }
+    else if (gameroomName == "") {
+        console.warn("You need a gameroom name!")
+        shakeElement(gameInitializerFormContainer.children[1])
+        return
+    }
+    gameMetaData["primaryPlayer"] = playerName
+
+    await checkersCollection.doc(gameroomName).get().then(function (doc) {
+        if (!doc.exists) {
+            gameRoomNameOK = true;
+        }
+    })
+
+    if (!gameRoomNameOK) {
+        console.error("Tried to make a game-room for a name that already exists")
+        return
+    }
+
     drawCheckersBoard()
     setupStopWatches()
+    checkersCollection.doc(gameroomName).set(gameMetaData)
 }
 
-function handleJoinGame() {
+async function handleJoinGame() {
+    playerName = gameInitializerFormContainer.children[0].value
+    gameroomName = gameInitializerFormContainer.children[1].value
+    gameroomDoc = checkersCollection.doc(gameroomName)
+    if (playerName == "") {
+        console.warn("You need a player name!")
+        shakeElement(gameInitializerFormContainer.children[0])
+        return
+    }
+    else if (gameroomName == "") {
+        console.warn("You need a gameroom name!")
+        shakeElement(gameInitializerFormContainer.children[1])
+        return
+    }
+
+    gameInitializerContainer.style.display = "none"
+
+
+
+    await gameroomDoc.get().then(function (doc) {
+        if (doc.exists) {
+            gameMetaData = doc.data()
+        } else {
+            // doc.data() will be undefined in this case
+            console.warn("No such gameroom exists!");
+            return
+        }
+    })
+    if (gameMetaData.hasOwnProperty("secondaryPlayer") && gameMetaData["secondaryPlayer"] != playerName) {
+        console.error("This gameroom already has two players, and you aren't one of them!")
+    }
+
+    await gameroomDoc.update({ "secondaryPlayer": playerName })
+
+    drawCheckersBoard(false)
+
 
 }
 
-function drawCheckersBoard() {
+
+function drawCheckersBoard(isNewGame = true) {
+    const checkersGameContainerElement = document.getElementById("checkers-game-container")
+
+
     var checkersBoard = document.createElement('div')
     checkersBoard.classList.add("checkers-board")
 
+    /*html */
+    infoContainerElementString = `<div id="secondary-player-info" class="checkers-game-player-info-container flex-column">
+        <span class="player-stop-watch flex">
+            <span>5</span>
+            <span>:</span>
+            <span>30</span>
+        </span>
+        <span class="pieces-captured-container">
+            <span>Pieces Captured</span>
+            <span>0</span>
+        </span>
+    </div>
+    <div class="game-info-player-turn-container flex">
+        <div class="checker primary-checker"></div>
+    </div>
+    <div id="checkers-board-container">
+    </div>
+    <div id="primary-player-info" class="checkers-game-player-info-container flex-column">
+        <span>${playerName}</span>
+        <span class="player-stop-watch flex">
+            <span>5</span>
+            <span>:</span>
+            <span>30</span>
+        </span>
+        <span class="pieces-captured-container">
+            <span>Pieces Captured</span>
+            <span>0</span>
+        </span>
+    </div>`
+
+    checkersGameContainerElement.insertAdjacentHTML('afterbegin', infoContainerElementString)
 
 
 
-    for (let row = 0; row < 8; row++) {
-        var checkersRow = document.createElement('div')
-        checkersRow.classList.add("checkers-row")
-        for (let square = 0; square < 8; square++) {
-            var checkersSquare = createCheckerSquare(square, 7 - row)
-            // var checkersSquare = document.createElement('div')
-            // checkersSquare.classList.add("checkers-square")
+    if (isNewGame) {
+        for (let row = 0; row < 8; row++) {
+            var checkersRow = document.createElement('div')
+            checkersRow.classList.add("checkers-row")
+            for (let square = 0; square < 8; square++) {
+                var checkersSquare = createCheckerSquare(square, 7 - row)
+                // var checkersSquare = document.createElement('div')
+                // checkersSquare.classList.add("checkers-square")
 
-            switch (row) {
-                case 0:
-                    if (square % 2 == 1) {
-                        createChecker(false, checkersSquare, square, 7 - row)
-                    }
-                    break;
-                case 1:
-                    if (square % 2 == 0) {
-                        createChecker(false, checkersSquare, square, 7 - row)
-                    }
-                    break;
-                case 2:
-                    if (square % 2 == 1) {
-                        createChecker(false, checkersSquare, square, 7 - row)
-                    }
-                    break;
-                case 5:
-                    if (square % 2 == 0) {
-                        createChecker(true, checkersSquare, square, 7 - row)
-                    }
-                    break;
-                case 6:
-                    if (square % 2 == 1) {
-                        createChecker(true, checkersSquare, square, 7 - row)
-                    }
-                    break;
-                case 7:
-                    if (square % 2 == 0) {
-                        createChecker(true, checkersSquare, square, 7 - row)
-                    }
-                    break;
+                switch (row) {
+                    case 0:
+                        if (square % 2 == 1) {
+                            createChecker(false, checkersSquare, square, 7 - row)
+                        }
+                        break;
+                    case 1:
+                        if (square % 2 == 0) {
+                            createChecker(false, checkersSquare, square, 7 - row)
+                        }
+                        break;
+                    case 2:
+                        if (square % 2 == 1) {
+                            createChecker(false, checkersSquare, square, 7 - row)
+                        }
+                        break;
+                    case 5:
+                        if (square % 2 == 0) {
+                            createChecker(true, checkersSquare, square, 7 - row)
+                        }
+                        break;
+                    case 6:
+                        if (square % 2 == 1) {
+                            createChecker(true, checkersSquare, square, 7 - row)
+                        }
+                        break;
+                    case 7:
+                        if (square % 2 == 0) {
+                            createChecker(true, checkersSquare, square, 7 - row)
+                        }
+                        break;
+                }
+
+
+                checkersRow.appendChild(checkersSquare)
             }
-
-
-            checkersRow.appendChild(checkersSquare)
+            checkersBoard.appendChild(checkersRow)
         }
-        checkersBoard.appendChild(checkersRow)
     }
+    else {
 
-    document.getElementById("checkers-board-container").insertAdjacentElement('afterbegin', checkersBoard)
+    }
+    document.getElementById('checkers-board-container').insertAdjacentElement('afterbegin', checkersBoard)
 }
 
 function handleSelectPiece() {
@@ -123,9 +235,16 @@ function handleSelectPiece() {
         })
     }
     else {
-        if (checkerID != selectedPieceID) {
+        if (checkerID != selectedPieceID && lockedSelectedPieceID == null) {
             console.warn("Selected piece that wasn't currently selected")
-            return
+            possibleMoves.forEach(coord => {
+                toggleTileHighlight(coord)
+            })
+            selectedPieceID = checkerID
+            possibleMoves = genPossibleMoves(checkerPosition)
+            possibleMoves.forEach(coord => {
+                toggleTileHighlight(coord)
+            })
         }
         else {
             selectedPieceID = null;
@@ -145,7 +264,7 @@ function genPossibleMoves(checkerData) {
         console.error("checkerData not in correct format!")
         return
     }
-    console.log("generating possible moves for position: ", checkerData)
+    // console.log("generating possible moves for position: ", checkerData)
     pieceID = pieceIDAtPosition([checkerData["x"], checkerData["y"]])
     result = []
     targetPositions = [
@@ -162,11 +281,14 @@ function genPossibleMoves(checkerData) {
             return;
         }
 
+
         pieceIDAtTargetPosition = pieceIDAtPosition(potentialTarget)
 
         console.log(`Checking position (${potentialTarget[0]},${potentialTarget[1]})`)
         if (pieceIDAtTargetPosition == null) {
-            result.push(potentialTarget)
+            if (currentTurn == 0 && potentialTarget[1] > checkerData["y"] || currentTurn == 1 && potentialTarget[1] < checkerData["y"] || lockedSelectedPieceID != null) {
+                result.push(potentialTarget)
+            }
         }
         if (pieceIDAtTargetPosition != null) {
             pieceIDAtTargetPositionSide = pieceIDAtTargetPosition.substring(0, 7) == "primary" ? 0 : 1
@@ -176,8 +298,8 @@ function genPossibleMoves(checkerData) {
                 const eatOpponentPieceCoord = [checkerData["x"] + (2 * (potentialTarget[0] - checkerData["x"])),
                 checkerData["y"] + (2 * (potentialTarget[1] - checkerData["y"]))]
                 pieceAtEatOpponentPieceCoord = pieceIDAtPosition(eatOpponentPieceCoord)
-                console.log("Can eat opponent and land on: ", eatOpponentPieceCoord)
                 if (isValidCoordinate(eatOpponentPieceCoord) && pieceAtEatOpponentPieceCoord == null) {
+                    console.log("Can eat opponent and land on: ", eatOpponentPieceCoord)
                     result.push(eatOpponentPieceCoord)
                 }
             }
@@ -303,6 +425,8 @@ function moveSelectedPieceToTile(tileElement) {
             toggleTileHighlight(coord)
         })
 
+        infoContainerID = currentTurn == 0 ? "primary-player-info" : "secondary-player-info"
+        document.getElementById(infoContainerID).getElementsByClassName("pieces-captured-container")[0].children[1].innerText = parseInt(document.getElementById(infoContainerID).getElementsByClassName("pieces-captured-container")[0].children[1].innerText) + 1
     }
     else {
 
@@ -380,4 +504,13 @@ function setupStopWatches() {
 
     secondaryStopwatch.children[0].innerText = secondaryMinutes;
     secondaryStopwatch.children[2].innerText = secondarySeconds < 10 ? "0" + secondarySeconds : secondarySeconds;
+}
+
+async function deleteAllStoredGames() {
+    await checkersCollection.get()
+        .then(querySnapshot => {
+            querySnapshot.docs.forEach(doc => {
+                checkersCollection.doc(doc.id).delete()
+            });
+        })
 }
