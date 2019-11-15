@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title>Luis Londono</title>
+    <script type="text/javascript" src="./js/global.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+
+    <script type="text/javascript" src="./js/checkers.js"></script>
+    <link rel="stylesheet" href="css/checkers.css">
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="images/cornellicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body id="page">
+
+    <header>
+    </header>
+
+    <div id="page-content">
+
+        <h1>Checkers</h1>
+        <div class="game-initiation-button-container">
+            <form class="game-initiation-form-container">
+                <input type="text" placeholder="Name">
+                <input type="text" placeholder="gameroom-name">
+            </form>
+            <button class="button-2" id="create-checkers-game" onclick="handleCreateNewGame()">Create Game</button>
+            <button class="button-2" id="join-checkers-game" onclick="handleJoinGame()">Join Game</button>
+            <button class="button-2" onclick="deleteAllStoredGames()">Delete All</button>
+        </div>
+        <div id="checkers-game-container" class="flex">
+
+        </div>
+        <button class="button-2" onclick="printState()"> Check State</button>
+
+
+
+    </div>
+
+</body>
+<script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-app.js"> </script>
+<script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-functions.js"></script>
+<script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-firestore.js"></script>
+
+
+</html>

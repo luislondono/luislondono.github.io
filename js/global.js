@@ -142,3 +142,10 @@ function handleMobileMenuIconClick() {
         document.getElementsByClassName("mobile-menu-container")[0].id = "mobile-menu-container-collapsed"
     }
 }
+
+function shakeElement(element) {
+    element.classList.add("invalid")
+    setTimeout(() => {
+        element.classList.remove("invalid")
+    }, 750)
+}
