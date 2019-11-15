@@ -26,8 +26,7 @@ var sellingSecurity = null;
 var quandlKey = 'xXj3VxSfn6yF5ghJpgTF'
 var SearchCacheBufferMilliseconds = 15 * 60 * 1000;
 
-
-
+var portfolioInfoContainerCarouselState = ['daily','summary','weekly','alltime']
 
 
 
@@ -169,6 +168,7 @@ async function setupSpecificPage() {
     resizePortfolioInfoContainerViewWindow()
     renderPerformanceGraph()
     renderPortfolioChart()
+    document.getElementsByClassName('portfolio-info-container-view-window')[0].scrollLeft = document.getElementsByClassName('portfolio-info-container-view-window')[0].getBoundingClientRect().width
 
 
 
@@ -724,13 +724,14 @@ function getStockQuoteIEX(ticker, callback) {
 }
 
 function renderPortfolioChart() {
+    return
     parentWidth = document.getElementById('portfolio-container').children[0].getBoundingClientRect().width
     pieWrapper = document.getElementById('portfolio-pie-wrapper')
     var pieWrapperWidth = pieWrapper.getBoundingClientRect().width
     var pieWrapperHeight = pieWrapper.getBoundingClientRect().height
 
-    console.log(`PieWrapperDimensions:  height ${pieWrapperHeight} , width ${pieWrapperWidth}`)
-    console.log(pieWrapper.style.height)
+    // console.log(`PieWrapperDimensions:  height ${pieWrapperHeight} , width ${pieWrapperWidth}`)
+    // console.log(pieWrapper.style.height)
 
     // Load the Visualization API and the corechart package.
     google.charts.load('current', { 'packages': ['corechart'] });
@@ -895,9 +896,9 @@ function resizePortfolioInfoContainerViewWindow() {
     for (let index = 0; index < windowFrame.children.length; index++) {
         const infoContainerElement = windowFrame.children[index];
         // console.log(infoContainerElement)
-        infoContainerElement.style.position = "absolute"
-        infoContainerElement.style.top = "0px"
-        infoContainerElement.style.left = windowFrame.getBoundingClientRect().width * index + "px"
+        // infoContainerElement.style.position = "absolute"
+        // infoContainerElement.style.top = "0px"
+        // infoContainerElement.style.left = windowFrame.getBoundingClientRect().width * index + "px"
         infoContainerElement.style.height = windowFrame.getBoundingClientRect().height + "px"
         infoContainerElement.style.width = windowFrame.getBoundingClientRect().width + "px"
 
@@ -910,14 +911,14 @@ function handleInfoContainerViewWindowScroll() {
     InfoContainerTitleElement = document.getElementById("portfolio-info-container-title")
     windowFrame = document.getElementsByClassName('portfolio-info-container-view-window')[0]
     windowWidth = windowFrame.getBoundingClientRect().width
-    console.log(windowFrame.scrollLeft)
+    // console.log(windowFrame.scrollLeft)
     if (windowFrame.scrollLeft > 0 && windowFrame.scrollLeft < windowWidth / 2) {
-        console.log("Looking at Summary")
+        // console.log("Looking at Summary")
         if (InfoContainerTitleElement.innerText != 'Portfolio Summary') {
             InfoContainerTitleElement.innerText = 'Portfolio Summary'
         }
     } else if (windowFrame.scrollLeft >= windowWidth / 2 && windowFrame.scrollLeft <= 3 / 2 * windowWidth) {
-        console.log("Looking at Graph")
+        // console.log("Looking at Graph")
         if (InfoContainerTitleElement.innerText != 'All-time Chart') {
             InfoContainerTitleElement.innerText = 'All-time Chart'
         }
@@ -931,4 +932,20 @@ function handleInfoContainerViewWindowScroll() {
     //         console.log(left)
     // }
 
+}
+
+function bringRightMostInfoContainerToLeft() {
+    windowFrame = document.getElementsByClassName('portfolio-info-container-view-window')[0]
+    infoContainers = windowFrame.children
+    lastChild = infoContainers[infoContainers.length -1]
+    windowFrame.scrollLeft += windowFrame.getBoundingClientRect().width
+    windowFrame.insertBefore(lastChild,infoContainers[0])
+}
+
+function bringLeftMostInfoContainerToRight() {
+    windowFrame = document.getElementsByClassName('portfolio-info-container-view-window')[0]
+    infoContainers = windowFrame.children
+    firstChild = infoContainers[0]
+    windowFrame.scrollLeft -= windowFrame.getBoundingClientRect().width
+    windowFrame.insertBefore(firstChild,infoContainers[infoContainers.length -1].nextSibling)
 }
