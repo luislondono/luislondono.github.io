@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@500&display=swap');
+
+*{
+ padding: 0px;
+ margin: 0px;
+ text-decoration: none;
+ font-family:  'Fira Sans';
+}
+ a{
+  display: inline-block;
+ }
+
+#page-content{
+ max-width: 766px;
+ margin-left: auto;
+ margin-right: auto;
+}
+
+.horizontal-centered{
+ margin-left: auto;
+ margin-right: auto;
+}
+
+.text-centered{
+ text-align: center;
+}
