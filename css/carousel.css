@@ -1,0 +1,32 @@
+.carousel-parent{
+    border: 1px solid black;
+    display: -webkit-box;
+    overflow: scroll;
+    /* scroll-snap-type: x mandatory; */
+    margin: auto;
+    height: 450px;
+    width: 800px;
+
+}
+
+.carousel-child{
+    height: 100%;
+    width: 100%;
+    /* scroll-snap-align: start; */
+}
+
+.yellow{
+    background-color: yellow;
+}
+
+.blue{
+    background-color: blue
+}
+
+.red{
+    background-color: red
+}
+
+.gray{
+    background-color: lightgray;
+}
