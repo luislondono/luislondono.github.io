@@ -6,15 +6,25 @@
  text-decoration: none;
  font-family:  'Fira Sans';
 }
+
+:root{
+ --cellularMaxWidth: 425px;
+ --tabletMaxWidth: 1024px;
+}
  a{
   display: inline-block;
  }
 
 #page-content{
- max-width: 766px;
+ max-width: 1250px;
  margin-left: auto;
  margin-right: auto;
+ overflow: hidden;
 }
+#page-content > *{
+ max-width: inherit;
+}
+
 
 .horizontal-centered{
  margin-left: auto;
