@@ -1,3 +1,6 @@
+*{
+ font-family:  'Fira Sans';
+}
 :root{
  --carousel-icon-height: 90px;
  --carousel-item-width-mult: 1.3;
