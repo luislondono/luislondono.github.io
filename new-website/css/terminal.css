@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans&display=swap');
+
+
+:root{
+ --title-bar-height: 25px;
+ --windowBorderRadius: 7px;
+ --defaultHeight: 500px;
+ --defaultWidth: 800px;
+ --terminalTitleBorderColor: #b8b8b8;
+ --terminalBodyBorderColor: #232e21;
+}
+
+body{
+ margin: 0;
+}
+#page-content{
+ height: 100vh;
+ width: 100vw;
+ display: flex;
+ overflow: hidden;
+
+}
+.terminal-container{
+ transform: translate(0px,0px);
+ height: var(--defaultHeight);
+ width: var(--defaultWidth);
+ position: absolute;
+ box-shadow: 0px 15px 25px rgba(9, 9, 9, 0.41);
+}
+.terminal-container > *{
+ font-family: 'PT Sans';
+}
+
+.terminal-title-bar{
+ border-radius: var(--windowBorderRadius) var(--windowBorderRadius) 0 0 ;
+ border-left: .5px solid var(--terminalTitleBorderColor);
+ border-top: .5px solid var(--terminalTitleBorderColor);
+ border-right: .5px solid var(--terminalTitleBorderColor);
+ height: var(--title-bar-height);
+ display: flex;
+ background-color: #e2e0e2;
+}
+
+.terminal-body{
+ /* border: 1px solid black; */
+ background-color: black;
+ border-radius: 0 0 var(--windowBorderRadius) var(--windowBorderRadius);
+ height: calc(100% - var(--title-bar-height));
+ border-left: .5px solid var(--terminalBodyBorderColor);
+ border-right: .5px solid var(--terminalBodyBorderColor);
+ border-bottom: .5px solid var(--terminalBodyBorderColor);
+ opacity: .95;
+}
+.terminal-title-navigation-buttons{
+ display: flex;
+}
+.terminal-title-nav-button{
+ height: calc(.6 * var(--title-bar-height));
+ width: calc(.6 * var(--title-bar-height));
+ border-radius: 50%;
+ margin-top: auto;
+ margin-bottom: auto;
+ margin-left: calc(.25* var(--title-bar-height));
+}
+.close{
+ background-color: #f05146;
+}
+
+.minimize{
+ background-color: #f9be30;
+}
+
+.expand{
+ background-color: #40c940;
+}
+
+.terminal-text{
+ color : #10ff00;
+ margin-left: 12px;
+ letter-spacing: 1px;
+}
+input, input:focus{
+ padding: 0;
+ color: inherit;
+ letter-spacing: inherit;
+ background-color: unset;
+ border: none;
+ 
+}
+
+
+.terminal-title-container{
+ height: var(--title-bar-height);
+ display: flex;
+ left: 30%;
+ position: relative;
+ user-select: none;
+}
+.gen-terminal-button{
+ position: absolute;
+ top: 20px;
+ left: 20px;
+ height: 60px;
+ 
+}
+
+.terminal-title-icon{
+ height: calc(var(--title-bar-height)* .7);
+ margin-top: auto;
+ margin-bottom: auto;
+ margin-right: 3px;
+}
