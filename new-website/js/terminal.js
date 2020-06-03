@@ -3,6 +3,30 @@ var terminalContainer
 var terminalBody
 var pageContent
 
+var terminals = []
+var terminalDict = {}
+
+var activeDragWindow = undefined;
+var activeTerminalInput = undefined;
+
+var dragItem;
+var terminalIDcounter = 0;
+var clipboard = ""
+
+
+
+commands = {
+  "help"  : executeHelp,
+  "home"  : executeGo,
+  "go"    : executeGo,
+  "exit"  : closeTerminal
+}
+
+helpDocs = {
+  "help": `help lists out all the commands offered to you in llash. Good work on finding this!`,
+  "home": `'home' takes you to my home page, luislondono.com`,
+  "exit": `exit closes out the terminal instance. `
+}
 class Terminal {
   beingDragged = false;
   currentX;
@@ -23,8 +47,15 @@ class Terminal {
     this.titlebar = container.getElementsByClassName('terminal-title-bar')[0]
     this.navigationButtons = container.getElementsByClassName('navigation-buttons')[0]
     this.titleContainer = container.getElementsByClassName('terminal-title-container')[0]
+    this.terminalBody = container.querySelector(".terminal-body")
     this.terminalCursor = container.querySelector(".terminal-cursor")
+    this.terminalText = container.querySelector(".terminal-text")
     this.terminalTextContent = container.querySelector(".terminal-text-content")
+    this.systemString = "luislondono.com"
+    this.directoryString = "~"
+    this.buffer = ""
+    this.lastKey = undefined
+    generateNewPrompt(this,true)
 
 
     terminals.push(this)
@@ -32,18 +63,6 @@ class Terminal {
   }
 }
 
-terminals = []
-terminalDict = {}
-
-activeDragWindow = undefined;
-activeTerminalInput = undefined;
-
-
-var dragItem;
-var container;
-
-
-var terminalIDcounter = 0;
 
 
 
@@ -53,12 +72,6 @@ function pageSpecificOnload() {
   // terminalTitleBar = document.getElementsByClassName('terminal-title-bar')[0]
 
   generateTerminal()
-
-
-  dragItem = document.getElementsByClassName('terminal-container')[0]
-  terminalContainer = document.getElementsByClassName('terminal-container')[0]
-
-
 
 
   document.documentElement.addEventListener("mousedown", (e) => dragStart(e))
@@ -77,25 +90,28 @@ function generateTerminal() {
   const terminalTitleContainer = generateNode("div", terminalTitleBar, "terminal-title-container")
   const terminalTitleIcon = generateNode("img", terminalTitleContainer, "terminal-title-icon")
   terminalTitleIcon.src = "./assets/terminal_icons/folder_icon.png"
-  const terminalTitleText = generateNode("span", terminalTitleContainer, "terminal-title-text", "luislondono.com -- bash")
+  const terminalTitleText = generateNode("span", terminalTitleContainer, "terminal-title-text", `luislondono.com terminal-${terminalIDcounter} -- bash ` )
   const terminalBody = generateNode("div", terminalContainer, "terminal-body")
   const terminalText = generateNode("div", terminalBody, "terminal-text")
-  const terminalTextContent = generateNode("text",terminalText,"terminal-text-content","luislondono.com ~: user$")
+  const terminalTextContent = generateNode("text",terminalText,"terminal-text-content")
   const terminalCursor = generateNode("span",terminalText,"terminal-cursor transparent","▋")
 
 
 
-  terminalContainerRect = terminalContainer.getBoundingClientRect()
-  terminalContainer.style.top = (window.innerHeight - terminalContainerRect.height) / 2 + "px"
-  terminalContainer.style.left = (window.innerWidth - terminalContainerRect.width) / 2 + "px"
+  const terminalContainerRect = terminalContainer.getBoundingClientRect()
+  terminalContainer.style.top = (window.innerHeight - terminalContainerRect.height)/ 2 + 8 * terminalIDcounter+ "px"
+  terminalContainer.style.left = (window.innerWidth - terminalContainerRect.width) / 2 + 8 * terminalIDcounter+ "px"
 
-  terminalObj = new Terminal(terminalContainer)
+  const terminalObj = new Terminal(terminalContainer)
 
   terminalBody.addEventListener("click", (e) => {
     handleActiveTerminal(true, terminalContainer)
   })
+  terminalTextContent.addEventListener("onpaste", (e) => {
+    console.log("pasting...")
+  })
   close.addEventListener("click", (e) => {
-    closeTerminal(terminalContainer)
+    closeTerminal([],terminalObj)
   })
 }
 
@@ -110,14 +126,6 @@ function generateNode(type, parentNode, classString = "", innerText = "") {
 }
 
 function dragStart(e) {
-  // console.log(e)
-  // if (e.target.classList.contains('terminal-title-bar')) {
-  //  // Clicked on terminal title bar
-  //  activeDragWindow = e.target.parentNode.id
-  //  terminalDict[e.target.parentNode.id].initialCursorX = e.clientX
-  //  terminalDict[e.target.parentNode.id].initialCursorY = e.clientY
-  //  // Bring to front
-  // }
 
   if (e.target.classList.value.substring(0, 8) == 'terminal') {
     // Clicked on some terminal
@@ -181,11 +189,9 @@ function drag(e) {
   if (activeDragWindow != undefined) {
     currentX = e.clientX - terminalDict[activeDragWindow].initialCursorX;
     currentY = e.clientY - terminalDict[activeDragWindow].initialCursorY;
-    // console.log("Client X,Y = " + e.clientX + ", " + e.clientY)
-    // console.log("DelX,DelY = " + (currentX) + ", " + currentY)
-
-
+    terminalDict[activeDragWindow].terminalText.style.position = "static"
     moveTerminal(currentX, currentY, terminalDict[activeDragWindow])
+    terminalDict[activeDragWindow].terminalText.style.position = ""
   }
 }
 
@@ -221,17 +227,20 @@ function handleActiveTerminal(state, terminalContainer) {
       , 700)
     }
     document.documentElement.addEventListener("keydown", readInput)
-    console.log("Terminal active:")
-    console.log(terminalContainer)
+    // console.log("Terminal active:")
+    // console.log(terminalContainer)
   } else {
-    console.log("No terminal active")
+    // console.log("No terminal active")
     if (activeTerminalInput) {
-      console.log("Clearing " + activeTerminalInput)
+      // console.log("Clearing " + activeTerminalInput)
       clearInterval(terminalDict[activeTerminalInput].blinkerTimer)
       document.documentElement.removeEventListener("keydown",readInput)
+      activeTerminalInput = undefined;
     }
   }
 }
+
+
 
 function blinkCursor(terminalContainer) {
   cursor = terminalContainer.querySelector('.terminal-cursor')
@@ -242,25 +251,171 @@ function generateTerminalID() {
   return terminalIDcounter++
 }
 
-function closeTerminal(termContainer) {
-  console.log("closing terminal")
-  console.log(termContainer)
-  tIndex = -1;
-  for (let i = 0; i < terminals.length; i++) {
-    if (terminals[i].terminalKey == termContainer.id) {
-      tIndex = i
-      break
+
+function closeTerminal(tokens, tObject, fixLayering = true) {
+  console.log("closing terminal " + tObject.container.id)
+  if (tokens.length == 2 && tokens[0] == "exit" && tokens[1] == "-a") {
+    for (let i = 0; i < terminals.length; i++) {
+      closeTerminal([],terminals[i],false)
     }
+    terminals = []
+    terminalDict = {}
+    terminalIDcounter = 0
+    activeTerminalInput = undefined
+    return
   }
-  terminals.splice(tIndex, 1)
-  delete terminalDict[termContainer.id]
-  termContainer.remove()
+  if (fixLayering) {
+    tIndex = -1;
+    for (let i = 0; i < terminals.length; i++) {
+      if (terminals[i].terminalKey == tObject.id) {
+        tIndex = i
+        break
+      }
+    }
+    terminals.splice(tIndex, 1)
+  }
+  if (tObject.id == activeTerminalInput) {
+    clearInterval(tObject.blinkerTimer)
+  }
+
+  delete terminalDict[tObject.id]
+  tObject.container.remove()
 }
 
-function readInput(e) {
+async function readInput(e) {
   if (activeTerminalInput) {
-    terminalDict[activeTerminalInput].terminalTextContent.innerText += e.key
+    // console.log(e)
+    if (terminalDict[activeTerminalInput].lastKey == "Meta") {
+      switch (e.key) {
+        case "v":
+          pasteToTerminal(terminalDict[activeTerminalInput])
+          break;
+
+        default:
+          break;
+      }
+      terminalDict[activeTerminalInput].lastKey = undefined;
+      return
+    }
+    switch (e.key) {
+      case "Enter":
+        generateNewPrompt(terminalDict[activeTerminalInput])
+        break;
+      case "Backspace":
+        if (terminalDict[activeTerminalInput].buffer.length != 0) {
+          terminalDict[activeTerminalInput].buffer = terminalDict[activeTerminalInput].buffer.slice(0, -1)
+          terminalDict[activeTerminalInput].terminalTextContent.innerText = terminalDict[activeTerminalInput].terminalTextContent.innerText.slice(0,-1)
+        }
+        break;
+      case "Tab":
+        break;
+      case "Meta":
+        terminalDict[activeTerminalInput].lastKey = "Meta"
+        break;
+
+      default:
+        console.log("Typing " + e.key )
+        terminalDict[activeTerminalInput].terminalTextContent.innerText += e.key
+        terminalDict[activeTerminalInput].buffer += e.key
+        break;
+    }
   }
+}
+
+function generateNewPrompt(terminalObject, first = false) {
+  if (!first) {
+    stdOut(terminalObject, "", true)
+    parseBuffer(terminalObject)
+  }
+  terminalObject.terminalTextContent.innerText += (first ? "" : "\n") + terminalObject.systemString + ": " + terminalObject.directoryString + " user $ "
+  terminalObject.buffer = ""
+}
+
+function parseBuffer(tObject) {
+  console.assert(tObject instanceof Terminal, "parseBuffer was not handed a Terminal Object")
+  tokens = tObject.buffer.split(" ")
+  console.log(tokens)
+  execute(tokens,tObject)
+}
+
+function executeHelp(tokens, tObject) {
+  console.assert(tObject instanceof Terminal, "executeHelp was not handed a Terminal Object")
+  var helpString = ""
+  if (tokens.length == 1) {
+    helpString = `llash terminal, version 2.0
+    This shell is a frontend project by Luis Londono.
+    You can learn more about the project at github.com/luislondono.
+    These commands are defined internally by Luis.
+
+    `
+    for (var key in commands) {
+      if (commands.hasOwnProperty(key)) {
+        console.log(key)
+        helpString += key + "\n"
+      }
+    }
+  }
+  else {
+    for (let i = 1; i < tokens.length; i++) {
+      if (helpDocs.hasOwnProperty(tokens[i])){
+        helpString += helpDocs[tokens[i]] + "\n"
+      }
+    }
+  }
+  stdOut(tObject,helpString)
+}
+
+function executeUnknown(tokens, tObject) {
+  console.assert(tObject instanceof Terminal, "executeUnknown was not handed a Terminal Object")
+  stdOut(tObject, `-llash: ${tokens[0]} : command not found. For a list of commands, type 'help'`)
+}
+
+
+function stdOut(tObject, buffer, newline) {
+  console.assert(tObject instanceof Terminal, "stdOut was not handed a Terminal Object")
+  console.log("pushing buffer" + buffer + "to stdout")
+  console.log(tObject)
+  tObject.terminalTextContent.innerText += buffer
+  if (newline) {
+    tObject.terminalTextContent.innerText += "\n"
+  }
+}
+
+function execute(tokens, tObject) {
+  console.assert(tObject instanceof Terminal, "Execute was not handed a Terminal Object")
+  console.log("executing...")
+  if (commands.hasOwnProperty(tokens[0])) {
+    commands[tokens[0]](tokens, tObject)
+  }
+  else {
+    executeUnknown(tokens,tObject)
+  }
+  scrollTerminalToBottom(tObject)
+}
+
+function executeGo(tokens, tObject) {
+  switch (tokens.length) {
+    case 1:
+      document.location.href = "http://www.luislondono.com"
+      break;
+    case 2:
+      document.location.href = "http://" + tokens[1]
+    default:
+      break;
+  }
+}
+
+function pasteToTerminal(tObject) {
+  console.log("pasting...")
+  console.log(tObject.terminalTextContent)
+  navigator.clipboard.readText().then(clipboard => {
+    tObject.terminalTextContent.innerText += clipboard
+    tObject.buffer += clipboard
+  })
+}
+
+function scrollTerminalToBottom(tObject) {
+  tObject.terminalBody.scrollTop = tObject.terminalBody.scrollHeight
 }
 
 
