@@ -17,7 +17,7 @@
 	overflow-x: scroll;
 	display: flex;
 	flex-direction: row;
-	width: fit-content;
+	/* width: fit-content; */
 	/* scroll-snap-type: x mandatory ; */
 	margin: 0 auto calc(var(--standard-mobile-padding) * 2) auto;
 }
