@@ -1,67 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<script type="text/javascript" src="./js/global.js"></script>
+		<script type="text/javascript" src="./js/index.js"></script>
+		<link rel="stylesheet" href="./css/global.css" />
+		<link rel="stylesheet" href="./css/index.css" />
+		<link
+			rel="shortcut icon"
+			type="image/x-icon"
+			href="images/cornellicon.ico"
+		/>
+		<title>Document</title>
+	</head>
 
-<head>
- <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <script type="text/javascript" src="./js/global.js"></script>
- <script type="text/javascript" src="./js/index.js"></script>
- <link rel="stylesheet" href="./css/global.css">
- <link rel="stylesheet" href="./css/index.css">
- <link rel="shortcut icon" type="image/x-icon" href="images/cornellicon.ico">
- <title>Document</title>
-</head>
+	<body>
+		<div id="page-content">
+			<div class="google-maps-background-container">
+				<div class="google-maps-background-wrapper">
+					<img id="google-maps-background" src="./assets/google_maps_nyc.png" />
+				</div>
+				<div class="headshot-container">
+					<div class="headshot">
+						<img src="./assets/hyperloop-headshot.JPG" alt="" />
+					</div>
 
-<body>
- <div id="page-content">
-  <div class="google-maps-background-container">
-   <div class="google-maps-background-wrapper">
-    <img id="google-maps-background" src="./assets/google_maps_nyc.png">
-   </div>
-   <div class="headshot">
-    <img src="./assets/hyperloop-headshot.JPG" alt="">
-   </div>
-  </div>
+					<div class="headshot-title text-centered">
+						<span class="name">Luis Londoño Ramos</span>
+						<span class="location">📍 Bayside, New York</span>
+					</div>
+				</div>
+			</div>
 
-  <div id="biography" class="horizontal-centered">
-   <span>
-    👋🏼 My name is Luis Londono and I hope through this website 💻 you can get a better idea💡 of who I am, what I do
-    and what I’m passionate about!
-   </span>
-  </div>
+			<div id="biography" class="horizontal-centered">
+				<span>
+					Challenge-seeking, 4th year undergrad with 2 summers of internship
+					experience. Looking for high-impact projects to join and apply my
+					fullstack background.
+					<hr />
+					Below are snapshots of my work 💻 for you to get a better idea💡 of
+					who I am, what I do and what I’m passionate about!
+				</span>
+			</div>
 
-  <div id="work-carousel">
-  </div>
+			<div id="work-carousel"></div>
 
-  <div id="resume" class="horizontal-centered">
-   <div id="education">
-    <div class="upper-education-container">
-     <div id="cornell-seal">
-      <img src="./assets/cornell_icon.png" alt="">
-     </div>
-     <div id="degree-information">
-      <h3> Cornell University, College of Engineering</h3>
-      <p>B.S. Computer Science (2020)</p>
-      <p>Minors: Business, Operations Research</p>
-     </div>
-    </div>
-    <div>
-     <h5>Relevant Coursework</h5>
-     <p>Practicum in Operating Systems, Algorithms, Object Oriented Programming, Artificial Intelligence, Linear
-      Programming, Discrete Structures, Linear Algebra, Swift Development, Computer Organization, Unix tools and
-      Scripting, Financial Accounting & Valuation of Capital Investment, Spreadsheet-Based Modeling and Data Analysis
-     </p>
-    </div>
-   </div>
-   <div id="skills">
-    <h3>Skills</h3>
+			<div id="resume" class="inner-content-width horizontal-centered">
+				<div id="education" class="horizontal-centered">
+					<div class="upper-education-container">
+						<div id="cornell-seal">
+							<img src="./assets/cornell_icon.png" alt="" />
+						</div>
+						<div id="degree-information">
+							<h3>Cornell University, College of Engineering</h3>
+							<p class="gray-text">B.S. Computer Science (2020)</p>
+							<p class="gray-text">Minors: Business, Operations Research</p>
+						</div>
+					</div>
+					<div id="relevant-coursework">
+						<h5>Relevant Coursework</h5>
+						<p class="gray-text">
+							Practicum in Operating Systems, Algorithms, Object Oriented
+							Programming, Artificial Intelligence, Linear Programming, Discrete
+							Structures, Linear Algebra, Swift Development, Computer
+							Organization, Unix tools and Scripting, Financial Accounting &
+							Valuation of Capital Investment, Spreadsheet-Based Modeling and
+							Data Analysis
+						</p>
+					</div>
+				</div>
+				<div id="skills" class="horizontal-centered">
+					<h3 class="text-centered">Skills</h3>
+					<div id="skills-container"></div>
+				</div>
 
-   </div>
-  </div>
-
- </div>
-
-
-</body>
-
+				<div id="contact-me" class="text-centered">
+					<span>Contact Me</span>
+					<hr />
+				</div>
+			</div>
+		</div>
+	</body>
 </html>
