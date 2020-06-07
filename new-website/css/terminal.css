@@ -2,12 +2,13 @@
 
 
 :root{
- --title-bar-height: 25px;
+ --title-bar-height: 22px;
  --windowBorderRadius: 7px;
  --defaultHeight: 500px;
  --defaultWidth: 800px;
  --terminalTitleBorderColor: #b8b8b8;
  --terminalBodyBorderColor: #232e21;
+ --terminalButtonRatio: .55;
 }
 
 body{
@@ -49,35 +50,67 @@ body{
  border-left: .5px solid var(--terminalBodyBorderColor);
  border-right: .5px solid var(--terminalBodyBorderColor);
  border-bottom: .5px solid var(--terminalBodyBorderColor);
- opacity: .95;
+ overflow-y: scroll;
+ opacity: .90;
+
 }
 .terminal-title-navigation-buttons{
  display: flex;
+ margin-left: calc(var(--title-bar-height) * .4);
 }
 .terminal-title-nav-button{
- height: calc(.6 * var(--title-bar-height));
- width: calc(.6 * var(--title-bar-height));
+ height: calc(var(--terminalButtonRatio) * var(--title-bar-height));
+ width: calc(var(--terminalButtonRatio) * var(--title-bar-height));
  border-radius: 50%;
  margin-top: auto;
  margin-bottom: auto;
- margin-left: calc(.25* var(--title-bar-height));
+ margin-right: calc(var(--title-bar-height) * .34);
 }
+
+
 .close{
  background-color: #f05146;
+ box-shadow: 0px 0px 2px rgba(239, 77, 1, 1);
+}
+
+.close-icon-line{
+  height:  calc(var(--terminalButtonRatio) * var(--title-bar-height)* .2);
+  width: calc(var(--terminalButtonRatio) * var(--title-bar-height) * .8);
+  background-color: rgba(0,0,0, 0.8);
+  border-radius: 10px;
+}
+
+.close-icon-line:nth-child(1){
+  transform: rotate(-45deg) translate3d(-3px,3px,0px);
+}
+
+.close-icon-line:nth-child(2){
+  transform: rotate(45deg) translate3d(1px,1px,0px);
+}
+
+.close-icon{
+  height: inherit;
+  width: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .minimize{
  background-color: #f9be30;
+ box-shadow: 0px 0px 2px rgba(239, 178, 50, 1);
 }
 
 .expand{
  background-color: #40c940;
+ box-shadow: 0px 0px 2px rgba(48, 176, 55, 1);
 }
 
 .terminal-text{
  color : #10ff00;
  margin-left: 12px;
  letter-spacing: 1px;
+ margin-right: 12px;
 }
 input, input:focus{
  padding: 0;
@@ -85,7 +118,7 @@ input, input:focus{
  letter-spacing: inherit;
  background-color: unset;
  border: none;
- 
+
 }
 
 
@@ -101,7 +134,7 @@ input, input:focus{
  top: 20px;
  left: 20px;
  height: 60px;
- 
+
 }
 
 .terminal-title-icon{
@@ -110,3 +143,22 @@ input, input:focus{
  margin-bottom: auto;
  margin-right: 3px;
 }
+
+.terminal-cursor{
+}
+
+.none{
+  display: none;
+}
+
+.transparent{
+  opacity: 0;
+}
+
+.terminal-text-content{
+  width: 100%;
+  overflow-wrap: anywhere;
+  line-height: 1em;
+}
+
+
